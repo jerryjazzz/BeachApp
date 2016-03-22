@@ -1,0 +1,68 @@
+<ion-view>
+  <div class="bar bar-header bar-light" menu-height=""
+       style="background: url('img/headerImage.png') no-repeat;background-size: 100% 100%;">
+    <div class="row row-no-padding">
+      <div class="col col-25">
+        <img src="img/logo.png" style="position:relative;width:100%; height:100%; padding:10px;"/>
+      </div>
+      <div class="col col-75 col-center">
+        <h4 style="color: white;font-size:1.75em;">Delray Beach Insider</h4>
+      </div>
+    </div>
+
+  </div>
+  <ion-content has-new-header="" class="homePageBackground">
+    <div class="row row-no-padding homeRow" ng-repeat="Icon in HomeIcons" ng-if="$index%4 ==0">
+      <div class="col">
+        <div class="row row-no-padding">
+          <div class="col">
+            <img src="{{Icon.logo | ImageLink}}" class="homeIcons"/>
+          </div>
+        </div>
+        <div class="row row-no-padding">
+          <div class="col">
+            {{HomeIcons[$index].name}}
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="row row-no-padding" ui-sref="mainApp.category">
+          <div class="col">
+            <img src="{{HomeIcons[$index+1].logo | ImageLink}}" class="homeIcons"/>
+          </div>
+        </div>
+        <div class="row row-no-padding">
+          <div class="col">
+            {{HomeIcons[$index+1].name}}
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row row-no-padding">
+          <div class="col">
+            <img src="{{HomeIcons[$index+2].logo | ImageLink}}" class="homeIcons"/>
+          </div>
+        </div>
+        <div class="row row-no-padding">
+          <div class="col">
+            {{HomeIcons[$index+2].name}}
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row row-no-padding">
+          <div class="col">
+            <img src="{{HomeIcons[$index+3].logo | ImageLink}}" class="homeIcons"/>
+          </div>
+        </div>
+        <div class="row row-no-padding">
+          <div class="col">
+            {{HomeIcons[$index+3].name}}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </ion-content>
+</ion-view>
