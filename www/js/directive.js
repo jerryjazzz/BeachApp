@@ -23,4 +23,14 @@ angular.module('DBApp.directives', [])
         });
       })
     }
-  });
+  })
+  .directive("checkHeight", function () {
+    return function (scope, element, attrs) {
+      element.ready(function () {
+        angular.element(document).ready(function () {
+          console.log("ContentHeight",scope.contentHeight);
+          element.css("top",scope.contentHeight+"px");
+        });
+      })
+    }
+  })

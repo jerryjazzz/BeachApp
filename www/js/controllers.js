@@ -39,19 +39,23 @@ angular.module('DBApp.controllers', [])
         $scope.closeLogin();
       }, 1000);
     };
-    $scope.goBack = function () {
-      //console.log("I am working");
-      //console.log($ionicHistory.viewHistory());
-      //$ionicHistory.goBack();
-    }
   })
 
   .controller('HomeCtrl', function ($scope, $state, $stateParams, Icons) {
     $scope.HomeIcons = Icons.icons;
   })
   .controller('catCtrl', function ($scope, $state, $stateParams, catList, $filter, $ionicScrollDelegate, $ionicPlatform) {
-    var mapDiv = angular.element(document.getElementById("mapcontent"));
-    console.log(mapDiv);
+    var test = angular.element(document.getElementById("mapContent"));
+    test.ready(function () {
+      console.log(test[0].offsetTop);
+      console.log(test[0].offsetHeight);
+      $scope.contentHeight = test[0].offsetHeight + test[0].offsetTop;
+      var mapDime = test[0].offsetHeight
+      var mapDiv = angular.element(document.getElementsByClassName("angular-google-map-container"));
+      console.log(mapDiv);
+      mapDiv.css("height", mapDime + "px");
+    });
+    //console.log(test);
     $scope.data = catList.CatList;
     console.log($scope.data);
     $scope.ShowCategories = true;
@@ -97,13 +101,10 @@ angular.module('DBApp.controllers', [])
         })
       }
     });
-    $ionicPlatform.onHardwareBackButton(function () {
-      event.preventDefault();
-      event.stopPropagation();
-      $scope.goBack();
-      return true;
-    });
-
+    $ionicPlatform.registerBackButtonAction(function ($event) {
+      console.log($scope.goBack());
+      $scope.$apply();
+    }, 10000);
 
     $scope.openList = function (index, id) {
       var SubCount = $scope.data[index].subCategoryList.length;
@@ -119,7 +120,6 @@ angular.module('DBApp.controllers', [])
         $scope.ShowCategories = false;
         $scope.ShowSubCategories = true;
         $scope.subCategories = catData.subCategoryList;
-        //$ionicScrollDelegate.resize();
       }
       else {
         $scope.hasSubCategory = false;
@@ -156,18 +156,22 @@ angular.module('DBApp.controllers', [])
         $state.go("home");
       }
       if ($scope.ShowSubCategories) {
-
         $scope.ShowCategories = true;
         $scope.ShowSubCategories = false;
+        console.log("Show the Categories");
+
+        return true;
       }
       if ($scope.ShowHotelList) {
         if (!$scope.hasSubCategory) {
           $scope.ShowCategories = true;
           $scope.ShowHotelList = false;
+          return true;
         }
         else {
           $scope.ShowSubCategories = true;
           $scope.ShowHotelList = false;
+          return true;
         }
       }
     }

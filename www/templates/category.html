@@ -3,7 +3,7 @@
     <button class="button button-icon button-clear ion-android-arrow-back" ng-click="goBack()">
     </button>
   </ion-nav-buttons>
-  <ion-content scroll="false" overflow-scroll="true">
+  <ion-content scroll="false" overflow-scroll="true" style="height:40vh;" id="mapContent">
     <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options">
       <ui-gmap-markers models="markers" coords="'self'" icon="'icon'">
         <ui-gmap-windows show="show">
@@ -11,31 +11,33 @@
         </ui-gmap-windows>
       </ui-gmap-markers>
     </ui-gmap-google-map>
-    <ion-scroll style="height:100%" has-bouncing="true" overflow-scroll="true">
-      <ion-list ng-show="ShowCategories">
-        <ion-item ng-repeat="Category in data" class="item-thumbnail-left" ng-click="openList($index,Category.id)">
-          <img src="{{Category.logo | MainImages}}"/>
-          <h2>{{Category.name}}</h2>
-        </ion-item>
-      </ion-list>
-      <ion-list ng-show="ShowSubCategories" >
-        <ion-item ng-repeat="Category in subCategories" class="item-thumbnail-left" ng-click="manageSubCategory(Category.id,Category.subcategory)">
-          <img src="{{Category.logo | MainImages}}"/>
+  </ion-content>
+  <ion-content check-height>
+    <ion-list ng-show="ShowCategories">
+      <ion-item ng-repeat="Category in data" class="item-thumbnail-left" ng-click="openList($index,Category.id)">
+        <img src="{{Category.logo | MainImages}}"/>
 
-          <h2>{{Category.name}}</h2>
-        </ion-item>
-      </ion-list>
-      <ion-list ng-show="ShowHotelList">
-        <ion-item ng-repeat="Hotel in HotelList[0].data" class="item-thumbnail-left">
-          <img src="{{Hotel.logo | MainImages}}"/>
+        <h2>{{Category.name}}</h2>
+      </ion-item>
+    </ion-list>
+    <ion-list ng-show="ShowSubCategories">
+      <ion-item ng-repeat="Category in subCategories" class="item-thumbnail-left"
+                ng-click="manageSubCategory(Category.id,Category.subcategory)">
+        <img src="{{Category.logo | MainImages}}"/>
 
-          <h2>{{Hotel.businessname}}</h2>
+        <h2>{{Category.name}}</h2>
+      </ion-item>
+    </ion-list>
+    <ion-list ng-show="ShowHotelList">
+      <ion-item ng-repeat="Hotel in HotelList[0].data" class="item-thumbnail-left">
+        <img src="{{Hotel.logo | MainImages}}"/>
 
-          <p ng-bind-html="Hotel.description"></p>
+        <h2>{{Hotel.businessname}}</h2>
 
-          <p>{{Hotel.distance}} mi.</p>
-        </ion-item>
-      </ion-list>
-    </ion-scroll>
+        <p ng-bind-html="Hotel.description"></p>
+
+        <p>{{Hotel.distance}} mi.</p>
+      </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>
