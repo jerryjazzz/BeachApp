@@ -65,6 +65,19 @@ angular.module('DBApp.factory', [])
     };
     return returnData;
   })
-
+  .factory("detailData", function ($http, $q, API_URL) {
+    var returnData = {};
+    returnData.getData = function (id) {
+      var deferred = $q.defer();
+      var URL = API_URL + "establishment/detail/" + id;
+      $http.get(URL).then(function (response) {
+        deferred.resolve(response.data);
+      }, function (err) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    }
+    return returnData;
+  })
 
 ;

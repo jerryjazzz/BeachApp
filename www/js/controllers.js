@@ -43,6 +43,25 @@ angular.module('DBApp.controllers', [])
 
   .controller('HomeCtrl', function ($scope, $state, $stateParams, Icons) {
     $scope.HomeIcons = Icons.icons;
+    console.log($scope.HomeIcons);
+    $scope.goToCategory = function (name) {
+      console.log(name);
+      //return false;
+      var id = 0;
+      if (name == "EAT") {
+        id = 1;
+      }
+      else if (name == "FITNESS") {
+        id = 5;
+      }
+      if (id > 0) {
+        $state.go("mainApp.category", {"id": id});
+      }
+      else {
+        alert("Work in Progress");
+      }
+
+    }
   })
   .controller('catCtrl', function ($scope, $state, $stateParams, catList, $filter, $ionicScrollDelegate, $ionicPlatform) {
     var test = angular.element(document.getElementById("mapContent"));
@@ -176,4 +195,51 @@ angular.module('DBApp.controllers', [])
       }
     }
 
+
+    $scope.showDetails = function (id) {
+      $state.go("mainApp.detailView", {"id": id});
+    }
+
+  })
+  .controller('detailCtrl', function ($scope, $state, $stateParams, detailData, $localStorage,$ionicHistory) {
+    $scope.EstablishData = detailData.Data;
+    console.log(detailData);
+    $scope.map = {center: {latitude: $localStorage.lat, longitude: $localStorage.long}, zoom: 12, bounds: {}};
+    $scope.options = {
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      disableDefaultUI: true
+    };
+    $scope.businessName = $scope.EstablishData.businessname;
+    $scope.dataArr = {
+      "Address": "address",
+      "Phone No": "contact",
+      "Price Range": "pricerange",
+      "Category": "category",
+      "Restaurant Type": "categorytype",
+      "Details": "description"
+    };
+    console.log($scope.dataArr);
+    console.log($scope.EstablishData);
+    if ($scope.EstablishData.galleryimages !== ""){
+      $scope.Gallery = JSON.parse($scope.EstablishData.galleryimages);
+    }
+    else{
+      $scope.Gallery = [];
+    }
+
+    //$scope.MenuImages = JSON.parse($scope.EstablishData.menuImages);
+    if ($scope.EstablishData.menuImages !== ""){
+      //$scope.MenuImages = JSON.parse($scope.EstablishData.menuImages);
+    }
+    else{
+      $scope.MenuImages = [];
+    }
+    console.log($scope.EstablishData.menuImages);
+
+    $scope.call = function () {
+      console.log($scope.EstablishData.contact);
+    }
+    $scope.goBack = function(){
+      $ionicHistory.goBack();
+    }
   });

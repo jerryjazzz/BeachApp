@@ -29,12 +29,12 @@
       </ion-item>
     </ion-list>
     <ion-list ng-show="ShowHotelList">
-      <ion-item ng-repeat="Hotel in HotelList[0].data" class="item-thumbnail-left">
+      <ion-item ng-repeat="Hotel in HotelList[0].data" class="item-thumbnail-left" ng-click="showDetails(Hotel.establishid)">
         <img src="{{Hotel.logo | MainImages}}"/>
 
         <h2>{{Hotel.businessname}}</h2>
 
-        <p ng-bind-html="Hotel.description"></p>
+        <p ng-bind-html="Hotel.address"></p>
 
         <p>{{Hotel.distance}} mi.</p>
       </ion-item>

@@ -1,0 +1,45 @@
+<ion-view view-title="{{businessName}}">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon button-clear ion-android-arrow-back" ng-click="goBack()">
+    </button>
+  </ion-nav-buttons>
+  <ion-tabs class="tabs-balanced tabs-icon-top">
+
+    <ion-tab title="Info" icon-on="ion-ios-information" icon-off="ion-ios-information-outline">
+      <ion-content get-map-height scroll="false" overflow-scroll="true" style="height:40vh;">
+        <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options">
+        </ui-gmap-google-map>
+      </ion-content>
+      <ion-content check-height="" style="top:44px;">
+        <div class="row" ng-repeat="(key,value) in dataArr">
+          <div class="col">
+            <h4>{{key}}</h4>
+
+            <p ng-bind-html="EstablishData[value]">{{value}}</p>
+          </div>
+        </div>
+      </ion-content>
+    </ion-tab>
+
+    <ion-tab title="Photos" icon-on="ion-ios-camera" icon-off="ion-ios-camera-outline">
+      <ion-content has-header has-sub-header class="has-header" style="top:44px;">
+        <img collection-repeat="photo in Gallery"
+             item-height="50%" item-width="50%"
+             ng-src="{{photo | MainImages}}" style="margin-bottom: 10px;">
+      </ion-content>
+    </ion-tab>
+
+    <ion-tab title="Menu" icon-on="ion-android-restaurant" icon-off="ion-android-restaurant">
+      <ion-content has-header has-sub-header class="has-header" style="top:44px;">
+        <img collection-repeat="photo in MenuImages"
+             item-height="50%" item-width="50%"
+             ng-src="{{photo | MainImages}}" style="margin-bottom: 10px;">
+      </ion-content>
+    </ion-tab>
+    <ion-tab title="Call" icon-on="ion-ios-telephone" icon-off="ion-ios-telephone-outline" ng-href="tel: {{EstablishData.contact}}">
+      <!-- Tab 3 content -->
+    </ion-tab>
+  </ion-tabs>
+
+
+</ion-view>

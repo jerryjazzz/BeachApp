@@ -28,8 +28,21 @@ angular.module('DBApp.directives', [])
     return function (scope, element, attrs) {
       element.ready(function () {
         angular.element(document).ready(function () {
-          console.log("ContentHeight",scope.contentHeight);
-          element.css("top",scope.contentHeight+"px");
+          console.log("ContentHeight", scope.contentHeight);
+          element.css("top", scope.contentHeight + "px");
+        });
+      })
+    }
+  })
+  .directive("getMapHeight", function () {
+    return function (scope, element, attrs) {
+      element.ready(function () {
+        angular.element(document).ready(function () {
+          scope.$parent.contentHeight = element[0].offsetHeight + element[0].offsetTop;
+          var mapDime = element[0].offsetHeight
+          var mapDiv = angular.element(document.getElementsByClassName("angular-google-map-container"));
+          mapDiv.css("height", mapDime + "px");
+          scope.$apply();
         });
       })
     }

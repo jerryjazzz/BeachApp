@@ -39,7 +39,7 @@ angular.module('DBApp', ['ionic',
     });
   })
 
-  .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $httpProvider,$ionicConfigProvider) {
     $stateProvider
 
       .state('home', {
@@ -60,21 +60,38 @@ angular.module('DBApp', ['ionic',
         abstract: true,
       })
       .state('mainApp.category', {
-        url: '/category',
+        url: '/category/:id',
         views: {
           'menuContent': {
             templateUrl: 'templates/category.html',
             controller: 'catCtrl',
             resolve: {
-              catList: function (CatList) {
-                return CatList.catlist(1);
+              catList: function (CatList,$stateParams) {
+                var id = $stateParams.id;
+                console.log(id);
+                return CatList.catlist(id);
+              }
+            }
+          },
+        }
+      })
+      .state('mainApp.detailView', {
+        url: '/detail/:id',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/detail.html',
+            controller: 'detailCtrl',
+            resolve: {
+              detailData: function (detailData,$stateParams) {
+                var id = $stateParams.id;
+                return detailData.getData(id);
               }
             }
           },
         }
       });
 
-
+    $ionicConfigProvider.tabs.position("bottom");
     $urlRouterProvider.otherwise('/home');
     //$httpProvider.defaults.headers.common["lat"] = "123456";
     //$httpProvider.defaults.headers.common["long"] = "123456";
