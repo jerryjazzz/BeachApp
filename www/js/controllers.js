@@ -50,6 +50,8 @@ angular.module('DBApp.controllers', [])
     $scope.HomeIcons = Icons.icons;
   })
   .controller('catCtrl', function ($scope, $state, $stateParams, catList, $filter, $ionicScrollDelegate, $ionicPlatform) {
+    var mapDiv = angular.element(document.getElementById("mapcontent"));
+    console.log(mapDiv);
     $scope.data = catList.CatList;
     console.log($scope.data);
     $scope.ShowCategories = true;
