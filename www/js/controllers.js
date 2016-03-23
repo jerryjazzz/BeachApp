@@ -63,7 +63,16 @@ angular.module('DBApp.controllers', [])
 
     }
   })
-  .controller('catCtrl', function ($scope, $state, $stateParams, catList, $filter, $ionicScrollDelegate, $ionicPlatform) {
+  .controller('catCtrl', function ($scope, $state, $stateParams, catList, $filter, $ionicScrollDelegate, $ionicPlatform, uiGmapGoogleMapApi,uiGmapIsReady) {
+    //uiGmapGoogleMapApi.then(function (maps) {
+    //  $scope.$evalAsync(function () {
+    //    $scope.showMap = true;
+    //  });
+    //});
+    //uiGmapIsReady.promise().then(function (maps) {
+    //  $scope.showMap = true;
+    //  google.maps.event.trigger(maps[0].map, 'resize');
+    //});
     var test = angular.element(document.getElementById("mapContent"));
     test.ready(function () {
       console.log(test[0].offsetTop);
@@ -76,7 +85,6 @@ angular.module('DBApp.controllers', [])
     });
     //console.log(test);
     $scope.data = catList.CatList;
-    console.log($scope.data);
     $scope.ShowCategories = true;
     $scope.ShowSubCategories = false;
     $scope.ShowHotelList = false;
@@ -197,41 +205,86 @@ angular.module('DBApp.controllers', [])
 
 
     $scope.showDetails = function (id) {
+      //$scope.showMap = false;
       $state.go("mainApp.detailView", {"id": id});
     }
 
   })
-  .controller('detailCtrl', function ($scope, $state, $stateParams, detailData, $localStorage,$ionicHistory) {
-    $scope.EstablishData = detailData.Data;
-    console.log(detailData);
-    $scope.map = {center: {latitude: $localStorage.lat, longitude: $localStorage.long}, zoom: 12, bounds: {}};
+  .controller('detailCtrl', function ($scope, $state, $stateParams, detailData, $localStorage, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady) {
+    $scope.showMap = false;
+    $scope.map = {center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}};
     $scope.options = {
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      disableDefaultUI: true
+      disableDefaultUI: false
     };
+
+
+    //uiGmapGoogleMapApi.then(function (maps) {
+    //  console.log(maps);
+    //  $scope.$evalAsync(function () {
+    //    $scope.showMap = true;
+    //  });
+    //});
+
+    $scope.EstablishData = detailData.Data;
+    $scope.markers = [];
+    var markerHotel = {
+      latitude: $scope.EstablishData.lat,
+      longitude: $scope.EstablishData.lng,
+      title: $scope.EstablishData.businessname,
+      id: $scope.EstablishData.id,
+      icon: 'img/blue_marker.png'
+    };
+    var markerCurrentLocation = {
+      latitude: $localStorage.lat,
+      longitude: $localStorage.long,
+      title: 'Current Location',
+      id: 100000,
+    }
+    $scope.markers.push(markerHotel);
+    $scope.markers.push(markerCurrentLocation);
     $scope.businessName = $scope.EstablishData.businessname;
     $scope.dataArr = {
-      "Address": "address",
-      "Phone No": "contact",
+      "Details": "description",
       "Price Range": "pricerange",
       "Category": "category",
       "Restaurant Type": "categorytype",
-      "Details": "description"
+
     };
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    directionsService.route({
+      origin: markerCurrentLocation.latitude + "," + markerCurrentLocation.longitude,
+      destination: markerHotel.latitude + "," + markerHotel.longitude,
+      travelMode: google.maps.TravelMode.DRIVING
+    }, function (response, status) {
+      console.log("MapResponse", response);
+      if (status === google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(response);
+      } else {
+        alert("Unable to find a Route");
+      }
+    });
+    uiGmapIsReady.promise().then(function (maps) {
+      //$scope.showMap = true;
+      google.maps.event.trigger(maps[0].map, 'resize');
+      directionsDisplay.setMap(maps[0].map);
+    });
+
     console.log($scope.dataArr);
     console.log($scope.EstablishData);
-    if ($scope.EstablishData.galleryimages !== ""){
+    if ($scope.EstablishData.galleryimages !== "") {
       $scope.Gallery = JSON.parse($scope.EstablishData.galleryimages);
     }
-    else{
+    else {
       $scope.Gallery = [];
     }
 
     //$scope.MenuImages = JSON.parse($scope.EstablishData.menuImages);
-    if ($scope.EstablishData.menuImages !== ""){
+    if ($scope.EstablishData.menuImages !== "") {
       //$scope.MenuImages = JSON.parse($scope.EstablishData.menuImages);
     }
-    else{
+    else {
       $scope.MenuImages = [];
     }
     console.log($scope.EstablishData.menuImages);
@@ -239,7 +292,24 @@ angular.module('DBApp.controllers', [])
     $scope.call = function () {
       console.log($scope.EstablishData.contact);
     }
-    $scope.goBack = function(){
+    $scope.goBack = function () {
+      //$scope.showMap = false;
       $ionicHistory.goBack();
     }
+    $scope.navigate = function () {
+      if (window.launchnavigator) {
+        launchnavigator.navigate(
+          [$scope.EstablishData.lat, $scope.EstablishData.lng],
+          null,
+          function () {
+            alert("Plugin success");
+          },
+          function (error) {
+            alert("Plugin error: " + error);
+          });
+      } else {
+        console.log("Launch Navigator is not available");
+      }
+    };
+    $scope.fullAddress = $scope.EstablishData.address + ", " + $scope.EstablishData.city + ", " + $scope.EstablishData.state;
   });

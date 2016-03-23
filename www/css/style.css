@@ -22,11 +22,12 @@
 .homeRow>.col{
   padding:5px;
   text-align: center;
-  color:white;
+  color:black;
   text-transform: uppercase;
 }
 .homeRow>.col>.row:nth-child(2){
-  font-size:0.7em;
+  font-size:0.9em;
+  font-weight:bold;
   line-height: 1.5;
   text-transform: uppercase;
   padding-top:5px;

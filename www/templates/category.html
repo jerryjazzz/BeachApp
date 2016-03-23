@@ -16,7 +16,6 @@
     <ion-list ng-show="ShowCategories">
       <ion-item ng-repeat="Category in data" class="item-thumbnail-left" ng-click="openList($index,Category.id)">
         <img src="{{Category.logo | MainImages}}"/>
-
         <h2>{{Category.name}}</h2>
       </ion-item>
     </ion-list>

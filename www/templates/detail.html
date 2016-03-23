@@ -1,21 +1,51 @@
-<ion-view view-title="{{businessName}}">
+<ion-view view-title="{{businessName}}" cache-view="false">
   <ion-nav-buttons side="left">
     <button class="button button-icon button-clear ion-android-arrow-back" ng-click="goBack()">
     </button>
   </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear ion-ios-navigate-outline" ng-click="navigate()">
+    </button>
+  </ion-nav-buttons>
   <ion-tabs class="tabs-balanced tabs-icon-top">
-
     <ion-tab title="Info" icon-on="ion-ios-information" icon-off="ion-ios-information-outline">
       <ion-content get-map-height scroll="false" overflow-scroll="true" style="height:40vh;">
-        <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options">
+        <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options" refresh="true" ng-if="$root.showMap">
+          <ui-gmap-markers models="markers" coords="'self'" icon="'icon'">
+            <ui-gmap-windows show="show">
+              <div ng-non-bindable>{{title}}</div>
+            </ui-gmap-windows>
+          </ui-gmap-markers>
         </ui-gmap-google-map>
       </ion-content>
       <ion-content check-height="" style="top:44px;">
+        <div class="row">
+          <div class="col col-75">
+            <div class="row row-no-padding">
+              <div class="col">
+                <h4>Address</h4>
+
+                <p ng-bind-html="fullAddress"></p>
+              </div>
+            </div>
+            <div class="row row-no-padding">
+              <div class="col">
+                <h4>Phone No</h4>
+
+                <p ng-bind-html="EstablishData.contact"></p>
+              </div>
+            </div>
+          </div>
+          <div class="col col-25">
+            <img src="{{EstablishData.logo | MainImages}}" style="height:100%;width:100%;float:right"/>
+          </div>
+        </div>
+
         <div class="row" ng-repeat="(key,value) in dataArr">
-          <div class="col">
+          <div class="col" style="padding-bottom: 0px;padding-top:0px;">
             <h4>{{key}}</h4>
 
-            <p ng-bind-html="EstablishData[value]">{{value}}</p>
+            <p ng-bind-html="EstablishData[value]" style="margin-bottom:5px;">{{value}}</p>
           </div>
         </div>
       </ion-content>
@@ -23,9 +53,20 @@
 
     <ion-tab title="Photos" icon-on="ion-ios-camera" icon-off="ion-ios-camera-outline">
       <ion-content has-header has-sub-header class="has-header" style="top:44px;">
-        <img collection-repeat="photo in Gallery"
-             item-height="50%" item-width="50%"
-             ng-src="{{photo | MainImages}}" style="margin-bottom: 10px;">
+        <!--<img collection-repeat="photo in Gallery"-->
+        <!--item-height="33%" item-width="33%"-->
+        <!--ng-src="{{photo | MainImages}}" style="margin-bottom: 10px;">-->
+        <div class="row" ng-repeat="photo in Gallery" ng-if="$index%3==0">
+          <div class="col col-33" ng-if="Gallery[$index]">
+            <img src="{{Gallery[$index] | MainImages}}" style="height:100%;width:100%;"/>
+          </div>
+          <div class="col col-33" ng-if="Gallery[$index+1]">
+            <img src="{{Gallery[$index+1] | MainImages}}" style="height:100%;width:100%;"/>
+          </div>
+          <div class="col col-33" ng-if="Gallery[$index+2]">
+            <img src="{{Gallery[$index+2] | MainImages}}" style="height:100%;width:100%;"/>
+          </div>
+        </div>
       </ion-content>
     </ion-tab>
 
@@ -36,7 +77,8 @@
              ng-src="{{photo | MainImages}}" style="margin-bottom: 10px;">
       </ion-content>
     </ion-tab>
-    <ion-tab title="Call" icon-on="ion-ios-telephone" icon-off="ion-ios-telephone-outline" ng-href="tel: {{EstablishData.contact}}">
+    <ion-tab title="Call" icon-on="ion-ios-telephone" icon-off="ion-ios-telephone-outline"
+             ng-href="tel: {{EstablishData.contact}}">
       <!-- Tab 3 content -->
     </ion-tab>
   </ion-tabs>

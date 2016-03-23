@@ -19,7 +19,7 @@ angular.module('DBApp.directives', [])
         angular.element(document).ready(function () {
           //var currHeight = element[0].offsetTop + 100;
           //console.log(element[0].clientHeight);
-          element.css("height", "15%");
+          element.css("height", "20%");
         });
       })
     }
