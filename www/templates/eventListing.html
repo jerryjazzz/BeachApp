@@ -1,0 +1,43 @@
+<ion-view view-title="EVENTS">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon button-clear ion-android-arrow-back" ng-click="Back()">
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear ion-search" ng-click="searchEnable()">
+    </button>
+  </ion-nav-buttons>
+  <ion-header-bar class="bar bar-subheader item-input-inset" ng-if="enableSearch">
+    <label class="item-input-wrapper">
+      <i class="icon ion-ios-search placeholder-icon"></i>
+      <input type="search" ng-model="filter" placeholder="Search">
+    </label>
+    <button class="button button-clear" ng-click="searchEnable()">
+      Cancel
+    </button>
+  </ion-header-bar>
+
+  <ion-content>
+    <ion-list ng-if="showListing()">
+      <ion-item ng-repeat="event in eventList">
+        <div class="row row-no-padding">
+          <div class="col col-20 col-center"
+               style="background-color: lightgrey;padding:10px;border-radius: 5px;font-size:1em;font-weight:bold;margin-right:5px; ">
+            <ul style="text-align: center;">
+              <li>{{event.startDate |getEventDate |date:'dd'}}</li>
+              <li>{{event.startDate |getEventDate |date:'MMM' | uppercase}}</li>
+            </ul>
+          </div>
+          <div class="col col-60" style="margin-right:5px;">
+            <h2>{{event.eventName}}</h2>
+
+            <p style="white-space: normal;">{{event.address}},{{event.city}},{{event.state}}</p>
+          </div>
+          <div class="col col-20">
+            <img src="{{event.logo | MainImages}}" style="height:50px;width:100%;"/>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

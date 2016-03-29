@@ -1,17 +1,16 @@
 <ion-view>
-  <div class="bar bar-header bar-light" menu-height=""
-       style="background: url('img/headerImageNew.jpg') no-repeat;background-size: 100% 100%;">
+  <div class="bar bar-header bar-clear"
+       style="height:20vh; padding:0px; background: url('img/headerImageNew.jpg') no-repeat;background-size: 100% 100%;">
     <div class="row row-no-padding">
-      <div class="col col-33">
-        <img src="img/logo.png" style="position:relative;width:100%; height:100%; padding:10px;"/>
+      <div class="col col-33 col-center">
+        <img src="img/logo.png" style="width:100%; height:100%; padding:0px 10px 0px;"/>
       </div>
       <div class="col col-66 col-center">
         <h4 style="color: white;font-size:1.75em;">Delray Beach Insider</h4>
       </div>
     </div>
-
   </div>
-  <ion-content has-new-header="" class="homePageBackground" scroll="false">
+  <ion-content class="homePageBackground" scroll="false">
     <div class="row row-no-padding homeRow" ng-repeat="Icon in HomeIcons" ng-if="$index%4 ==0">
       <div class="col">
         <div class="row row-no-padding" ng-click="goToCategory(HomeIcons[$index].name)">
@@ -25,7 +24,6 @@
           </div>
         </div>
       </div>
-
       <div class="col">
         <div class="row row-no-padding" ng-click="goToCategory(HomeIcons[$index+1].name)">
           <div class="col">
@@ -62,7 +60,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </ion-content>
 </ion-view>

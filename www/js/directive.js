@@ -47,3 +47,20 @@ angular.module('DBApp.directives', [])
       })
     }
   })
+  .directive("loadContent", function () {
+    return function (scope, element, attrs) {
+      var mapElem = angular.element(document.getElementById("mapContent"));
+      mapElem.ready(function () {
+        console.log(mapElem);
+        console.log("MapHeight", mapElem[0].offsetHeight);
+        console.log("MapTop", mapElem[0].offsetTop);
+        var newTop = mapElem[0].offsetHeight + mapElem[0].offsetTop;
+        element.css("display", "none");
+        element.css("top", newTop + "px");
+        element.css("display", "block");
+        var mapDiv = angular.element(document.getElementsByClassName("angular-google-map-container"));
+        mapDiv.css("height", mapElem[0].offsetHeight + "px");
+      })
+    }
+  })
+

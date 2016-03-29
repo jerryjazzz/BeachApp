@@ -1,0 +1,26 @@
+<ion-view view-title="DISCOUNTS">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon button-clear ion-android-arrow-back" ng-click="Back()">
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+    <ion-list ng-if="showListing">
+      <ion-item ng-repeat="event in dealList">
+        <div class="row row-no-padding">
+          <div class="col col-20 col-center"
+               style="background-color: lightgrey;padding:10px;border-radius: 5px;font-size:1em;font-weight:bold;margin-right:5px; ">
+            <ul style="text-align: center;">
+              <li>{{event.startDate |getEventDate |date:'dd'}}</li>
+              <li>{{event.startDate |getEventDate |date:'MMM' | uppercase}}</li>
+            </ul>
+          </div>
+          <div class="col col-80">
+            <h2>{{event.name}}</h2>
+
+            <p style="white-space: normal;">Click for More Information</p>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

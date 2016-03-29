@@ -32,7 +32,16 @@
   <script src="js/angular-google-maps.min.js"></script>
   <script src="lib/ngstorage/ngStorage.min.js"></script>
   <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
-
+  <script>
+    document.onclick = function (e) {
+      e = e || window.event;
+      var element = e.target || e.srcElement;
+      if (element.tagName == 'A') {
+        window.open(element.href, "_blank", "location=yes");
+        return false;
+      }
+    };
+  </script>
 
 </head>
 

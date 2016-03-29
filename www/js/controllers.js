@@ -10,49 +10,59 @@ angular.module('DBApp.controllers', [])
     //});
 
     // Form data for the login modal
-    $scope.loginData = {};
-
-    // Create the login modal that we will use later
-    $ionicModal.fromTemplateUrl('templates/login.html', {
-      scope: $scope
-    }).then(function (modal) {
-      $scope.modal = modal;
-    });
-
-    // Triggered in the login modal to close it
-    $scope.closeLogin = function () {
-      $scope.modal.hide();
-    };
-
-    // Open the login modal
-    $scope.login = function () {
-      $scope.modal.show();
-    };
-
-    // Perform the login action when the user submits the login form
-    $scope.doLogin = function () {
-      console.log('Doing login', $scope.loginData);
-
-      // Simulate a login delay. Remove this and replace with your login
-      // code if using a login system
-      $timeout(function () {
-        $scope.closeLogin();
-      }, 1000);
-    };
+    //$scope.loginData = {};
+    //
+    //// Create the login modal that we will use later
+    //$ionicModal.fromTemplateUrl('templates/login.html', {
+    //  scope: $scope
+    //}).then(function (modal) {
+    //  $scope.modal = modal;
+    //});
+    //
+    //// Triggered in the login modal to close it
+    //$scope.closeLogin = function () {
+    //  $scope.modal.hide();
+    //};
+    //
+    //// Open the login modal
+    //$scope.login = function () {
+    //  $scope.modal.show();
+    //};
+    //
+    //// Perform the login action when the user submits the login form
+    //$scope.doLogin = function () {
+    //  console.log('Doing login', $scope.loginData);
+    //
+    //  // Simulate a login delay. Remove this and replace with your login
+    //  // code if using a login system
+    //  $timeout(function () {
+    //    $scope.closeLogin();
+    //  }, 1000);
+    //};
   })
 
   .controller('HomeCtrl', function ($scope, $state, $stateParams, Icons) {
     $scope.HomeIcons = Icons.icons;
-    console.log($scope.HomeIcons);
+    //console.log($scope.HomeIcons);
     $scope.goToCategory = function (name) {
       console.log(name);
       //return false;
       var id = 0;
       if (name == "EAT") {
         id = 1;
+        $state.go("mainApp.category", {"id": id});
+        return false;
       }
       else if (name == "FITNESS") {
         id = 5;
+      }
+      else if (name == "EVENT") {
+        $state.go("mainApp.events");
+        return true;
+      }
+      else if (name == "DISCOUNT") {
+        $state.go("mainApp.deals");
+        return true;
       }
       if (id > 0) {
         $state.go("mainApp.category", {"id": id});
@@ -63,28 +73,9 @@ angular.module('DBApp.controllers', [])
 
     }
   })
-  .controller('catCtrl', function ($scope, $state, $stateParams, catList, $filter, $ionicScrollDelegate, $ionicPlatform, uiGmapGoogleMapApi,uiGmapIsReady) {
-    //uiGmapGoogleMapApi.then(function (maps) {
-    //  $scope.$evalAsync(function () {
-    //    $scope.showMap = true;
-    //  });
-    //});
-    //uiGmapIsReady.promise().then(function (maps) {
-    //  $scope.showMap = true;
-    //  google.maps.event.trigger(maps[0].map, 'resize');
-    //});
-    var test = angular.element(document.getElementById("mapContent"));
-    test.ready(function () {
-      console.log(test[0].offsetTop);
-      console.log(test[0].offsetHeight);
-      $scope.contentHeight = test[0].offsetHeight + test[0].offsetTop;
-      var mapDime = test[0].offsetHeight
-      var mapDiv = angular.element(document.getElementsByClassName("angular-google-map-container"));
-      console.log(mapDiv);
-      mapDiv.css("height", mapDime + "px");
-    });
-    //console.log(test);
+  .controller('catCtrl', function ($scope, $state, $stateParams, catList, $filter, $ionicHistory, $ionicScrollDelegate, $ionicPlatform, uiGmapGoogleMapApi, uiGmapIsReady) {
     $scope.data = catList.CatList;
+    console.log(JSON.stringify($scope.data));
     $scope.ShowCategories = true;
     $scope.ShowSubCategories = false;
     $scope.ShowHotelList = false;
@@ -132,7 +123,6 @@ angular.module('DBApp.controllers', [])
       console.log($scope.goBack());
       $scope.$apply();
     }, 10000);
-
     $scope.openList = function (index, id) {
       var SubCount = $scope.data[index].subCategoryList.length;
       var hotelData = $scope.data[index].HotelList;
@@ -161,7 +151,6 @@ angular.module('DBApp.controllers', [])
         //$ionicScrollDelegate.resize();
       }
     };
-
     $scope.manageSubCategory = function (id, parent) {
       console.log(id);
       console.log(parent);
@@ -202,30 +191,19 @@ angular.module('DBApp.controllers', [])
         }
       }
     }
-
-
     $scope.showDetails = function (id) {
-      //$scope.showMap = false;
+      console.log($ionicHistory.viewHistory());
       $state.go("mainApp.detailView", {"id": id});
     }
-
   })
-  .controller('detailCtrl', function ($scope, $state, $stateParams, detailData, $localStorage, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady) {
-    $scope.showMap = false;
+  .controller('detailCtrl', function ($scope, $state, $stateParams, detailData, $localStorage,$ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
+    uiGmapGoogleMapApi.then(function (maps) {
+    });
     $scope.map = {center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}};
     $scope.options = {
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: false
     };
-
-
-    //uiGmapGoogleMapApi.then(function (maps) {
-    //  console.log(maps);
-    //  $scope.$evalAsync(function () {
-    //    $scope.showMap = true;
-    //  });
-    //});
-
     $scope.EstablishData = detailData.Data;
     $scope.markers = [];
     var markerHotel = {
@@ -245,11 +223,10 @@ angular.module('DBApp.controllers', [])
     $scope.markers.push(markerCurrentLocation);
     $scope.businessName = $scope.EstablishData.businessname;
     $scope.dataArr = {
-      "Details": "description",
       "Price Range": "pricerange",
       "Category": "category",
       "Restaurant Type": "categorytype",
-
+      "Details": "description",
     };
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -266,23 +243,16 @@ angular.module('DBApp.controllers', [])
       }
     });
     uiGmapIsReady.promise().then(function (maps) {
-      //$scope.showMap = true;
       google.maps.event.trigger(maps[0].map, 'resize');
       directionsDisplay.setMap(maps[0].map);
     });
-
-    console.log($scope.dataArr);
-    console.log($scope.EstablishData);
     if ($scope.EstablishData.galleryimages !== "") {
       $scope.Gallery = JSON.parse($scope.EstablishData.galleryimages);
     }
     else {
       $scope.Gallery = [];
     }
-
-    //$scope.MenuImages = JSON.parse($scope.EstablishData.menuImages);
     if ($scope.EstablishData.menuImages !== "") {
-      //$scope.MenuImages = JSON.parse($scope.EstablishData.menuImages);
     }
     else {
       $scope.MenuImages = [];
@@ -292,9 +262,10 @@ angular.module('DBApp.controllers', [])
     $scope.call = function () {
       console.log($scope.EstablishData.contact);
     }
-    $scope.goBack = function () {
-      //$scope.showMap = false;
-      $ionicHistory.goBack();
+    $scope.Back = function () {
+      console.log($ionicHistory.viewHistory());
+      $ionicHistory.goBack(-1);
+      $ionicPlatform.offHardwareBackButton();
     }
     $scope.navigate = function () {
       if (window.launchnavigator) {
@@ -302,14 +273,78 @@ angular.module('DBApp.controllers', [])
           [$scope.EstablishData.lat, $scope.EstablishData.lng],
           null,
           function () {
-            alert("Plugin success");
+            console.log("Map Opened Successfully")
           },
           function (error) {
-            alert("Plugin error: " + error);
+            console.log("Error Opening Navigation");
           });
       } else {
         console.log("Launch Navigator is not available");
       }
     };
     $scope.fullAddress = $scope.EstablishData.address + ", " + $scope.EstablishData.city + ", " + $scope.EstablishData.state;
-  });
+    $scope.callNow = function (number) {
+      if (number) {
+        window.open('tel:' + number, '_system', 'location=yes')
+      }
+      else {
+        alert("Number not available");
+      }
+
+
+    };
+    $scope.createModal = function () {
+      $ionicTabsDelegate.select(1);
+      $ionicModal.fromTemplateUrl('image-modal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function (modal) {
+        $scope.modal = modal;
+      });
+    };
+
+    $scope.loadFullScreen = function (index) {
+      if (index == null || angular.isUndefined(index)) {
+        index = 1
+      }
+      $ionicSlideBoxDelegate.update();
+      $ionicSlideBoxDelegate.slide(index);
+
+      $scope.modal.show();
+    }
+    $scope.CloseModal = function () {
+      $scope.modal.hide();
+    }
+    $ionicPlatform.registerBackButtonAction(function ($event) {
+      console.log($scope.Back());
+      $scope.$apply();
+    }, 10000);
+  })
+  .controller('eventCtrl', function ($scope, $state, $stateParams, eventData, $ionicHistory) {
+    $scope.showListing = function () {
+      return eventData.eventList.length > 0 ? true : false;
+    }
+    $scope.eventList = eventData.eventList;
+    console.log($scope.eventList);
+    $scope.enableSearch = false;
+    $scope.searchEnable = function () {
+      if ($scope.enableSearch) {
+        $scope.enableSearch = false;
+      }
+      else {
+        $scope.enableSearch = true;
+      }
+    }
+    $scope.Back = function () {
+      $ionicHistory.goBack(-1);
+    }
+  })
+  .controller('dealCtrl', function ($scope, $state, dealData, $ionicHistory) {
+    $scope.showListing = dealData.dealList.length > 0 ? true : false;
+    $scope.dealList = dealData.dealList;
+    console.log($scope.dealList);
+    $scope.Back = function () {
+      $ionicHistory.goBack(-1);
+    }
+  })
+;

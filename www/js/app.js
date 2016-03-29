@@ -15,7 +15,7 @@ angular.module('DBApp', ['ionic',
     'ngCordova',
   ])
 
-  .run(function ($ionicPlatform, $rootScope, uiGmapIsReady) {
+  .run(function ($ionicPlatform, $rootScope, uiGmapIsReady, $ionicLoading) {
     $ionicPlatform.ready(function ($localStorage, uiGmapIsReady) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -39,19 +39,12 @@ angular.module('DBApp', ['ionic',
     });
     $rootScope.showMap = true;
     $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams, options) {
-      uiGmapIsReady.promise().then(function (maps) {
-
-        $rootScope.showMap = false;
-        //google.maps.event.trigger(maps[0].map, 'resize');
+      $ionicLoading.show({
+        template: 'Please wait..'
       });
     });
     $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
-      //console.log(toState);
-      if (toState.name = "mainApp.detailView") {
-        uiGmapIsReady.promise().then(function (maps) {
-          $rootScope.showMap = true;
-        });
-      }
+      $ionicLoading.hide();
     })
 
   })
@@ -84,8 +77,9 @@ angular.module('DBApp', ['ionic',
             controller: 'catCtrl',
             resolve: {
               catList: function (CatList, $stateParams) {
+
                 var id = $stateParams.id;
-                console.log(id);
+                console.log(JSON.stringify(CatList.catlist(id)));
                 return CatList.catlist(id);
               }
             }
@@ -102,6 +96,34 @@ angular.module('DBApp', ['ionic',
               detailData: function (detailData, $stateParams) {
                 var id = $stateParams.id;
                 return detailData.getData(id);
+              }
+            }
+          },
+        }
+      })
+      .state('mainApp.events', {
+        url: '/events',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/eventListing.html',
+            controller: 'eventCtrl',
+            resolve: {
+              eventData: function (eventListing, $stateParams) {
+                return eventListing.getListing();
+              }
+            }
+          },
+        }
+      })
+      .state('mainApp.deals', {
+        url: '/deals',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/dealListing.html',
+            controller: 'dealCtrl',
+            resolve: {
+              dealData: function (dealListing, $stateParams) {
+                return dealListing.getListing();
               }
             }
           },

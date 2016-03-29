@@ -13,7 +13,7 @@ angular.module('DBApp.filters', [])
       }
     }
   })
-  .filter("MainImages",function(HOME_IMG_URL){
+  .filter("MainImages", function (HOME_IMG_URL) {
     return function (link) {
       if (angular.isDefined(link)) {
         var finalLink = HOME_IMG_URL + link;
@@ -22,6 +22,17 @@ angular.module('DBApp.filters', [])
       else {
         return link;
       }
+    }
+  })
+  .filter('getEventDate', function () {
+    return function (input) {
+      if (input) {
+        return new Date(input);
+      }
+      else {
+        return false;
+      }
+
     }
   })
 ;

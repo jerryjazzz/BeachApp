@@ -55,8 +55,9 @@ angular.module('DBApp.factory', [])
     returnData.catlist = function (id) {
       var deferred = $q.defer();
       var URL = API_URL + "category/fetchSubCategory/" + id;
+      //console.log(URL);return false;
       $http.get(URL).then(function (response) {
-        //console.log(JSON.stringify(response));
+        console.log(JSON.stringify(response));
         deferred.resolve(response.data);
       }, function (err) {
         deferred.reject(err);
@@ -79,5 +80,40 @@ angular.module('DBApp.factory', [])
     }
     return returnData;
   })
-
+  .factory("eventListing", function ($http, $q, API_URL) {
+    var returnData = {};
+    returnData.getListing = function (date) {
+      var deferred = $q.defer();
+      if (!date) {
+        console.log("No Date Specified");
+        date = "";
+      }
+      var URL = API_URL + "event/" + date;
+      $http.get(URL).then(function (response) {
+        deferred.resolve(response.data);
+      }, function (err) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    }
+    return returnData;
+  })
+  .factory("dealListing", function ($http, $q, API_URL) {
+    var returnData = {};
+    returnData.getListing = function (date) {
+      var deferred = $q.defer();
+      if (!date) {
+        console.log("No Date Specified");
+        date = "";
+      }
+      var URL = API_URL + "deal/" + date;
+      $http.get(URL).then(function (response) {
+        deferred.resolve(response.data);
+      }, function (err) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    }
+    return returnData;
+  })
 ;

@@ -1,6 +1,7 @@
 /* Empty. Add your own CSS if you like */
 
 .homePageBackground {
+  top: 20vh;
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#03bcfd+0,75f3ff+32,0382d7+100 */
   background: #03bcfd; /* Old browsers */
   background: -moz-linear-gradient(top, #03bcfd 0%, #75f3ff 32%, #0382d7 100%); /* FF3.6-15 */
@@ -13,24 +14,151 @@
   height: 100%;
   width: 100%;
 }
-.homeRow{
-  padding-top:5vh;
+
+.homeRow {
+  padding-top: 5vh;
   margin-bottom: 0;
-  padding-right:10px;
-  padding-left:10px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
-.homeRow>.col{
-  padding:5px;
+
+.homeRow > .col {
+  padding: 5px;
   text-align: center;
-  color:black;
+  color: black;
   text-transform: uppercase;
 }
-.homeRow>.col>.row:nth-child(2){
-  font-size:0.9em;
-  font-weight:bold;
+
+.homeRow > .col > .row:nth-child(2) {
+  font-size: 0.8em;
+  font-weight: bold;
   line-height: 1.5;
   text-transform: uppercase;
-  padding-top:5px;
-  padding-bottom:10px;
+  padding-top: 5px;
+  padding-bottom: 10px;
 }
-.angular-google-map-container { /*height: 40vh; */}
+
+.angular-google-map-container { /*height: 40vh; */
+}
+
+/* Start Code for Modal SlideBox */
+.GalleryClose {
+  text-align: right;
+  font-size: 50px;
+  float: right;
+  color: white;
+}
+
+.transparent {
+  background: transparent !important;
+}
+
+.image-modal {
+  width: 100% !important;
+  height: 100%;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+.fullscreen-image {
+  max-width: 100%;
+  max-height: 100%;
+  bottom: 0;
+  left: 0;
+/ / margin: auto;
+  overflow: auto;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
+.slider {
+  width: 100%;
+  height: 100%;
+}
+
+p.info {
+  position: absolute;
+  bottom: 55px;
+  margin: 0 auto;
+  width: 100%;
+  display: block;
+  text-align: center;
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.fader {
+  background-color: rgba(0, 0, 0, 0.6);
+  height: 100%;
+  z-index: 4;
+  float: left;
+  width: 100%;
+  position: absolute;
+}
+
+.tab-active {
+  background-color: #FFF;
+  color: white;
+}
+
+.tab-inactive {
+  background-color: #011F3D;
+
+}
+
+.tab-inactive h4 {
+  color: white;
+}
+
+.tab-item-text {
+  color: white;
+}
+
+.details-attrib {
+  background-color: #011F3D;
+}
+
+.details-attrib h2 {
+  color: white;
+}
+
+.details-attrib i {
+  color: white;
+}
+
+.about-us-items {
+  background-color: #011F3D;
+  color: white;
+}
+
+.about-us-items:focus {
+  background-color: #011F3D;
+  color: white;
+}
+
+.about-us-items:hover {
+  background-color: #011F3D;
+  color: white;
+}
+
+.about-us-items:active {
+  background-color: #011F3D;
+  color: white;
+}
+
+/* Fix modal backdrop for smaller devices */
+@media (max-width: 679px) {
+  .active .modal-backdrop-bg {
+    opacity: .5;
+  }
+
+  .modal-backdrop-bg {
+    -webkit-transition: opacity 300ms ease-in-out;
+    transition: opacity 300ms ease-in-out;
+    background-color: #000;
+    opacity: 0;
+  }
+}
+
+/* End Code for Modal SlideBox */
