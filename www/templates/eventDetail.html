@@ -1,0 +1,28 @@
+<ion-view view-title="{{eventName}}" cache-view="false">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon button-clear ion-android-arrow-back" ng-click="Back()">
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear ion-ios-navigate-outline" ng-click="navigate()">
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+    <div class="row">
+      <div class="col">
+        <h4>Address</h4>
+
+        <p>{{fullAddress}}</p>
+      </div>
+    </div>
+    <div class="row" ng-repeat="(key,value) in eventFinalData">
+      <div class="col">
+        <h4>{{key}}</h4>
+        <a href="{{eventDetail[value]}}" ng-if="value=='eventLink' || value=='website'">
+          <p ng-bind-html="eventDetail[value]"></p>
+        </a>
+        <p ng-if="value!=='eventLink' && value!=='website'" ng-bind-html="eventDetail[value]"></p>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

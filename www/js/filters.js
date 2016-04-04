@@ -24,6 +24,26 @@ angular.module('DBApp.filters', [])
       }
     }
   })
+  .filter("ThumbnailImages", function (HOME_IMG_URL) {
+    return function (link) {
+      if (angular.isDefined(link)) {
+        var newData = "";
+        try {
+          newData = JSON.parse(link).thumbnail[0];
+        }
+        catch (e) {
+          console.log(e);
+          newData = link;
+        }
+        //console.log(JSON.parse(link));
+        var finalLink = HOME_IMG_URL + newData;
+        return finalLink;
+      }
+      else {
+        return link;
+      }
+    }
+  })
   .filter('getEventDate', function () {
     return function (input) {
       if (input) {
@@ -33,6 +53,17 @@ angular.module('DBApp.filters', [])
         return false;
       }
 
+    }
+  })
+  .filter("galleryImages", function (HOME_IMG_URL) {
+    return function (link) {
+      if (angular.isDefined(link)) {
+        console.log(link);
+        return link;
+      }
+      else {
+        return link;
+      }
     }
   })
 ;

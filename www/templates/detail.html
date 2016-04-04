@@ -10,7 +10,8 @@
   <ion-tabs class="tabs-positive tabs-icon-top">
     <ion-tab title="Info" icon-on="ion-ios-information" icon-off="ion-ios-information-outline">
       <ion-content scroll="false" overflow-scroll="true" style="height:40vh;" id="mapContent">
-        <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options" refresh="true">
+        <ui-gmap-google-map center='mapOptions.center' zoom='mapOptions.zoom' options="options"
+                            control="mapOptions.control" events="mapOptions.events" ng-if="showMap" map-loaded>
           <ui-gmap-markers models="markers" coords="'self'" icon="'icon'">
             <ui-gmap-windows show="show">
               <div ng-non-bindable>{{title}}</div>
@@ -18,7 +19,7 @@
           </ui-gmap-markers>
         </ui-gmap-google-map>
       </ion-content>
-      <ion-content load-content>
+      <ion-content load-content id="detailContent">
         <div class="row">
           <div class="col col-75">
             <div class="row row-no-padding">
@@ -37,7 +38,7 @@
             </div>
           </div>
           <div class="col col-25">
-            <img src="{{EstablishData.logo | MainImages}}" style="height:100%;width:100%;float:right"/>
+            <img src="{{EstablishData.logo | ThumbnailImages}}" style="height:100%;width:100%;float:right"/>
           </div>
         </div>
 
@@ -53,9 +54,6 @@
 
     <ion-tab title="Photos" icon-on="ion-ios-camera" icon-off="ion-ios-camera-outline" ng-click="createModal()">
       <ion-content has-header has-sub-header class="has-header" style="top:44px;">
-        <!--<img collection-repeat="photo in Gallery"-->
-        <!--item-height="33%" item-width="33%"-->
-        <!--ng-src="{{photo | MainImages}}" style="margin-bottom: 10px;">-->
         <div class="row" ng-repeat="photo in Gallery" ng-if="$index%3==0">
           <div class="col col-33" ng-if="Gallery[$index]">
             <img src="{{Gallery[$index] | MainImages}}" style="height:100%;width:100%;"
@@ -74,11 +72,24 @@
       </ion-content>
     </ion-tab>
 
-    <ion-tab title="Menu" icon-on="ion-android-restaurant" icon-off="ion-android-restaurant">
+    <ion-tab title="Menu" icon-on="ion-android-restaurant" icon-off="ion-android-restaurant"
+             ng-click="createMenuModal()">
       <ion-content has-header has-sub-header class="has-header" style="top:44px;">
-        <img collection-repeat="photo in MenuImages"
-             item-height="50%" item-width="50%"
-             ng-src="{{photo | MainImages}}" style="margin-bottom: 10px;">
+        <div class="row" ng-repeat="photo in MenuImages" ng-if="$index%3==0">
+          <div class="col col-33" ng-if="MenuImages[$index]">
+            <img src="{{MenuImages[$index] | MainImages}}" style="height:100%;width:100%;"
+                 ng-click="loadMenuFull($index)"/>
+          </div>
+          <div class="col col-33" ng-if="MenuImages[$index+1]">
+            <img src="{{MenuImages[$index+1] | MainImages}}" style="height:100%;width:100%;"
+                 ng-click="loadMenuFull($index+1)"/>
+          </div>
+          <div class="col col-33" ng-if="MenuImages[$index+2]">
+            <img src="{{MenuImages[$index+2] | MainImages}}" style="height:100%;width:100%;"
+                 ng-click="loadMenuFull($index+2)"/>
+          </div>
+        </div>
+
       </ion-content>
     </ion-tab>
     <ion-tab ng-click="callNow(EstablishData.contact)" title="Call" icon-on="ion-ios-telephone"
@@ -88,14 +99,31 @@
     </ion-tab>
   </ion-tabs>
   <script id="image-modal.html" type="text/ng-template">
-    <div class="modal image-modal transparent">
-      <div class="CloseBtn GalleryClose ion-close" ng-click="CloseModal()"></div>
-      <ion-slide-box show-pager="true">
-        <ion-slide ng-repeat="oImage in Gallery">
-          <img src="{{oImage | MainImages}}" class="fullscreen-image"/>
-        </ion-slide>
-      </ion-slide-box>
+    <div class="modal">
+      <header class="bar bar-header bar-positive">
+        <div class="button button-clear" ng-click="CloseModal()"><span class="icon ion-close"></span></div>
+      </header>
+      <content has-header="true" padding="true">
+        <ion-slide-box ng-if="GalleryFull" delegate-handle="Gallery">
+          <ion-slide class="items" ng-repeat="oImage in GalleryFull">
+            <img src="{{oImage | MainImages}}" style="width:100%;"/>
+          </ion-slide>
+        </ion-slide-box>
+      </content>
     </div>
   </script>
-
+  <script id="menuImages.html" type="text/ng-template">
+    <div class="modal">
+      <header class="bar bar-header bar-positive">
+        <div class="button button-clear" ng-click="CloseModal()"><span class="icon ion-close"></span></div>
+      </header>
+      <content has-header="true" padding="true">
+        <ion-slide-box delegate-handle="MenuFull">
+          <ion-slide class="items" ng-repeat="oImage in MenuFull">
+            <img src="{{oImage | MainImages}}" style="width:100%;"/>
+          </ion-slide>
+        </ion-slide-box>
+      </content>
+    </div>
+  </script>
 </ion-view>

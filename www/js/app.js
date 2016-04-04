@@ -15,8 +15,8 @@ angular.module('DBApp', ['ionic',
     'ngCordova',
   ])
 
-  .run(function ($ionicPlatform, $rootScope, uiGmapIsReady, $ionicLoading) {
-    $ionicPlatform.ready(function ($localStorage, uiGmapIsReady) {
+  .run(function ($ionicPlatform, $rootScope, uiGmapIsReady, $ionicLoading, $localStorage) {
+    $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
       if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -28,6 +28,7 @@ angular.module('DBApp', ['ionic',
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
+      //$localStorage.lat = "";
       var geoOptions = {maximumAge: 3000, timeout: 5000, enableHighAccuracy: true};
       navigator.geolocation.getCurrentPosition(function (position) {
         $localStorage.lat = position.coords.latitude;
@@ -57,8 +58,8 @@ angular.module('DBApp', ['ionic',
         templateUrl: 'templates/home.html',
         controller: 'HomeCtrl',
         resolve: {
-          Icons: function (HomeMenu, $localStorage) {
-            console.log(HomeMenu.homeIcons());
+          Icons: function (HomeMenu) {
+            //console.log(HomeMenu.homeIcons());
             return HomeMenu.homeIcons();
           }
         }
@@ -77,11 +78,9 @@ angular.module('DBApp', ['ionic',
             controller: 'catCtrl',
             resolve: {
               catList: function (CatList, $stateParams) {
-
                 var id = $stateParams.id;
-                console.log(JSON.stringify(CatList.catlist(id)));
                 return CatList.catlist(id);
-              }
+              },
             }
           },
         }
@@ -96,7 +95,7 @@ angular.module('DBApp', ['ionic',
               detailData: function (detailData, $stateParams) {
                 var id = $stateParams.id;
                 return detailData.getData(id);
-              }
+              },
             }
           },
         }
@@ -110,6 +109,22 @@ angular.module('DBApp', ['ionic',
             resolve: {
               eventData: function (eventListing, $stateParams) {
                 return eventListing.getListing();
+              }
+            }
+          },
+        }
+      })
+      .state('mainApp.eventDetail', {
+        url: '/eventDetail/:id',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/eventDetail.html',
+            controller: 'eventDetailCtrl',
+            resolve: {
+              eventData: function (eventListing, $stateParams) {
+                console.log($stateParams);
+                var id = $stateParams.id
+                return eventListing.getEventDetail(id);
               }
             }
           },

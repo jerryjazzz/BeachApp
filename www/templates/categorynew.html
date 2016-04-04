@@ -9,7 +9,7 @@
   </ion-nav-buttons>
   <ion-content scroll="false" overflow-scroll="true" style="height:40vh;" id="mapContent">
     <!--<div id="googleMap"></div>-->
-    <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options" control="map.control" ng-if="showMap">
+    <ui-gmap-google-map center='map.center' zoom='map.zoom' options="mapOptions" control="map.control">
       <ui-gmap-markers models="markers" coords="'self'" icon="'icon'">
         <ui-gmap-windows show="show">
           <div ng-non-bindable>{{title}}</div>
@@ -20,24 +20,23 @@
   <ion-content load-content>
     <ion-list ng-show="ShowCategories">
       <ion-item ng-repeat="Category in data" class="item-thumbnail-left" ng-click="openList($index,Category.id)">
-        <img src="{{Category.logo | ThumbnailImages}}"/>
-
+        <img src="{{Category.logo | MainImages}}"/>
         <h2>{{Category.name}}</h2>
       </ion-item>
     </ion-list>
-    <ion-list ng-if="ShowSubCategories">
-      <ion-item ng-repeat="Category in subCategories" class="item-thumbnail-left"
+    <ion-list ng-show="ShowSubCategories">
+      <ion-item ng-repeat="Category in SubCategories[SubCatIndex]" class="item-thumbnail-left"
                 ng-click="manageSubCategory(Category.id,Category.subcategory)">
-        <img src="{{Category.logo | ThumbnailImages}}"/>
+        <img src="{{Category.logo | MainImages}}"/>
 
         <h2>{{Category.name}}</h2>
       </ion-item>
     </ion-list>
-    <ion-list ng-if="ShowHotelList">
+    <ion-list ng-show="ShowHotelList">
       <ion-item ng-repeat="Hotel in HotelList[0].data" class="item-complex" ng-click="showDetails(Hotel.establishid)">
         <div class="row" style="padding-bottom: 0px;">
           <div class="col col-20">
-            <img src="{{Hotel.logo | ThumbnailImages}}" style="width:100%;height:100px;"/>
+            <img src="{{Hotel.logo | MainImages}}" style="width:100%;height:100px;"/>
           </div>
           <div class="col col-80">
             <div class="row row-no-padding">

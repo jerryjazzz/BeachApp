@@ -57,7 +57,7 @@ angular.module('DBApp.factory', [])
       var URL = API_URL + "category/fetchSubCategory/" + id;
       //console.log(URL);return false;
       $http.get(URL).then(function (response) {
-        console.log(JSON.stringify(response));
+        //console.log(JSON.stringify(response));
         deferred.resolve(response.data);
       }, function (err) {
         deferred.reject(err);
@@ -96,6 +96,16 @@ angular.module('DBApp.factory', [])
       });
       return deferred.promise;
     }
+    returnData.getEventDetail = function (id) {
+      var deferred = $q.defer();
+      var URL = API_URL + "event/detail/" + id;
+      $http.get(URL).then(function (response) {
+        deferred.resolve(response.data);
+      }, function (err) {
+        deferred.reject(err);
+      })
+      return deferred.promise;
+    };
     return returnData;
   })
   .factory("dealListing", function ($http, $q, API_URL) {
@@ -107,6 +117,7 @@ angular.module('DBApp.factory', [])
         date = "";
       }
       var URL = API_URL + "deal/" + date;
+      console.log(URL);
       $http.get(URL).then(function (response) {
         deferred.resolve(response.data);
       }, function (err) {

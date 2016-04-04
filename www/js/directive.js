@@ -7,7 +7,6 @@ angular.module('DBApp.directives', [])
     return function (scope, element, attrs) {
       element.ready(function () {
         angular.element(document).ready(function () {
-          //var currHeight = element[0].offsetTop + 100;
           element.css("top", "15%");
         });
       })
@@ -17,8 +16,6 @@ angular.module('DBApp.directives', [])
     return function (scope, element, attrs) {
       element.ready(function () {
         angular.element(document).ready(function () {
-          //var currHeight = element[0].offsetTop + 100;
-          //console.log(element[0].clientHeight);
           element.css("height", "20%");
         });
       })
@@ -51,16 +48,32 @@ angular.module('DBApp.directives', [])
     return function (scope, element, attrs) {
       var mapElem = angular.element(document.getElementById("mapContent"));
       mapElem.ready(function () {
-        console.log(mapElem);
-        console.log("MapHeight", mapElem[0].offsetHeight);
-        console.log("MapTop", mapElem[0].offsetTop);
         var newTop = mapElem[0].offsetHeight + mapElem[0].offsetTop;
         element.css("display", "none");
         element.css("top", newTop + "px");
         element.css("display", "block");
-        var mapDiv = angular.element(document.getElementsByClassName("angular-google-map-container"));
-        mapDiv.css("height", mapElem[0].offsetHeight + "px");
+        //var mapDiv = angular.element(document.getElementsByClassName("angular-google-map-container"));
+        //var mapDiv = angular.element(document.getElementById("mapContent"));
+        //mapDiv.css("height", mapElem[0].offsetHeight + "px");
       })
     }
   })
+  .directive("mapLoaded", function () {
+    return function (scope, element, attrs) {
+      element.ready(function () {
+        var mapDiv = angular.element(document.getElementsByClassName("angular-google-map-container"));
+        mapDiv.css("height", "40vh");
+        var newTop = mapDiv[0].offsetHeight + mapDiv[0].offsetTop + 44;
+        console.log(newTop);
+        var contentElem = angular.element(document.getElementById("detailContent"));
+        console.log(contentElem);
+        contentElem.css("top", newTop + "px");
+        //element.css("display", "none");
+        //element.css("top", newTop + "px");
+        //element.css("display", "block");
+      })
+    }
+  })
+
+
 

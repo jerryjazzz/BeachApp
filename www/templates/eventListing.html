@@ -19,7 +19,7 @@
 
   <ion-content>
     <ion-list ng-if="showListing()">
-      <ion-item ng-repeat="event in eventList">
+      <ion-item ng-repeat="event in eventList" ng-click="openDetail(event.eventId)">
         <div class="row row-no-padding">
           <div class="col col-20 col-center"
                style="background-color: lightgrey;padding:10px;border-radius: 5px;font-size:1em;font-weight:bold;margin-right:5px; ">
@@ -34,7 +34,7 @@
             <p style="white-space: normal;">{{event.address}},{{event.city}},{{event.state}}</p>
           </div>
           <div class="col col-20">
-            <img src="{{event.logo | MainImages}}" style="height:50px;width:100%;"/>
+            <img src="{{event.logo | ThumbnailImages}}" style="height:50px;width:100%;"/>
           </div>
         </div>
       </ion-item>

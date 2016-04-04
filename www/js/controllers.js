@@ -40,10 +40,12 @@ angular.module('DBApp.controllers', [])
     //  }, 1000);
     //};
   })
-
-  .controller('HomeCtrl', function ($scope, $state, $stateParams, Icons) {
+  .controller('HomeCtrl', function ($scope, $state, $stateParams, Icons,$ionicHistory) {
+    $ionicHistory.clearCache().then(function (response) {
+      console.log("cache removed");
+    });
     $scope.HomeIcons = Icons.icons;
-    //console.log($scope.HomeIcons);
+    //console.log(Icons)
     $scope.goToCategory = function (name) {
       console.log(name);
       //return false;
@@ -64,6 +66,18 @@ angular.module('DBApp.controllers', [])
         $state.go("mainApp.deals");
         return true;
       }
+      else if (name == "HAPPY HOUR") {
+        id = 10;
+      }
+      else if (name == "FUN&SUN") {
+        id = 12;
+      }
+      else if (name == "LODGING") {
+        id = 14;
+      }
+      else if (name == "BEAUTY") {
+        id = 17;
+      }
       if (id > 0) {
         $state.go("mainApp.category", {"id": id});
       }
@@ -73,133 +87,12 @@ angular.module('DBApp.controllers', [])
 
     }
   })
-  .controller('catCtrl', function ($scope, $state, $stateParams, catList, $filter, $ionicHistory, $ionicScrollDelegate, $ionicPlatform, uiGmapGoogleMapApi, uiGmapIsReady) {
-    $scope.data = catList.CatList;
-    console.log(JSON.stringify($scope.data));
-    $scope.ShowCategories = true;
-    $scope.ShowSubCategories = false;
-    $scope.ShowHotelList = false;
-    $scope.markers = [];
-    $scope.map = {center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}};
-    $scope.options = {
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      disableDefaultUI: true
+  .controller('detailCtrl', function ($scope, $state, $timeout, $stateParams, detailData, $localStorage, $ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
+    console.log(detailData);
+    $scope.control = {};
+    $scope.mapOptions = {
+      center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}, control: {}, events: {}
     };
-    $scope.HotelList = [];
-    angular.forEach($scope.data, function (value, key) {
-      var pushData = {'icon': 'blue_marker', 'data': value.HotelList};
-      $scope.HotelList = $scope.HotelList.concat(pushData);
-    });
-    $scope.$watch("ShowCategories", function (newValue, oldValue) {
-      if (newValue) {
-        $scope.HotelList = [];
-        angular.forEach($scope.data, function (value, key) {
-          var pushData = {'icon': 'blue_marker', 'data': value.HotelList};
-          $scope.HotelList = $scope.HotelList.concat(pushData);
-        });
-      }
-    });
-    $scope.$watch("HotelList", function (newValue, oldValue) {
-      if (newValue) {
-        console.log(newValue);
-        $scope.markers = [];
-        angular.forEach(newValue, function (value, key) {
-          var icon = value.icon;
-          angular.forEach(value.data, function (v1, k1) {
-            var marker = {};
-            marker = {
-              latitude: v1.lat,
-              longitude: v1.lng,
-              title: v1.businessname,
-              id: v1.id,
-              icon: 'img/' + icon + '.png'
-            };
-            $scope.markers.push(marker);
-          })
-        })
-      }
-    });
-    $ionicPlatform.registerBackButtonAction(function ($event) {
-      console.log($scope.goBack());
-      $scope.$apply();
-    }, 10000);
-    $scope.openList = function (index, id) {
-      var SubCount = $scope.data[index].subCategoryList.length;
-      var hotelData = $scope.data[index].HotelList;
-      var catData = $scope.data[index];
-
-      if (SubCount > 0) {
-        $scope.hasSubCategory = true;
-        $scope.HotelList = [];
-        var data = $filter('filter')(hotelData, {'subcategory': id});
-        var pushData = {'icon': 'blue_marker', 'data': data};
-        $scope.HotelList = $scope.HotelList.concat(pushData);
-        $scope.ShowCategories = false;
-        $scope.ShowSubCategories = true;
-        $scope.subCategories = catData.subCategoryList;
-      }
-      else {
-        $scope.hasSubCategory = false;
-        $scope.ShowCategories = false;
-        $scope.ShowSubCategories = false;
-        $scope.HotelList = [];
-        var hotelData = $filter('filter')(hotelData, {'subcategory': id});
-        var pushData = {'icon': 'blue_marker', 'data': hotelData};
-        $scope.HotelList = $scope.HotelList.concat(pushData);
-        //$scope.HotelList = hotelData;
-        $scope.ShowHotelList = true;
-        //$ionicScrollDelegate.resize();
-      }
-    };
-    $scope.manageSubCategory = function (id, parent) {
-      console.log(id);
-      console.log(parent);
-      var Parent = $filter('filter')($scope.data, {'id': parent})[0];
-      $scope.HotelList = [];
-      console.log(Parent);
-      $scope.ShowSubCategories = false;
-      $scope.ShowCategories = false;
-      $scope.ShowHotelList = true;
-
-
-      var hotelData = $filter('filter')(Parent.HotelList, {'categorytype': id})
-      var pushData = {'icon': 'blue_marker', 'data': hotelData};
-      $scope.HotelList = $scope.HotelList.concat(pushData);
-      //$ionicScrollDelegate.resize();
-    };
-    $scope.goBack = function () {
-      if ($scope.ShowCategories) {
-        $state.go("home");
-      }
-      if ($scope.ShowSubCategories) {
-        $scope.ShowCategories = true;
-        $scope.ShowSubCategories = false;
-        console.log("Show the Categories");
-
-        return true;
-      }
-      if ($scope.ShowHotelList) {
-        if (!$scope.hasSubCategory) {
-          $scope.ShowCategories = true;
-          $scope.ShowHotelList = false;
-          return true;
-        }
-        else {
-          $scope.ShowSubCategories = true;
-          $scope.ShowHotelList = false;
-          return true;
-        }
-      }
-    }
-    $scope.showDetails = function (id) {
-      console.log($ionicHistory.viewHistory());
-      $state.go("mainApp.detailView", {"id": id});
-    }
-  })
-  .controller('detailCtrl', function ($scope, $state, $stateParams, detailData, $localStorage,$ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
-    uiGmapGoogleMapApi.then(function (maps) {
-    });
-    $scope.map = {center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}};
     $scope.options = {
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: false
@@ -218,7 +111,7 @@ angular.module('DBApp.controllers', [])
       longitude: $localStorage.long,
       title: 'Current Location',
       id: 100000,
-    }
+    };
     $scope.markers.push(markerHotel);
     $scope.markers.push(markerCurrentLocation);
     $scope.businessName = $scope.EstablishData.businessname;
@@ -242,22 +135,30 @@ angular.module('DBApp.controllers', [])
         alert("Unable to find a Route");
       }
     });
-    uiGmapIsReady.promise().then(function (maps) {
+    uiGmapIsReady.promise(1).then(function (maps) {
+      //console.log(maps);
       google.maps.event.trigger(maps[0].map, 'resize');
-      directionsDisplay.setMap(maps[0].map);
+      //console.log($scope.showMap);
     });
     if ($scope.EstablishData.galleryimages !== "") {
-      $scope.Gallery = JSON.parse($scope.EstablishData.galleryimages);
+      var gallery = JSON.parse($scope.EstablishData.galleryimages);
+      $scope.Gallery = gallery.thumbnail;
+      //console.log($scope.Gallery);
+      $scope.GalleryFull = gallery.original;
     }
     else {
       $scope.Gallery = [];
     }
     if ($scope.EstablishData.menuImages !== "") {
+      //console.log($scope.EstablishData.menuImages);
+      var menuImages = JSON.parse($scope.EstablishData.menuImages);
+      $scope.MenuImages = menuImages.thumbnail;
+      $scope.MenuFull = menuImages.original;
+      //console.log($scope.MenuImages);
     }
     else {
       $scope.MenuImages = [];
     }
-    console.log($scope.EstablishData.menuImages);
 
     $scope.call = function () {
       console.log($scope.EstablishData.contact);
@@ -290,8 +191,6 @@ angular.module('DBApp.controllers', [])
       else {
         alert("Number not available");
       }
-
-
     };
     $scope.createModal = function () {
       $ionicTabsDelegate.select(1);
@@ -301,15 +200,35 @@ angular.module('DBApp.controllers', [])
       }).then(function (modal) {
         $scope.modal = modal;
       });
+      $ionicSlideBoxDelegate.$getByHandle("Gallery").update();
     };
+
+    $scope.createMenuModal = function () {
+      $ionicTabsDelegate.select(2);
+      $ionicModal.fromTemplateUrl('menuImages.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function (modal) {
+        $scope.modal = modal;
+      });
+      $ionicSlideBoxDelegate.$getByHandle("MenuFull").update();
+    };
+    $scope.loadMenuFull = function (index) {
+      if (index == null || angular.isUndefined(index)) {
+        index = 1
+      }
+      $ionicSlideBoxDelegate.update();
+      //$ionicSlideBoxDelegate.update();
+      $ionicSlideBoxDelegate.slide(index);
+      $scope.modal.show();
+    }
 
     $scope.loadFullScreen = function (index) {
       if (index == null || angular.isUndefined(index)) {
         index = 1
       }
-      $ionicSlideBoxDelegate.update();
+      //$ionicSlideBoxDelegate.update();
       $ionicSlideBoxDelegate.slide(index);
-
       $scope.modal.show();
     }
     $scope.CloseModal = function () {
@@ -319,6 +238,12 @@ angular.module('DBApp.controllers', [])
       console.log($scope.Back());
       $scope.$apply();
     }, 10000);
+    $scope.$on("$ionicView.beforeLeave", function () {
+      $scope.showMap = false;
+    });
+    $scope.$on("$ionicView.enter", function () {
+      $scope.showMap = true;
+    });
   })
   .controller('eventCtrl', function ($scope, $state, $stateParams, eventData, $ionicHistory) {
     $scope.showListing = function () {
@@ -334,9 +259,12 @@ angular.module('DBApp.controllers', [])
       else {
         $scope.enableSearch = true;
       }
-    }
+    };
     $scope.Back = function () {
       $ionicHistory.goBack(-1);
+    }
+    $scope.openDetail = function (eventId) {
+      $state.go("mainApp.eventDetail", {id: eventId});
     }
   })
   .controller('dealCtrl', function ($scope, $state, dealData, $ionicHistory) {
@@ -346,5 +274,191 @@ angular.module('DBApp.controllers', [])
     $scope.Back = function () {
       $ionicHistory.goBack(-1);
     }
+    $scope.goToEstablishment = function (id) {
+      $state.go("mainApp.detailView", {id: id});
+    }
   })
-;
+  .controller('catCtrl', function ($scope, $state, $stateParams, catList, $filter, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicPlatform, uiGmapGoogleMapApi, uiGmapIsReady) {
+    $scope.data = catList.CatList;
+    $scope.ShowCategories = true;
+    $scope.ShowSubCategories = false;
+    $scope.ShowHotelList = false;
+    $scope.markers = [];
+    $scope.map = {center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}, control: {}};
+    $scope.options = {
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      disableDefaultUI: false
+    };
+    $scope.HotelList = [];
+    angular.forEach($scope.data, function (value, key) {
+      var pushData = {'icon': 'blue_marker', 'data': value.HotelList};
+      $scope.HotelList = $scope.HotelList.concat(pushData);
+    });
+    $scope.$watch("ShowCategories", function (newValue, oldValue) {
+      if (newValue) {
+        $scope.HotelList = [];
+        angular.forEach($scope.data, function (value, key) {
+          var pushData = {'icon': 'blue_marker', 'data': value.HotelList};
+          $scope.HotelList = $scope.HotelList.concat(pushData);
+        });
+      }
+    });
+    $scope.$watch("HotelList", function (newValue, oldValue) {
+      if (newValue) {
+        console.log(newValue);
+        $scope.markers = [];
+        angular.forEach(newValue, function (value, key) {
+          var icon = value.icon;
+          angular.forEach(value.data, function (v1, k1) {
+            var marker = {};
+            marker = {
+              latitude: v1.lat,
+              longitude: v1.lng,
+              title: v1.businessname,
+              id: v1.id,
+              icon: 'img/' + icon + '.png'
+            };
+            //console.log(marker);
+            $scope.markers.push(marker);
+          })
+        })
+      }
+    });
+    //$scope.$watch("HotelList", function (newValue, oldValue) {
+    //  if (newValue) {
+    //    //$scope.infoWindows = [];
+    //    var infoWindow = new google.maps.InfoWindow();
+    //    console.log(newValue);
+    //    $scope.markers = [];
+    //    angular.forEach(newValue, function (value, key) {
+    //      var icon = value.icon;
+    //      angular.forEach(value.data, function (v1, k1) {
+    //        var latlngset = new google.maps.LatLng(v1.lat, v1.lng);
+    //        var marker = new google.maps.Marker({
+    //          map: map, title: v1.businessname, position: latlngset, icon: 'img/' + icon + '.png'
+    //        });
+    //        google.maps.event.addListener(marker, 'click', (function (marker) {
+    //          return function () {
+    //            console.log(infoWindow);
+    //            infoWindow.setContent(marker.title);
+    //            infoWindow.open(map, marker);
+    //          }
+    //        })(marker));
+    //
+    //        $scope.markers.push(marker);
+    //      })
+    //    })
+    //    console.log($scope.markers);
+    //  }
+    //});
+    $ionicPlatform.registerBackButtonAction(function ($event) {
+      console.log($scope.goBack());
+      $scope.$apply();
+    }, 10000);
+    $scope.openList = function (index, id) {
+      var SubCount = $scope.data[index].subCategoryList.length;
+      var hotelData = $scope.data[index].HotelList;
+      var catData = $scope.data[index];
+
+      if (SubCount > 0) {
+        $scope.hasSubCategory = true;
+        $scope.HotelList = [];
+        var data = $filter('filter')(hotelData, {'subcategory': id});
+        var pushData = {'icon': 'blue_marker', 'data': data};
+        $scope.HotelList = $scope.HotelList.concat(pushData);
+        $scope.ShowCategories = false;
+        $scope.ShowSubCategories = true;
+        $scope.subCategories = catData.subCategoryList;
+      }
+      else {
+        $scope.hasSubCategory = false;
+        $scope.ShowCategories = false;
+        $scope.ShowSubCategories = false;
+        $scope.HotelList = [];
+        var hotelData = $filter('filter')(hotelData, {'subcategory': id});
+        var pushData = {'icon': 'blue_marker', 'data': hotelData};
+        $scope.HotelList = $scope.HotelList.concat(pushData);
+        //$scope.HotelList = hotelData;
+        $scope.ShowHotelList = true;
+      }
+    };
+    $scope.manageSubCategory = function (id, parent) {
+      console.log(id);
+      console.log(parent);
+      var Parent = $filter('filter')($scope.data, {'id': parent})[0];
+      $scope.HotelList = [];
+      console.log(Parent);
+      $scope.ShowSubCategories = false;
+      $scope.ShowCategories = false;
+      $scope.ShowHotelList = true;
+      var hotelData = $filter('filter')(Parent.HotelList, {'categorytype': id})
+      var pushData = {'icon': 'blue_marker', 'data': hotelData};
+      $scope.HotelList = $scope.HotelList.concat(pushData);
+      //$ionicScrollDelegate.resize();
+    };
+    $scope.goBack = function () {
+      if ($scope.ShowCategories) {
+        $state.go("home");
+        $scope.showMap = false;
+      }
+      if ($scope.ShowSubCategories) {
+        $scope.ShowCategories = true;
+        $scope.ShowSubCategories = false;
+        console.log("Show the Categories");
+        return true;
+      }
+      if ($scope.ShowHotelList) {
+        if (!$scope.hasSubCategory) {
+          $scope.ShowCategories = true;
+          $scope.ShowHotelList = false;
+          return true;
+        }
+        else {
+          $scope.ShowSubCategories = true;
+          $scope.ShowHotelList = false;
+          return true;
+        }
+      }
+    }
+    $scope.showDetails = function (id) {
+      console.log($ionicHistory.viewHistory());
+
+      $state.go("mainApp.detailView", {"id": id});
+    }
+    $scope.$on("$ionicView.beforeLeave", function () {
+      $timeout(function () {
+        $scope.showMap = false;
+      });
+    });
+    $scope.$on("$ionicView.enter", function () {
+      console.log("Entered");
+      $timeout(function () {
+        $scope.showMap = true;
+      });
+    });
+    $scope.returnJson = function (data) {
+      console.log(data);
+      var newData = JSON.parse(data);
+      console.log(newData);
+    }
+
+  })
+  .controller('eventDetailCtrl', function ($scope, $state, $stateParams, $ionicHistory, eventData) {
+    $scope.Back = function () {
+      $ionicHistory.goBack(-1);
+    }
+    $scope.eventDetail = eventData.eventDetail;
+    $scope.eventName = $scope.eventDetail.eventName;
+    $scope.fullAddress = $scope.eventDetail.address + ", " + $scope.eventDetail.city + ", " + $scope.eventDetail.state;
+    $scope.eventFinalData = {
+      "Contact Person": "contactName",
+      "Contact Number": "contactNumber",
+      "Event Start Date": "startDate",
+      "Event Start Time": "startTime",
+      "Event End Date": "endDate",
+      "Event End Time": "endTime",
+      "Event Type": "eventType",
+      "Event Link": "eventLink",
+      "Website": "website",
+    }
+  });
