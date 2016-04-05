@@ -204,9 +204,9 @@ angular.module('DBApp.controllers', [])
 
         confirmPopup.then(function (res) {
           if (res) {
-            console.log('You are sure');
+            window.open('tel:' + number, '_system', 'location=yes')
           } else {
-            console.log('You are not sure');
+            console.log("Nothing to do");
           }
         });
 
@@ -313,7 +313,12 @@ angular.module('DBApp.controllers', [])
   .controller('catCtrl', function ($scope, $localStorage, $state, $stateParams, catList, $filter, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicPlatform, uiGmapGoogleMapApi, uiGmapIsReady) {
     $scope.viewTitle = $stateParams.name;
     $scope.vh = window.innerHeight;
-    $scope.ContentHeight = ($scope.vh * 40) / 100 + 44 + "px";
+    if (ionic.Platform.isIOS()) {
+      $scope.ContentHeight = ($scope.vh * 40) / 100 + 44 + 20 + "px";
+    }
+    else {
+      $scope.ContentHeight = ($scope.vh * 40) / 100 + 44 + "px";
+    }
     $scope.data = catList.CatList;
     $scope.ShowCategories = true;
     $scope.ShowSubCategories = false;
