@@ -19,7 +19,7 @@
           </ui-gmap-markers>
         </ui-gmap-google-map>
       </ion-content>
-      <ion-content id="detailContent" ng-style="{top:ContentHeight}">
+      <ion-content id="detailContent" ng-style="{top:ContentHeight}" has-bouncing="false" overflow-scroll="false">
         <div class="row">
           <div class="col col-75">
             <div class="row row-no-padding">
@@ -92,9 +92,8 @@
 
       </ion-content>
     </ion-tab>
-    <ion-tab ng-click="callNow(EstablishData.contact)" title="Call" icon-on="ion-ios-telephone"
-             icon-off="ion-ios-telephone-outline"
-             ng-href="tel: {{EstablishData.contact}}">
+    <ion-tab ng-click="callNow()" title="Call" icon-on="ion-ios-telephone"
+             icon-off="ion-ios-telephone-outline">
       <!-- Tab 3 content -->
     </ion-tab>
   </ion-tabs>

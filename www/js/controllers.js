@@ -79,7 +79,7 @@ angular.module('DBApp.controllers', [])
         id = 17;
       }
       if (id > 0) {
-        $state.go("mainApp.category", {"id": id,"name":name});
+        $state.go("mainApp.category", {"id": id, "name": name});
       }
       else {
         alert("Work in Progress");
@@ -87,7 +87,7 @@ angular.module('DBApp.controllers', [])
 
     }
   })
-  .controller('detailCtrl', function ($scope, $state, $timeout, $stateParams, detailData, $localStorage, $ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
+  .controller('detailCtrl', function ($scope, $state, $timeout, $filter, $ionicPopup, $stateParams, detailData, $localStorage, $ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
     console.log(detailData);
     $scope.control = {};
     $scope.vh = window.innerHeight;
@@ -184,9 +184,29 @@ angular.module('DBApp.controllers', [])
       }
     };
     $scope.fullAddress = $scope.EstablishData.address + ", " + $scope.EstablishData.city + ", " + $scope.EstablishData.state;
-    $scope.callNow = function (number) {
-      if (number) {
-        window.open('tel:' + number, '_system', 'location=yes')
+    $scope.callNow = function () {
+      if ($scope.EstablishData.contact) {
+        console.log($scope.EstablishData.contact);
+        var number = $filter('tel')($scope.EstablishData.contact);
+        console.log(number);
+        var template = '<div class="row">' +
+          '<div class="col col-center" style="text-align:center;">' +
+          '<h5 class="title">' + $scope.businessName + ': <br/> ' + number + '</h5></div></div>'
+        var confirmPopup = $ionicPopup.confirm({
+          title: '',
+          template: template
+        });
+
+        confirmPopup.then(function (res) {
+          if (res) {
+            console.log('You are sure');
+          } else {
+            console.log('You are not sure');
+          }
+        });
+
+
+        //window.open('tel:' + number, '_system', 'location=yes')
       }
       else {
         alert("Number not available");
@@ -285,7 +305,7 @@ angular.module('DBApp.controllers', [])
       $state.go("mainApp.detailView", {id: id});
     }
   })
-  .controller('catCtrl', function ($scope,$localStorage, $state, $stateParams, catList, $filter, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicPlatform, uiGmapGoogleMapApi, uiGmapIsReady) {
+  .controller('catCtrl', function ($scope, $localStorage, $state, $stateParams, catList, $filter, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicPlatform, uiGmapGoogleMapApi, uiGmapIsReady) {
     $scope.viewTitle = $stateParams.name;
     $scope.vh = window.innerHeight;
     $scope.ContentHeight = ($scope.vh * 40) / 100 + 44 + "px";
