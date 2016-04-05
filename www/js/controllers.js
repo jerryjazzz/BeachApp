@@ -204,7 +204,7 @@ angular.module('DBApp.controllers', [])
 
         confirmPopup.then(function (res) {
           if (res) {
-            window.open('tel:' + number, '_system', 'location=yes')
+            window.open('tel:' + $scope.EstablishData.contact, '_system', 'location=yes')
           } else {
             console.log("Nothing to do");
           }
