@@ -87,11 +87,16 @@ angular.module('DBApp.controllers', [])
 
     }
   })
-  .controller('detailCtrl', function ($scope, $state, $timeout, $filter, $ionicPopup, $stateParams, detailData, $localStorage, $ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
+  .controller('detailCtrl', function ($scope, $ionicPlatform, $state, $timeout, $filter, $ionicPopup, $stateParams, detailData, $localStorage, $ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
     console.log(detailData);
     $scope.control = {};
     $scope.vh = window.innerHeight;
-    $scope.ContentHeight = ($scope.vh * 40) / 100 + 44 + "px";
+    if (ionic.Platform.isIOS()) {
+      $scope.ContentHeight = ($scope.vh * 40) / 100 + 44 + 20 + "px";
+    }
+    else {
+      $scope.ContentHeight = ($scope.vh * 40) / 100 + 44 + "px";
+    }
     $scope.mapOptions = {
       center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}, control: {}, events: {}
     };

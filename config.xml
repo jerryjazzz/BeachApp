@@ -20,6 +20,9 @@
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
+  <feature name="Device">
+    <param name="ios-package" value="CDVDevice" />
+</feature>
   <plugin name="cordova-plugin-console" source="npm"/>
   <plugin name="cordova-plugin-device" source="npm"/>
   <plugin name="cordova-plugin-geolocation" source="npm"/>
