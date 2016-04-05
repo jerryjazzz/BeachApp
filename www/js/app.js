@@ -72,6 +72,7 @@ angular.module('DBApp', ['ionic',
       })
       .state('mainApp.category', {
         url: '/category/:id',
+        params:{name:null},
         views: {
           'menuContent': {
             templateUrl: 'templates/category.html',
@@ -79,6 +80,7 @@ angular.module('DBApp', ['ionic',
             resolve: {
               catList: function (CatList, $stateParams) {
                 var id = $stateParams.id;
+                console.log($stateParams);
                 return CatList.catlist(id);
               },
             }

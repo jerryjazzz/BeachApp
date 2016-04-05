@@ -40,7 +40,7 @@ angular.module('DBApp.controllers', [])
     //  }, 1000);
     //};
   })
-  .controller('HomeCtrl', function ($scope, $state, $stateParams, Icons,$ionicHistory) {
+  .controller('HomeCtrl', function ($scope, $state, $stateParams, Icons, $ionicHistory) {
     $ionicHistory.clearCache().then(function (response) {
       console.log("cache removed");
     });
@@ -52,8 +52,8 @@ angular.module('DBApp.controllers', [])
       var id = 0;
       if (name == "EAT") {
         id = 1;
-        $state.go("mainApp.category", {"id": id});
-        return false;
+        //$state.go("mainApp.category", {"id": id});
+        //return false;
       }
       else if (name == "FITNESS") {
         id = 5;
@@ -79,7 +79,7 @@ angular.module('DBApp.controllers', [])
         id = 17;
       }
       if (id > 0) {
-        $state.go("mainApp.category", {"id": id});
+        $state.go("mainApp.category", {"id": id,"name":name});
       }
       else {
         alert("Work in Progress");
@@ -90,6 +90,8 @@ angular.module('DBApp.controllers', [])
   .controller('detailCtrl', function ($scope, $state, $timeout, $stateParams, detailData, $localStorage, $ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
     console.log(detailData);
     $scope.control = {};
+    $scope.vh = window.innerHeight;
+    $scope.ContentHeight = ($scope.vh * 40) / 100 + 44 + "px";
     $scope.mapOptions = {
       center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}, control: {}, events: {}
     };
@@ -136,10 +138,8 @@ angular.module('DBApp.controllers', [])
       }
     });
     uiGmapIsReady.promise(1).then(function (maps) {
-      //console.log(maps);
-      google.maps.event.trigger(maps[0].map, 'resize');
-      //console.log($scope.showMap);
     });
+
     if ($scope.EstablishData.galleryimages !== "") {
       var gallery = JSON.parse($scope.EstablishData.galleryimages);
       $scope.Gallery = gallery.thumbnail;
@@ -244,6 +244,13 @@ angular.module('DBApp.controllers', [])
     $scope.$on("$ionicView.enter", function () {
       $scope.showMap = true;
     });
+
+    $scope.vh = window.innerHeight;
+    //$scope.setHeight = function(elem){
+    //  console.log($scope.vh);
+    //  console.log(elem);
+    //  console.log($ionicSlideBoxDelegate.$getByHandle("Gallery"));
+    //}
   })
   .controller('eventCtrl', function ($scope, $state, $stateParams, eventData, $ionicHistory) {
     $scope.showListing = function () {
@@ -278,7 +285,10 @@ angular.module('DBApp.controllers', [])
       $state.go("mainApp.detailView", {id: id});
     }
   })
-  .controller('catCtrl', function ($scope, $state, $stateParams, catList, $filter, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicPlatform, uiGmapGoogleMapApi, uiGmapIsReady) {
+  .controller('catCtrl', function ($scope,$localStorage, $state, $stateParams, catList, $filter, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicPlatform, uiGmapGoogleMapApi, uiGmapIsReady) {
+    $scope.viewTitle = $stateParams.name;
+    $scope.vh = window.innerHeight;
+    $scope.ContentHeight = ($scope.vh * 40) / 100 + 44 + "px";
     $scope.data = catList.CatList;
     $scope.ShowCategories = true;
     $scope.ShowSubCategories = false;
@@ -436,12 +446,33 @@ angular.module('DBApp.controllers', [])
         $scope.showMap = true;
       });
     });
+
     $scope.returnJson = function (data) {
       console.log(data);
       var newData = JSON.parse(data);
       console.log(newData);
     }
-
+    uiGmapIsReady.promise(1).then(function (maps) {
+      console.log("I am in Ready");
+      var contentElem = angular.element(document.getElementById("detailContent"));
+      contentElem.css("display", "none");
+      google.maps.event.trigger(maps[0].map, 'resize');
+      var mapDiv = angular.element(document.getElementsByClassName("angular-google-map-container"));
+      console.log(mapDiv);
+      var newTop = mapDiv[0].offsetHeight + mapDiv[0].offsetTop + 44;
+      mapDiv.ready(function () {
+        mapDiv.css("height", "40vh");
+        var newTop = mapDiv[0].offsetHeight + mapDiv[0].offsetTop + 44;
+        console.log(newTop);
+      });
+      contentElem.ready(function () {
+        console.log(contentElem);
+        console.log(newTop);
+        contentElem.css("top", newTop + "px");
+        contentElem.css("display", "block");
+        console.log(contentElem);
+      });
+    });
   })
   .controller('eventDetailCtrl', function ($scope, $state, $stateParams, $ionicHistory, eventData) {
     $scope.Back = function () {
