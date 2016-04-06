@@ -43,6 +43,25 @@ angular.module('DBApp.filters', [])
       }
     }
   })
+  .filter("OriginalImages", function (HOME_IMG_URL) {
+    return function (link) {
+      if (angular.isDefined(link)) {
+        var newData = "";
+        try {
+          newData = JSON.parse(link).original[0];
+        }
+        catch (e) {
+          newData = link;
+        }
+        //console.log(JSON.parse(link));
+        var finalLink = HOME_IMG_URL + newData;
+        return finalLink;
+      }
+      else {
+        return link;
+      }
+    }
+  })
   .filter('getEventDate', function () {
     return function (input) {
       if (input) {

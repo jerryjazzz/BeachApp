@@ -496,8 +496,13 @@ angular.module('DBApp.controllers', [])
       "Description": "description",
       "Contact Person": "contactName",
     }
-    $scope.startDateTime = new Date($scope.eventDetail.startDate + " " + $scope.eventDetail.startTime);
-    $scope.endDateTime = new Date($scope.eventDetail.endDate + " " + $scope.eventDetail.endTime);
+    var splitStartDate = $scope.eventDetail.startDate.split("-");
+    var splitStartTime = $scope.eventDetail.startTime.split(":");
+    var splitEndDate = $scope.eventDetail.endDate.split("-");
+    var splitEndTime = $scope.eventDetail.endTime.split(":");
+    //console.log(new Date(splitEndDate[0], splitEndDate[1] - 1, splitEndDate[2], splitEndTime[0], splitEndTime[1], 0, 0));
+    $scope.startDateTime = new Date(splitStartDate[0], splitStartDate[1] - 1, splitStartDate[2], splitStartTime[0], splitStartTime[1], 0, 0);
+    $scope.endDateTime = new Date(splitEndDate[0], splitEndDate[1] - 1, splitEndDate[2], splitEndTime[0], splitEndTime[1], 0, 0);
     $scope.createEvent = function () {
       $cordovaCalendar.createEventInteractively({
         title: $scope.eventDetail.eventName,
