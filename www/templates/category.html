@@ -4,7 +4,8 @@
     </button>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <button class="button button-icon button-clear ion-android-funnel" menu-toggle="right">
+    <button class="button button-icon button-clear ion-android-funnel" ng-click="showFilters()" ng-show="ShowHotelList">
+
     </button>
   </ion-nav-buttons>
   <ion-content scroll="false" overflow-scroll="true" style="height:40vh;" id="mapContent">
@@ -34,7 +35,9 @@
       </ion-item>
     </ion-list>
     <ion-list ng-if="ShowHotelList">
-      <ion-item ng-repeat="Hotel in HotelList[0].data" class="item-complex" ng-click="showDetails(Hotel.establishid)">
+      <ion-item
+        ng-repeat="Hotel in Hotels =(HotelList[0].data| filter:greaterThan('distance',filterData.miles) | filter:{'priceName':filterData.priceRange})"
+        class="item-complex" ng-click="showDetails(Hotel.establishid)">
         <div class="row" style="padding-bottom: 0px;">
           <div class="col col-20">
             <img src="{{Hotel.logo | ThumbnailImages}}" style="width:100%;height:100%"/>
@@ -48,17 +51,15 @@
               </div>
               <div class="col col-25">
                 <p style="text-overflow: none;">{{Hotel.distance}} mi.</p>
+
                 <p style="text-align: right;"><i class="ion-ios-arrow-right" style="font-size:2em;"></i></p>
               </div>
             </div>
-
           </div>
         </div>
-        <!--<img src="{{Hotel.logo | MainImages}}"/>-->
-        <!--<h2>{{Hotel.businessname}}</h2>-->
-        <!--<p>{{Hotel.address}},{{Hotel.city}},{{Hotel.state}}</p>-->
-
-        <!--<p>{{Hotel.distance}} mi.</p>-->
+      </ion-item>
+      <ion-item ng-hide="Hotels.length">
+        No Establishment Available
       </ion-item>
     </ion-list>
   </ion-content>

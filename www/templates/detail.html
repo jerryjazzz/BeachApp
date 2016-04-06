@@ -45,7 +45,6 @@
         <div class="row" ng-repeat="(key,value) in dataArr">
           <div class="col" style="padding-bottom: 0px;padding-top:0px;">
             <h4>{{key}}</h4>
-
             <p ng-bind-html="EstablishData[value]" style="margin-bottom:5px;">{{value}}</p>
           </div>
         </div>
@@ -89,7 +88,6 @@
                  ng-click="loadMenuFull($index+2)"/>
           </div>
         </div>
-
       </ion-content>
     </ion-tab>
     <ion-tab ng-click="callNow()" title="Call" icon-on="ion-ios-telephone"
@@ -98,20 +96,15 @@
     </ion-tab>
   </ion-tabs>
   <script id="image-modal.html" type="text/ng-template">
-    <div class="modal">
-      <ion-header-bar class="bar-positive">
-        <button class="button button-clear button-icon ion-close" ng-click="CloseModal()"></button>
-        <!--<div class="button button-clear" ng-click="CloseModal()"><span class="icon ion-close"></span></div>-->
+    <div class="modal" style="background-color: black;">
+      <ion-header-bar class="bar-clear">
         <h1 class="title">{{businessName}} - Gallery</h1>
+        <button class="button button-stable button-outline" ng-click="CloseModal()">Close</button>
       </ion-header-bar>
-      <!--<header class="bar bar-header bar-positive">-->
-
-        <!---->
-      <!--</header>-->
       <content has-header="true" padding="true">
         <ion-slide-box ng-if="GalleryFull" delegate-handle="Gallery">
           <ion-slide class="items" ng-repeat="oImage in GalleryFull" style="top:44px;height:100vh;">
-            <div class="row" style="top:auto;position:absolute;height:100%;">
+            <div class="row" style="top:auto;position:absolute;height:90%;">
               <div class="col col-center">
                 <img src="{{oImage | MainImages}}" style="width:100%;"/>
               </div>
@@ -121,20 +114,17 @@
       </content>
     </div>
   </script>
+
   <script id="menuImages.html" type="text/ng-template">
-    <div class="modal">
-      <ion-header-bar>
-        <button class="button button-clear button-icon ion-close" ng-click="CloseModal()"></button>
+    <div class="modal" style="background-color: black;">
+      <ion-header-bar class="bar-clear">
         <h1 class="title">{{businessName}} - Menu</h1>
+        <button class="button button-light button-outline" ng-click="CloseModal()">Close</button>
       </ion-header-bar>
-      <!--<header class="bar bar-header bar-positive">-->
-        <!--<div class="button button-clear" ng-click="CloseModal()"><span class="icon ion-close"></span></div>-->
-        <!--<h1 class="title">{{businessName}} - Menu</h1>-->
-      <!--</header>-->
       <content has-header="true" padding="true">
         <ion-slide-box delegate-handle="MenuFull">
           <ion-slide class="items" ng-repeat="oImage in MenuFull" style="top:44px;height:100vh;">
-            <div class="row" style="top:auto;position:absolute;height:100%;">
+            <div class="row" style="top:auto;position:absolute;height:90%;">
               <div class="col col-center">
                 <img src="{{oImage | MainImages}}" style="width:100%;"/>
               </div>

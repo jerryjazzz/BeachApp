@@ -127,4 +127,18 @@ angular.module('DBApp.factory', [])
     }
     return returnData;
   })
+  .factory("priceRange", function ($q, $http, API_URL) {
+    var returnData = {};
+    returnData.get = function () {
+      var deferred = $q.defer();
+      var URL = API_URL + "price/";
+      $http.get(URL).then(function (response) {
+        deferred.resolve(response.data);
+      }, function (err) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    }
+    return returnData;
+  })
 ;

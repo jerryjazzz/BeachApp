@@ -4,7 +4,7 @@
     </button>
   </ion-nav-buttons>
   <ion-content>
-    <ion-list ng-if="showListing">
+    <ion-list>
       <ion-item ng-repeat="event in dealList" ng-click="goToEstablishment(event.es_id)">
         <div class="row row-no-padding">
           <div class="col col-20 col-center"
@@ -20,6 +20,9 @@
             <p style="white-space: normal;">Click for More Information</p>
           </div>
         </div>
+      </ion-item>
+      <ion-item ng-hide="dealList.length">
+        No Discounts Available
       </ion-item>
     </ion-list>
   </ion-content>

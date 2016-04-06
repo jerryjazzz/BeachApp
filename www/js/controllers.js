@@ -47,7 +47,6 @@ angular.module('DBApp.controllers', [])
     $scope.HomeIcons = Icons.icons;
     //console.log(Icons)
     $scope.goToCategory = function (name) {
-      console.log(name);
       //return false;
       var id = 0;
       if (name == "EAT") {
@@ -123,11 +122,12 @@ angular.module('DBApp.controllers', [])
     $scope.markers.push(markerCurrentLocation);
     $scope.businessName = $scope.EstablishData.businessname;
     $scope.dataArr = {
-      "Price Range": "pricerange",
+      "Price Range": "priceName",
       "Category": "category",
       "Restaurant Type": "categorytype",
       "Details": "description",
     };
+    console.log($scope.EstablishData);
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
     directionsService.route({
@@ -135,7 +135,7 @@ angular.module('DBApp.controllers', [])
       destination: markerHotel.latitude + "," + markerHotel.longitude,
       travelMode: google.maps.TravelMode.DRIVING
     }, function (response, status) {
-      console.log("MapResponse", response);
+
       if (status === google.maps.DirectionsStatus.OK) {
         directionsDisplay.setDirections(response);
       } else {
@@ -166,7 +166,7 @@ angular.module('DBApp.controllers', [])
     }
 
     $scope.call = function () {
-      console.log($scope.EstablishData.contact);
+
     }
     $scope.Back = function () {
       console.log($ionicHistory.viewHistory());
@@ -191,9 +191,7 @@ angular.module('DBApp.controllers', [])
     $scope.fullAddress = $scope.EstablishData.address + ", " + $scope.EstablishData.city + ", " + $scope.EstablishData.state;
     $scope.callNow = function () {
       if ($scope.EstablishData.contact) {
-        console.log($scope.EstablishData.contact);
         var number = $filter('tel')($scope.EstablishData.contact);
-        console.log(number);
         var template = '<div class="row">' +
           '<div class="col col-center" style="text-align:center;">' +
           '<h5 class="title">' + $scope.businessName + ': <br/> ' + number + '</h5></div></div>'
@@ -209,9 +207,6 @@ angular.module('DBApp.controllers', [])
             console.log("Nothing to do");
           }
         });
-
-
-        //window.open('tel:' + number, '_system', 'location=yes')
       }
       else {
         alert("Number not available");
@@ -260,7 +255,6 @@ angular.module('DBApp.controllers', [])
       $scope.modal.hide();
     }
     $ionicPlatform.registerBackButtonAction(function ($event) {
-      console.log($scope.Back());
       $scope.$apply();
     }, 10000);
     $scope.$on("$ionicView.beforeLeave", function () {
@@ -269,20 +263,12 @@ angular.module('DBApp.controllers', [])
     $scope.$on("$ionicView.enter", function () {
       $scope.showMap = true;
     });
-
-    $scope.vh = window.innerHeight;
-    //$scope.setHeight = function(elem){
-    //  console.log($scope.vh);
-    //  console.log(elem);
-    //  console.log($ionicSlideBoxDelegate.$getByHandle("Gallery"));
-    //}
   })
   .controller('eventCtrl', function ($scope, $state, $stateParams, eventData, $ionicHistory) {
     $scope.showListing = function () {
       return eventData.eventList.length > 0 ? true : false;
     }
     $scope.eventList = eventData.eventList;
-    console.log($scope.eventList);
     $scope.enableSearch = false;
     $scope.searchEnable = function () {
       if ($scope.enableSearch) {
@@ -309,8 +295,9 @@ angular.module('DBApp.controllers', [])
     $scope.goToEstablishment = function (id) {
       $state.go("mainApp.detailView", {id: id});
     }
+    console.log($scope.dealList.length);
   })
-  .controller('catCtrl', function ($scope, $localStorage, $state, $stateParams, catList, $filter, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicPlatform, uiGmapGoogleMapApi, uiGmapIsReady) {
+  .controller('catCtrl', function ($scope, priceRange, $localStorage, $ionicPopup, $state, $stateParams, catList, $filter, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicPlatform, uiGmapGoogleMapApi, uiGmapIsReady) {
     $scope.viewTitle = $stateParams.name;
     $scope.vh = window.innerHeight;
     if (ionic.Platform.isIOS()) {
@@ -364,35 +351,7 @@ angular.module('DBApp.controllers', [])
         })
       }
     });
-    //$scope.$watch("HotelList", function (newValue, oldValue) {
-    //  if (newValue) {
-    //    //$scope.infoWindows = [];
-    //    var infoWindow = new google.maps.InfoWindow();
-    //    console.log(newValue);
-    //    $scope.markers = [];
-    //    angular.forEach(newValue, function (value, key) {
-    //      var icon = value.icon;
-    //      angular.forEach(value.data, function (v1, k1) {
-    //        var latlngset = new google.maps.LatLng(v1.lat, v1.lng);
-    //        var marker = new google.maps.Marker({
-    //          map: map, title: v1.businessname, position: latlngset, icon: 'img/' + icon + '.png'
-    //        });
-    //        google.maps.event.addListener(marker, 'click', (function (marker) {
-    //          return function () {
-    //            console.log(infoWindow);
-    //            infoWindow.setContent(marker.title);
-    //            infoWindow.open(map, marker);
-    //          }
-    //        })(marker));
-    //
-    //        $scope.markers.push(marker);
-    //      })
-    //    })
-    //    console.log($scope.markers);
-    //  }
-    //});
     $ionicPlatform.registerBackButtonAction(function ($event) {
-      console.log($scope.goBack());
       $scope.$apply();
     }, 10000);
     $scope.openList = function (index, id) {
@@ -423,11 +382,8 @@ angular.module('DBApp.controllers', [])
       }
     };
     $scope.manageSubCategory = function (id, parent) {
-      console.log(id);
-      console.log(parent);
       var Parent = $filter('filter')($scope.data, {'id': parent})[0];
       $scope.HotelList = [];
-      console.log(Parent);
       $scope.ShowSubCategories = false;
       $scope.ShowCategories = false;
       $scope.ShowHotelList = true;
@@ -444,7 +400,6 @@ angular.module('DBApp.controllers', [])
       if ($scope.ShowSubCategories) {
         $scope.ShowCategories = true;
         $scope.ShowSubCategories = false;
-        console.log("Show the Categories");
         return true;
       }
       if ($scope.ShowHotelList) {
@@ -461,7 +416,6 @@ angular.module('DBApp.controllers', [])
       }
     }
     $scope.showDetails = function (id) {
-      console.log($ionicHistory.viewHistory());
 
       $state.go("mainApp.detailView", {"id": id});
     }
@@ -471,55 +425,145 @@ angular.module('DBApp.controllers', [])
       });
     });
     $scope.$on("$ionicView.enter", function () {
-      console.log("Entered");
       $timeout(function () {
         $scope.showMap = true;
       });
     });
 
     $scope.returnJson = function (data) {
-      console.log(data);
       var newData = JSON.parse(data);
-      console.log(newData);
     }
     uiGmapIsReady.promise(1).then(function (maps) {
-      console.log("I am in Ready");
       var contentElem = angular.element(document.getElementById("detailContent"));
       contentElem.css("display", "none");
       google.maps.event.trigger(maps[0].map, 'resize');
       var mapDiv = angular.element(document.getElementsByClassName("angular-google-map-container"));
-      console.log(mapDiv);
       var newTop = mapDiv[0].offsetHeight + mapDiv[0].offsetTop + 44;
       mapDiv.ready(function () {
         mapDiv.css("height", "40vh");
         var newTop = mapDiv[0].offsetHeight + mapDiv[0].offsetTop + 44;
-        console.log(newTop);
       });
       contentElem.ready(function () {
-        console.log(contentElem);
-        console.log(newTop);
         contentElem.css("top", newTop + "px");
         contentElem.css("display", "block");
-        console.log(contentElem);
       });
     });
+
+    $scope.filterData = {};
+    $scope.filterData.miles = "5";
+    $scope.finalFilter = {};
+    $scope.showFilters = function () {
+      var myPopup = $ionicPopup.show({
+        templateUrl: 'templates/filter.html',
+        title: 'Filter Options',
+        scope: $scope,
+        buttons: [
+          {text: 'Cancel'},
+          {
+            text: '<b>Apply</b>',
+            type: 'button-positive',
+            onTap: function (e) {
+              return $scope.filterData;
+            }
+          }
+        ]
+      });
+      myPopup.then(function (res) {
+        console.log('Tapped!', res);
+      });
+    };
+    $scope.greaterThan = function (prop, val) {
+      return function (item) {
+        return item[prop] > val;
+      }
+    }
+    priceRange.get().then(function (response) {
+      $scope.PriceRange = response.priceList;
+      console.log($scope.PriceRange);
+    })
+    $scope.miles = ["5", "10", "15", "20", "25"];
   })
-  .controller('eventDetailCtrl', function ($scope, $state, $stateParams, $ionicHistory, eventData) {
+  .controller('eventDetailCtrl', function ($scope, $state, $stateParams, $ionicHistory, eventData, $cordovaCalendar, $filter, $ionicPopup) {
     $scope.Back = function () {
       $ionicHistory.goBack(-1);
     }
     $scope.eventDetail = eventData.eventDetail;
+    console.log($scope.eventDetail);
     $scope.eventName = $scope.eventDetail.eventName;
-    $scope.fullAddress = $scope.eventDetail.address + ", " + $scope.eventDetail.city + ", " + $scope.eventDetail.state;
+    $scope.eventDetail.fullAddress = $scope.eventDetail.address + ", " + $scope.eventDetail.city + ", " + $scope.eventDetail.state;
     $scope.eventFinalData = {
+      "Address": "fullAddress",
+      "Description": "description",
       "Contact Person": "contactName",
-      "Contact Number": "contactNumber",
-      "Event Start Date": "startDate",
-      "Event Start Time": "startTime",
-      "Event End Date": "endDate",
-      "Event End Time": "endTime",
-      "Event Type": "eventType",
-      "Event Link": "eventLink",
-      "Website": "website",
     }
+    $scope.startDateTime = new Date($scope.eventDetail.startDate + " " + $scope.eventDetail.startTime);
+    $scope.endDateTime = new Date($scope.eventDetail.endDate + " " + $scope.eventDetail.endTime);
+    $scope.createEvent = function () {
+      $cordovaCalendar.createEventInteractively({
+        title: $scope.eventDetail.eventName,
+        location: $scope.fullAddress,
+        notes: $scope.eventDetail.description,
+        startDate: $scope.startDateTime,
+        endDate: $scope.endDateTime
+      }).then(function (result) {
+        if (result) {
+
+        }
+      }, function (err) {
+        console.log("err", err);
+      });
+    }
+    $scope.callNow = function () {
+      if ($scope.eventDetail.contactNumber !== "") {
+        var number = $filter('tel')($scope.eventDetail.contactNumber);
+        var template = '<div class="row">' +
+          '<div class="col col-center" style="text-align:center;">' +
+          '<h5 class="title">' + $scope.eventDetail.contactName + ': <br/> ' + number + '</h5></div></div>'
+        var confirmPopup = $ionicPopup.confirm({
+          title: '',
+          template: template
+        });
+
+        confirmPopup.then(function (res) {
+          if (res) {
+            window.open('tel:' + $scope.eventDetail.contactNumber, '_system', 'location=yes')
+          } else {
+            console.log("Nothing to do");
+          }
+        });
+      }
+    }
+    $scope.openEventLink = function () {
+      if ($scope.eventDetail.eventLink) {
+        //console.log($scope.eventDetail.eventLink);
+        window.open($scope.eventDetail.eventLink, "_blank", "location=yes");
+      }
+      else {
+        alert("Event Link not available");
+      }
+    }
+    $scope.openWebLink = function () {
+      if ($scope.eventDetail.website) {
+        //console.log($scope.eventDetail.eventLink);
+        window.open($scope.eventDetail.website, "_blank", "location=yes");
+      }
+      else {
+        alert("Website not available");
+      }
+    }
+    $scope.navigate = function () {
+      if (window.launchnavigator) {
+        launchnavigator.navigate(
+          [$scope.eventDetail.lat, $scope.eventDetail.lng],
+          null,
+          function () {
+            console.log("Map Opened Successfully")
+          },
+          function (error) {
+            console.log("Error Opening Navigation");
+          });
+      } else {
+        console.log("Launch Navigator is not available");
+      }
+    };
   });

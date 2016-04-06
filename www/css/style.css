@@ -163,3 +163,41 @@ p.info {
 }
 
 /* End Code for Modal SlideBox */
+
+/* Event Detail Style */
+.eventPhoto {
+  /*background-size: contain;*/
+  background-size: 100% 100% !important;
+  position: relative;
+}
+
+.eventType {
+  list-style: none;
+  display: inline-flex;
+  font-size: 1em;
+}
+
+.eventType li:first-child {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.eventType li {
+  margin-right: 5px;
+}
+.eventHeader {
+  min-height: 10vh;
+  background-color: #1A237E;
+  color: #fff;
+  padding:5px;
+}
+.eventHeader > .eventTitle {
+  font-size: 2em;
+  color:white;
+  padding:5px;
+}
+.eventHeader > .eventType{
+  font-size:1em;
+  color:white;
+  padding:5px;
+}

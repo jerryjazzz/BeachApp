@@ -1,0 +1,40 @@
+<!--<div class="list">-->
+<!--<label class="item item-input item-stacked-label">-->
+<!--<span class="input-label">Miles</span>-->
+<!--<input type="text" placeholder="Miles" ng-model="filterData.miles">-->
+<!--</label>-->
+<!--<label class="item item-stacked-label item-select">-->
+<!--<span class="input-label">Select Price Range</span>-->
+<!--<select ng-options="price.price as price.price for price in PriceRange" ng-model="filterData.priceRange"></select>-->
+<!--</label>-->
+<!--</div>-->
+<div class="row row-no-padding">
+  <div class="col">
+    <div class="row">
+      <div class="col">
+        Within Miles
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <!--<input type="text" placeholder="Within Miles" ng-model="filterData.miles">
+        -->
+        <select ng-options="mile as mile for mile in miles" ng-model="filterData.miles" ng-selected="filterData.miles" style="width:100%;"></select>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row row-no-padding">
+  <div class="col">
+    <div class="row">
+      <div class="col">
+        Select Price Range
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <select ng-options="price.price as price.price for price in PriceRange" ng-model="filterData.priceRange" style="width:100%;"></select>
+      </div>
+    </div>
+  </div>
+</div>

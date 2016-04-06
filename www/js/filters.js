@@ -32,7 +32,6 @@ angular.module('DBApp.filters', [])
           newData = JSON.parse(link).thumbnail[0];
         }
         catch (e) {
-          console.log(e);
           newData = link;
         }
         //console.log(JSON.parse(link));
