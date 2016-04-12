@@ -103,7 +103,17 @@ angular.module('DBApp.factory', [])
         deferred.resolve(response.data);
       }, function (err) {
         deferred.reject(err);
-      })
+      });
+      return deferred.promise;
+    };
+    returnData.getCompletedEvents = function () {
+      var deferred = $q.defer();
+      var URL = API_URL + "event/photos/";
+      $http.get(URL).then(function (response) {
+        deferred.resolve(response.data);
+      }, function (err) {
+        deferred.reject(err);
+      });
       return deferred.promise;
     };
     return returnData;
@@ -139,6 +149,21 @@ angular.module('DBApp.factory', [])
       });
       return deferred.promise;
     }
+    return returnData;
+  })
+  .factory("establishmentList", function ($q, $http, API_URL) {
+    var returnData = {};
+    returnData.getList = function () {
+      var deferred = $q.defer();
+      var URL = API_URL + "establishment/list/";
+      //console.log(URL);
+      $http.get(URL).then(function (response) {
+        deferred.resolve(response.data);
+      }, function (err) {
+        deferred.reject(err);
+      })
+      return deferred.promise;
+    };
     return returnData;
   })
 ;

@@ -1,0 +1,16 @@
+<ion-view view-title="THE AVE" cache-view="false">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon button-clear ion-android-arrow-back" ng-click="Back()">
+    </button>
+  </ion-nav-buttons>
+  <ion-content class="theAve" ng-style="{height:ContentHeight}">
+    <ui-gmap-google-map center='mapOptions.center' zoom='mapOptions.zoom' options="options"
+                        control="mapOptions.control" events="mapOptions.events" ng-if="showMap" >
+      <ui-gmap-markers models="markers" coords="'self'" icon="'icon'">
+        <ui-gmap-windows show="show">
+          <div ng-non-bindable>{{title}}</div>
+        </ui-gmap-windows>
+      </ui-gmap-markers>
+    </ui-gmap-google-map>
+  </ion-content>
+</ion-view>

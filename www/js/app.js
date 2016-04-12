@@ -72,7 +72,7 @@ angular.module('DBApp', ['ionic',
       })
       .state('mainApp.category', {
         url: '/category/:id',
-        params:{name:null},
+        params: {name: null},
         views: {
           'menuContent': {
             templateUrl: 'templates/category.html',
@@ -129,6 +129,54 @@ angular.module('DBApp', ['ionic',
                 return eventListing.getEventDetail(id);
               }
             }
+          },
+        }
+      })
+      .state('mainApp.theAve', {
+        url: '/theave',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/theave.html',
+            controller: 'theAveCtrl',
+            resolve: {
+              establishments: function (establishmentList) {
+                return establishmentList.getList();
+              }
+            }
+          },
+        }
+      })
+      .state('mainApp.completedEventsListing', {
+        url: '/completedEventsListing',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/completedEventsListing.html',
+            controller: 'completedEventsListingCtrl',
+            resolve: {
+              completedEvents: function (eventListing) {
+                return eventListing.getCompletedEvents();
+              }
+            }
+          },
+        }
+      })
+      .state('mainApp.completedEventPhotos', {
+        url: '/completedEventPhotos/',
+        params: {gallery: null},
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/completedEventPhotos.html',
+            controller: 'completedEventPhotosCtrl',
+          },
+        }
+      })
+      .state('mainApp.maps', {
+        url: '/maps/',
+        params: {gallery: null},
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/maps.html',
+            controller: 'mapsCtrl',
           },
         }
       })

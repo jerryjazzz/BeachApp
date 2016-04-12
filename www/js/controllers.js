@@ -1,5 +1,4 @@
 angular.module('DBApp.controllers', [])
-
   .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $ionicHistory) {
 
     // With the new view caching in Ionic, Controllers are only called
@@ -48,6 +47,7 @@ angular.module('DBApp.controllers', [])
     //console.log(Icons)
     $scope.goToCategory = function (name) {
       //return false;
+      console.log(name);
       var id = 0;
       if (name == "EAT") {
         id = 1;
@@ -77,6 +77,18 @@ angular.module('DBApp.controllers', [])
       else if (name == "BEAUTY") {
         id = 17;
       }
+      else if (name == "THE AVE") {
+        $state.go("mainApp.theAve");
+        return false;
+      }
+      else if (name == "PHOTOS") {
+        $state.go("mainApp.completedEventsListing");
+        return false;
+      } else if (name == "MAP") {
+        $state.go("mainApp.maps");
+        return false;
+      }
+
       if (id > 0) {
         $state.go("mainApp.category", {"id": id, "name": name});
       }
@@ -88,6 +100,24 @@ angular.module('DBApp.controllers', [])
   })
   .controller('detailCtrl', function ($scope, $ionicPlatform, $state, $timeout, $filter, $ionicPopup, $stateParams, detailData, $localStorage, $ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
     console.log(detailData);
+    console.log(detailData.Data.menuImages);
+    if (detailData.Data.menuImages == "") {
+      console.log("i am null");
+    }
+    if (detailData.Data.galleryimages !== "") {
+      $scope.hasGallery = true;
+    }
+    else {
+      $scope.hasGallery = false;
+    }
+    if (detailData.Data.menuImages == "") {
+
+      $scope.hasMenu = false;
+    }
+    else {
+      $scope.hasMenu = true;
+    }
+    console.log($scope.hasMenu);
     $scope.control = {};
     $scope.vh = window.innerHeight;
     if (ionic.Platform.isIOS()) {
@@ -124,8 +154,8 @@ angular.module('DBApp.controllers', [])
     $scope.dataArr = {
       "Price Range": "priceName",
       "Category": "category",
-      "Restaurant Type": "categorytype",
-      "Details": "description",
+      "Type": "categorytype",
+      //"Details": "description",
     };
     console.log($scope.EstablishData);
     var directionsService = new google.maps.DirectionsService;
@@ -301,7 +331,7 @@ angular.module('DBApp.controllers', [])
     $scope.viewTitle = $stateParams.name;
     $scope.vh = window.innerHeight;
     if (ionic.Platform.isIOS()) {
-      $scope.ContentHeight = ($scope.vh * 40) / 100 + 44 + 20 + "px";
+      $scope.ContentHeight = ($scope.vh * 40) / 100 + 44 + "px";
     }
     else {
       $scope.ContentHeight = ($scope.vh * 40) / 100 + 44 + "px";
@@ -480,7 +510,7 @@ angular.module('DBApp.controllers', [])
     priceRange.get().then(function (response) {
       $scope.PriceRange = response.priceList;
       console.log($scope.PriceRange);
-    })
+    });
     $scope.miles = ["5", "10", "15", "20", "25"];
   })
   .controller('eventDetailCtrl', function ($scope, $state, $stateParams, $ionicHistory, eventData, $cordovaCalendar, $filter, $ionicPopup) {
@@ -571,4 +601,106 @@ angular.module('DBApp.controllers', [])
         console.log("Launch Navigator is not available");
       }
     };
-  });
+  })
+  .controller('theAveCtrl', function ($scope, $state, $stateParams, uiGmapIsReady, $ionicHistory, $ionicPlatform, establishments) {
+    //console.log(establishments);
+    $scope.showMap = true;
+    $scope.establishmentList = establishments.List;
+    $scope.vh = window.innerHeight;
+    $scope.ContentHeight = $scope.vh - 44 + "px";
+    angular.element(document).ready(function () {
+      var mapElem = angular.element(document.getElementsByClassName("angular-google-map-container"));
+      mapElem.css("height", $scope.ContentHeight);
+    });
+
+    $scope.markers = [];
+    angular.forEach($scope.establishmentList, function (value, key) {
+      var marker = {};
+      //var bounds = new google.maps.LatLngBounds();
+
+      marker = {
+        latitude: value.lat,
+        longitude: value.lng,
+        title: value.businessname,
+        id: value.id,
+        icon: 'img/blue_marker.png'
+      };
+      $scope.markers.push(marker);
+    });
+
+    $scope.mapOptions = {
+      center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}, control: {}, events: {}
+    };
+    $scope.Back = function () {
+      console.log($ionicHistory.viewHistory());
+      $ionicHistory.goBack(-1);
+      $ionicPlatform.offHardwareBackButton();
+    }
+  })
+  .controller("completedEventsListingCtrl", function ($scope, $state, $stateParams, completedEvents, $ionicHistory) {
+    console.log(completedEvents);
+    $scope.eventList = completedEvents.CompletedEvent;
+    console.log($scope.eventList);
+    $scope.openDetail = function (gallery) {
+      $state.go("mainApp.completedEventPhotos", {gallery: gallery});
+    }
+    $scope.Back = function () {
+      $ionicHistory.goBack(-1);
+    }
+  })
+  .controller("completedEventPhotosCtrl", function ($scope, $state, $stateParams, $ionicModal, $ionicSlideBoxDelegate, $ionicHistory) {
+    console.log($stateParams);
+    $scope.gallery = $stateParams.gallery;
+    if ($scope.gallery == null) {
+      $state.go("mainApp.completedEventsListing");
+      return false;
+    }
+    if ($scope.gallery !== null) {
+      try {
+        $scope.gallery = JSON.parse($scope.gallery);
+      }
+      catch (e) {
+        console.log(e);
+      }
+      $scope.EventThumbs = $scope.gallery.thumbnail;
+      $scope.EventOriginal = $scope.gallery.original;
+    }
+    $scope.loadFullScreen = function (index) {
+      if (index == null || angular.isUndefined(index)) {
+        index = 1
+      }
+      $ionicModal.fromTemplateUrl('image-modal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function (modal) {
+        $scope.modal = modal;
+        $ionicSlideBoxDelegate.update();
+        console.log(index);
+        $ionicSlideBoxDelegate.slide(index);
+        $scope.modal.show();
+      });
+    };
+    $scope.CloseModal = function () {
+      $scope.modal.hide();
+    }
+    $scope.Back = function () {
+      $ionicHistory.goBack(-1);
+    }
+  })
+  .controller("mapsCtrl", function ($scope, $state, $stateParams,$ionicHistory) {
+    $scope.vh = window.innerHeight;
+    $scope.ContentHeight = $scope.vh - 44 + "px";
+    angular.element(document).ready(function () {
+      var mapElem = angular.element(document.getElementsByClassName("angular-google-map-container"));
+      mapElem.css("height", $scope.ContentHeight);
+    });
+    $scope.mapOptions = {
+      center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}, control: {}, events: {}
+    };
+    $scope.Back = function () {
+      //console.log($ionicHistory.viewHistory());
+      $ionicHistory.goBack(-1);
+      //$ionicPlatform.offHardwareBackButton();
+    }
+  })
+;

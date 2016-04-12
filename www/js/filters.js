@@ -35,6 +35,7 @@ angular.module('DBApp.filters', [])
           newData = link;
         }
         //console.log(JSON.parse(link));
+        //console.log(newData);
         var finalLink = HOME_IMG_URL + newData;
         return finalLink;
       }

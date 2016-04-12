@@ -10,14 +10,17 @@
   <ion-content>
     <div class="row row-no-padding" style="height:35vh;">
       <div class="col eventPhoto" style="background: url('{{eventDetail.logo |OriginalImages}}') no-repeat;">
-        <div class="row" style="bottom:0;position:absolute;background: linear-gradient(0deg,rgba(242, 242, 242, 0.95) 0,rgba(0,0,0,0) 100%);
-    height:30%;">
+        <div class="row" style="">
           <div class="col">
-            <div class="button-bar" style="bottom:10px;">
-              <button class="button button-icon icon button-outline button-dark ion-ios-telephone" ng-click="callNow()"></button>
-              <button class="button button-icon icon button-outline button-dark ion-android-hangout" ng-click="openEventLink()"></button>
-              <button class="button button-icon icon button-outline button-dark ion-android-globe" ng-click="openWebLink()"></button>
-              <button class="button button-icon icon button-outline button-dark ion-android-alarm-clock" ng-click="createEvent()"></button>
+            <div class="button-bar bar-stable" style="bottom:10px;">
+              <button class="button  button-outline button-icon button-light icon ion-ios-telephone"
+                      ng-click="callNow()" style="color:#fff"></button>
+              <button class="button button-outline  button-icon button-light icon ion-android-hangout"
+                      ng-click="openEventLink()" style="color:#fff"></button>
+              <button class="button  button-outline button-icon button-light icon ion-android-globe"
+                      ng-click="openWebLink()" style="color:#fff"></button>
+              <button class="button button-outline button-icon button-light icon ion-android-alarm-clock"
+                      ng-click="createEvent()" style="color:#fff"></button>
             </div>
           </div>
         </div>
@@ -50,12 +53,14 @@
             <div class="item item-text-wrap" ng-bind-html="eventDetail[value]">
 
             </div>
-            <!--<div class="item item-divider">-->
-            <!--Description-->
-            <!--</div>-->
-            <!--<div class="item item-text-wrap" ng-bind-html="eventDetail.description">-->
-
-            <!--</div>-->
+          </div>
+          <div>
+            <div class="item item-divider">
+              Entry Fee
+            </div>
+            <div class="item item-text-wrap">
+              {{eventDetail["price"] | currency:'$':2}}
+            </div>
           </div>
         </div>
       </div>

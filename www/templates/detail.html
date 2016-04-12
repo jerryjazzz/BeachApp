@@ -25,9 +25,9 @@
             <div class="row row-no-padding">
               <div class="col">
                 <h4>Address</h4>
-
                 <p ng-bind-html="fullAddress"></p>
               </div>
+
             </div>
             <div class="row row-no-padding">
               <div class="col">
@@ -43,15 +43,24 @@
         </div>
 
         <div class="row" ng-repeat="(key,value) in dataArr">
-          <div class="col" style="padding-bottom: 0px;padding-top:0px;">
+          <div class="col col-33 col-center" style="padding-bottom: 0px;padding-top:0px;">
             <h4>{{key}}</h4>
+
+          </div>
+          <div class="col col-center">
             <p ng-bind-html="EstablishData[value]" style="margin-bottom:5px;">{{value}}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <h4>Description</h4>
+            <p ng-bind-html="EstablishData.description"></p>
           </div>
         </div>
       </ion-content>
     </ion-tab>
-
-    <ion-tab title="Photos" icon-on="ion-ios-camera" icon-off="ion-ios-camera-outline" ng-click="createModal()">
+    <ion-tab ng-if="hasGallery" title="Photos" icon-on="ion-ios-camera" icon-off="ion-ios-camera-outline"
+             ng-click="createModal()">
       <ion-content has-header has-sub-header class="has-header" style="top:44px;">
         <div class="row" ng-repeat="photo in Gallery" ng-if="$index%3==0">
           <div class="col col-33" ng-if="Gallery[$index]">
@@ -70,8 +79,7 @@
 
       </ion-content>
     </ion-tab>
-
-    <ion-tab title="Menu" icon-on="ion-android-restaurant" icon-off="ion-android-restaurant"
+    <ion-tab ng-if="hasMenu" title="Menu" icon-on="ion-android-restaurant" icon-off="ion-android-restaurant"
              ng-click="createMenuModal()">
       <ion-content has-header has-sub-header class="has-header" style="top:44px;">
         <div class="row" ng-repeat="photo in MenuImages" ng-if="$index%3==0">
@@ -114,7 +122,6 @@
       </content>
     </div>
   </script>
-
   <script id="menuImages.html" type="text/ng-template">
     <div class="modal" style="background-color: black;">
       <ion-header-bar class="bar-clear">

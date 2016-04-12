@@ -185,19 +185,33 @@ p.info {
 .eventType li {
   margin-right: 5px;
 }
+
 .eventHeader {
   min-height: 10vh;
   background-color: #1A237E;
   color: #fff;
-  padding:5px;
+  padding: 5px;
 }
+
 .eventHeader > .eventTitle {
   font-size: 2em;
-  color:white;
-  padding:5px;
+  color: white;
+  padding: 5px;
 }
-.eventHeader > .eventType{
-  font-size:1em;
-  color:white;
-  padding:5px;
+
+.eventHeader > .eventType {
+  font-size: 1em;
+  color: white;
+  padding: 5px;
 }
+
+.eventPhoto > div:first-child {
+  bottom: 0;
+  position: absolute;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0, rgba(0, 0, 0, 0) 100%);
+  height: 30%;
+}
+
+/*.theAve .angular-google-map-container {*/
+  /*height: 100vh;*/
+/*}*/
