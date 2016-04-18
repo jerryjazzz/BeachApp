@@ -13,7 +13,7 @@
   <ion-content class="homePageBackground" scroll="false">
     <div class="row row-no-padding homeRow" ng-repeat="Icon in HomeIcons" ng-if="$index%4 ==0">
       <div class="col">
-        <div class="row row-no-padding" ng-click="goToCategory(HomeIcons[$index].name)">
+        <div class="row row-no-padding" ng-click="goToCategory(HomeIcons[$index].name,HomeIcons[$index].cat_id)">
           <div class="col">
             <img src="{{HomeIcons[$index].logo | ImageLink}}" class="homeIcons"/>
           </div>
@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="col">
-        <div class="row row-no-padding" ng-click="goToCategory(HomeIcons[$index+1].name)">
+        <div class="row row-no-padding" ng-click="goToCategory(HomeIcons[$index+1].name,HomeIcons[$index+1].cat_id)">
           <div class="col">
             <img src="{{HomeIcons[$index+1].logo | ImageLink}}" class="homeIcons"/>
           </div>
@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="col">
-        <div class="row row-no-padding" ng-click="goToCategory(HomeIcons[$index+2].name)">
+        <div class="row row-no-padding" ng-click="goToCategory(HomeIcons[$index+2].name,HomeIcons[$index+2].cat_id)">
           <div class="col">
             <img src="{{HomeIcons[$index+2].logo | ImageLink}}" class="homeIcons"/>
           </div>
@@ -49,7 +49,7 @@
         </div>
       </div>
       <div class="col">
-        <div class="row row-no-padding" ng-click="goToCategory(HomeIcons[$index+3].name)">
+        <div class="row row-no-padding" ng-click="goToCategory(HomeIcons[$index+3].name,HomeIcons[$index+3].cat_id)">
           <div class="col">
             <img src="{{HomeIcons[$index+3].logo | ImageLink}}" class="homeIcons"/>
           </div>

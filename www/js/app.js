@@ -15,8 +15,17 @@ angular.module('DBApp', ['ionic',
     'ngCordova',
   ])
 
-  .run(function ($ionicPlatform, $rootScope, uiGmapIsReady, $ionicLoading, $localStorage) {
+  .run(function ($ionicPlatform, $rootScope, uiGmapIsReady, $ionicLoading, $localStorage, $state, HomeMenu) {
+    $ionicPlatform.on("resume", function () {
+
+    });
     $ionicPlatform.ready(function () {
+      HomeMenu.getAmenities().then(function (response) {
+        $localStorage.amenities = response;
+        console.log(response);
+      }, function (err) {
+        console.log(err);
+      })
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
       if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -89,14 +98,39 @@ angular.module('DBApp', ['ionic',
       })
       .state('mainApp.detailView', {
         url: '/detail/:id',
+        params: {data: null},
         views: {
           'menuContent': {
             templateUrl: 'templates/detail.html',
             controller: 'detailCtrl',
             resolve: {
-              detailData: function (detailData, $stateParams) {
-                var id = $stateParams.id;
-                return detailData.getData(id);
+              detailData: function (detailData, $stateParams, $q) {
+                //var id = $stateParams.id;
+                //return detailData.getData(id);
+                console.log($stateParams);
+                var deferred = $q.defer();
+                deferred.resolve($stateParams.data);
+                return deferred.promise;
+              },
+            }
+          },
+        }
+      })
+      .state('mainApp.parkingdetailView', {
+        url: '/parkingDetail/:id',
+        params: {data: null},
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/parkingdetail.html',
+            controller: 'parkingdetailCtrl',
+            resolve: {
+              detailData: function (detailData, $stateParams, $q) {
+                console.log($stateParams);
+                var deferred = $q.defer();
+                deferred.resolve($stateParams.data);
+                return deferred.promise;
+                //var id = $stateParams.id;
+                //return detailData.getData(id);
               },
             }
           },

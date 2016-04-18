@@ -212,6 +212,10 @@ p.info {
   height: 30%;
 }
 
+.amenities {
+  font-family: 'map-icons';
+}
+
 /*.theAve .angular-google-map-container {*/
-  /*height: 100vh;*/
+/*height: 100vh;*/
 /*}*/

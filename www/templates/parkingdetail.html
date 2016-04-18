@@ -1,0 +1,78 @@
+<ion-view view-title="{{businessName}}" cache-view="false">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon  button-clear ion-home" ng-click="goHome()">
+    </button>
+    <button class="button button-icon button-clear ion-android-arrow-back" ng-click="Back()">
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear ion-ios-navigate-outline" ng-click="navigate()">
+    </button>
+  </ion-nav-buttons>
+  <ion-tabs class="tabs-positive tabs-icon-top">
+    <ion-tab title="Info" icon-on="ion-ios-information" icon-off="ion-ios-information-outline">
+      <ion-content scroll="false" overflow-scroll="true" style="height:40vh;" id="mapContent">
+        <ui-gmap-google-map center='mapOptions.center' zoom='mapOptions.zoom' options="options"
+                            control="mapOptions.control" events="mapOptions.events" ng-if="showMap">
+          <ui-gmap-markers models="markers" coords="'self'" icon="'icon'">
+            <ui-gmap-windows show="show">
+              <div ng-non-bindable>{{title}}</div>
+            </ui-gmap-windows>
+          </ui-gmap-markers>
+        </ui-gmap-google-map>
+      </ion-content>
+      <ion-content id="detailContent" ng-style="{top:ContentHeight}" has-bouncing="false" overflow-scroll="true">
+        <div class="row">
+          <div class="col col-75">
+            <div class="row row-no-padding">
+              <div class="col">
+                <div class="row row-no-padding">
+                  <div class="col">
+                    <h4>Address
+                    </h4>
+
+                    <p ng-bind-html="fullAddress"></p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col col-25">
+            <img src="{{EstablishData.logo | ThumbnailImages}}" style="height:100%;width:100%;float:right"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <h4>Description</h4>
+
+            <p ng-bind-html="EstablishData.description | htmlContent"></p>
+          </div>
+        </div>
+        <!--<div class="row" ng-repeat="(key,value) in dataArr">-->
+          <!--<div class="col col-33 col-center" style="padding-bottom: 0px;padding-top:0px;">-->
+            <!--<h4 style="margin:0px;">{{key}}</h4>-->
+
+          <!--</div>-->
+          <!--<div class="col col-67 col-center">-->
+            <!--<p ng-bind-html="EstablishData[value]" style="margin-bottom:5px;">{{value}}</p>-->
+          <!--</div>-->
+        <!--</div>-->
+
+      </ion-content>
+    </ion-tab>
+    <ion-tab ng-click="callNow()" title="Call" icon-on="ion-ios-telephone"
+             icon-off="ion-ios-telephone-outline">
+      <!-- Tab 3 content -->
+    </ion-tab>
+    <ion-tab title="Know More" ng-click="moreInfo()" icon-on="ion-ios-home" icon-off="ion-ios-home-outline">
+      <!--<ion-content>-->
+      <!--<div class="row">-->
+      <!--<div class="col">-->
+      <!--<h1 class="title">I am here</h1>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</ion-content>-->
+    </ion-tab>
+  </ion-tabs>
+</ion-view>

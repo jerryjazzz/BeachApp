@@ -32,6 +32,7 @@ angular.module('DBApp.factory', [])
     returnData.homeIcons = function () {
       var deferred = $q.defer();
       var URL = API_URL + "home-icons/";
+      //console.log(URL);
       if (angular.isUndefined($localStorage.menu)) {
         $http.get(URL).success(function (response) {
           $localStorage.menu = response;
@@ -43,6 +44,18 @@ angular.module('DBApp.factory', [])
       else {
         deferred.resolve($localStorage.menu);
       }
+      return deferred.promise;
+    };
+    returnData.getAmenities = function () {
+      var deferred = $q.defer();
+      var URL = API_URL + "home-icons/getAmenities/";
+      console.log(URL);
+      $http.get(URL).success(function (response) {
+        //$localStorage.menu = response;
+        deferred.resolve(response);
+      }).error(function (err) {
+        deferred.reject(err);
+      });
       return deferred.promise;
     };
 

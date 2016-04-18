@@ -130,5 +130,26 @@ angular.module('DBApp.filters', [])
 
       return (country + " (" + city + ") " + number).trim();
     };
+  })
+  .filter("htmlContent", function ($sce) {
+    return function (link) {
+      if (angular.isDefined(link)) {
+        return $sce.trustAsHtml(link);
+      }
+    }
+  })
+  .filter("finalAmenities", function ($filter, $localStorage) {
+    return function (link) {
+      if (angular.isDefined(link)) {
+        var FinalArr = [];
+        var Amenities = link.split(",");
+        angular.forEach(Amenities, function (value, key) {
+          var data = $filter('filter')($localStorage.amenities, {id: value});
+          if (data.length > 0) {
+            FinalArr.push(data[0]);
+          }
+        });
+        return FinalArr;
+      }
+    }
   });
-;
