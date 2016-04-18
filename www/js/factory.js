@@ -25,7 +25,6 @@ angular.module('DBApp.factory', [])
     };
     return timestampMarker;
   })
-
   .factory("HomeMenu", function ($http, $q, API_URL, IMG_URL, $localStorage) {
     var returnData = {};
 
@@ -62,7 +61,6 @@ angular.module('DBApp.factory', [])
     return returnData;
 
   })
-
   .factory("CatList", function ($http, $q, API_URL) {
     var returnData = {};
     returnData.catlist = function (id) {

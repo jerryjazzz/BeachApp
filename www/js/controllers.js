@@ -71,9 +71,9 @@ angular.module('DBApp.controllers', [])
     }
 
   })
-  .controller('detailCtrl', function ($scope, $ionicPlatform, $sce, $state, $timeout, $filter, $ionicPopup, $stateParams, detailData, $localStorage, $ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
-    console.log(detailData);
-    $scope.EstablishData = detailData;
+  .controller('detailCtrl', function ($scope, $ionicPlatform, $sce, $state, $timeout, $filter, $ionicPopup, $stateParams, Data, $localStorage, $ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
+    console.log(Data);
+    $scope.EstablishData = Data.Data;
     if ($scope.EstablishData.menuImages == "") {
       console.log("i am null");
     }
@@ -126,8 +126,8 @@ angular.module('DBApp.controllers', [])
     $scope.businessName = $scope.EstablishData.businessname;
     $scope.dataArr = {
       "Price Range": "priceName",
-      "Category": "category",
-      "Type": "categorytype",
+      "Category": "subCategoryName",
+      "Type": "categoryTypeName",
       //"Details": "description",
     };
     console.log($scope.EstablishData);
@@ -328,7 +328,7 @@ angular.module('DBApp.controllers', [])
     $scope.map = {center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}, control: {}};
     $scope.options = {
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      disableDefaultUI: false
+      disableDefaultUI: true
     };
     $scope.HotelList = [];
     angular.forEach($scope.data, function (value, key) {
@@ -357,7 +357,18 @@ angular.module('DBApp.controllers', [])
               longitude: v1.lng,
               title: v1.businessname,
               id: v1.id,
-              icon: 'img/' + icon + '.png'
+              icon: '',
+              //icon: 'img/' + icon + '.png',
+              //icon: {
+              //  path: SQUARE_PIN,
+              //  fillColor: '#00CCBB',
+              //  fillOpacity: 1,
+              //  strokeColor: '',
+              //  strokeWeight: 0
+              //},
+              options: {
+                label: v1.subCategoryName,
+              }
             };
             //console.log(marker);
             $scope.markers.push(marker);
@@ -393,6 +404,7 @@ angular.module('DBApp.controllers', [])
         $scope.HotelList = $scope.HotelList.concat(pushData);
         //$scope.HotelList = hotelData;
         $scope.ShowHotelList = true;
+        $ionicScrollDelegate.scrollTop();
       }
     };
     $scope.manageSubCategory = function (id, parent) {
@@ -401,8 +413,9 @@ angular.module('DBApp.controllers', [])
       $scope.ShowSubCategories = false;
       $scope.ShowCategories = false;
       $scope.ShowHotelList = true;
-      var hotelData = $filter('filter')(Parent.HotelList, {'categorytype': id})
+      var hotelData = $filter('filter')(Parent.HotelList, {'categorytype': id});
       var pushData = {'icon': 'blue_marker', 'data': hotelData};
+      console.log("I am here");
       $scope.HotelList = $scope.HotelList.concat(pushData);
       //$ionicScrollDelegate.resize();
     };

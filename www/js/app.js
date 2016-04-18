@@ -104,12 +104,19 @@ angular.module('DBApp', ['ionic',
             templateUrl: 'templates/detail.html',
             controller: 'detailCtrl',
             resolve: {
-              detailData: function (detailData, $stateParams, $q) {
-                //var id = $stateParams.id;
+              Data: function (detailData, $stateParams, $q) {
+                var id = $stateParams.id;
                 //return detailData.getData(id);
-                console.log($stateParams);
                 var deferred = $q.defer();
-                deferred.resolve($stateParams.data);
+                if ($stateParams.data == null || $stateParams.data == "") {
+                  deferred.resolve(detailData.getData(id));
+                }
+                else {
+                  console.log($stateParams);
+                  var Object1 = {};
+                  Object1.Data = $stateParams.data
+                  deferred.resolve(Object1);
+                }
                 return deferred.promise;
               },
             }

@@ -13,8 +13,8 @@
   </ion-nav-buttons>
   <ion-content scroll="false" overflow-scroll="true" style="height:40vh;" id="mapContent">
     <!--<div id="googleMap"></div>-->
-    <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options" control="map.control" ng-if="showMap">
-      <ui-gmap-markers models="markers" coords="'self'" icon="'icon'">
+    <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options" control="map.control" ng-if="showMap" >
+      <ui-gmap-markers models="markers" coords="'self'" icon="'icon'" options="'options'" ng-class="map-icon-label" fit="true">
         <ui-gmap-windows show="show">
           <div ng-non-bindable>{{title}}</div>
         </ui-gmap-windows>
@@ -50,7 +50,7 @@
                 <p style="white-space: normal;">{{Hotel.address}},{{Hotel.city}},{{Hotel.state}}</p>
               </div>
               <div class="col col-25">
-                <p style="text-overflow: none;">{{Hotel.distance}} mi.</p>
+                <p>{{Hotel.distance}} mi.</p>
 
                 <p style="text-align: right;"><i class="ion-ios-arrow-right" style="font-size:2em;"></i></p>
               </div>

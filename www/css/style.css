@@ -197,6 +197,7 @@ p.info {
   font-size: 2em;
   color: white;
   padding: 5px;
+  line-height:1;
 }
 
 .eventHeader > .eventType {
