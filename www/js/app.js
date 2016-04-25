@@ -13,6 +13,7 @@ angular.module('DBApp', ['ionic',
     'uiGmapgoogle-maps',
     'ngStorage',
     'ngCordova',
+    'ionic-zoom-view',
   ])
 
   .run(function ($ionicPlatform, $rootScope, uiGmapIsReady, $ionicLoading, $localStorage, $state, HomeMenu) {
@@ -25,19 +26,17 @@ angular.module('DBApp', ['ionic',
         console.log(response);
       }, function (err) {
         console.log(err);
-      })
+      });
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
       if (window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
         cordova.plugins.Keyboard.disableScroll(true);
-
       }
       if (window.StatusBar) {
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
-      //$localStorage.lat = "";
       var geoOptions = {maximumAge: 3000, timeout: 5000, enableHighAccuracy: true};
       navigator.geolocation.getCurrentPosition(function (position) {
         $localStorage.lat = position.coords.latitude;
@@ -45,7 +44,6 @@ angular.module('DBApp', ['ionic',
       }, function (err) {
         console.log(err);
       }, geoOptions);
-
     });
     $rootScope.showMap = true;
     $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams, options) {
@@ -68,7 +66,6 @@ angular.module('DBApp', ['ionic',
         controller: 'HomeCtrl',
         resolve: {
           Icons: function (HomeMenu) {
-            //console.log(HomeMenu.homeIcons());
             return HomeMenu.homeIcons();
           }
         }
@@ -93,6 +90,40 @@ angular.module('DBApp', ['ionic',
                 return CatList.catlist(id);
               },
             }
+          },
+        }
+      })
+      .state('mainApp.subCategory', {
+        url: '/subCategory/:id',
+        params: {data: null},
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/subCategory.html',
+            controller: 'subCatCtrl',
+            //resolve: {
+            //  catList: function (CatList, $stateParams) {
+            //    var id = $stateParams.id;
+            //    console.log($stateParams);
+            //    return CatList.catlist(id);
+            //  },
+            //}
+          },
+        }
+      })
+      .state('mainApp.establishment', {
+        url: '/establishment/',
+        params: {data: null, name: null},
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/establishmentList.html',
+            controller: 'establishmentCtrl',
+            //resolve: {
+            //  catList: function (CatList, $stateParams) {
+            //    var id = $stateParams.id;
+            //    console.log($stateParams);
+            //    return CatList.catlist(id);
+            //  },
+            //}
           },
         }
       })
@@ -230,6 +261,32 @@ angular.module('DBApp', ['ionic',
             resolve: {
               dealData: function (dealListing, $stateParams) {
                 return dealListing.getListing();
+              }
+            }
+          },
+        }
+      })
+      .state('mainApp.dealsDetail', {
+        url: '/dealDetail/:id',
+        params: {data: null},
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/dealDetail.html',
+            controller: 'dealDetailCtrl',
+            resolve: {
+              dealData: function ($stateParams, $q, dealListing) {
+                var deferred = $q.defer();
+                console.log($stateParams);
+                if ($stateParams.data !== "" && $stateParams.data !== null) {
+                  var finalData = {dealDetail: $stateParams.data};
+                  deferred.resolve(finalData);
+                }
+                else {
+                  deferred.resolve(dealListing.getDetail($stateParams.id));
+
+                }
+                //return dealListing.getListing();
+                return deferred.promise;
               }
             }
           },

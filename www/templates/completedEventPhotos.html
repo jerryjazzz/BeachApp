@@ -1,9 +1,9 @@
 <ion-view view-title="EVENT PHOTOS">
-  <ion-nav-buttons side="left">
-    <button class="button button-icon button-clear ion-android-arrow-back" ng-click="Back()">
-    </button>
-  </ion-nav-buttons>
-  <ion-content has-header has-sub-header class="has-header" style="top:44px;">
+  <!--<ion-nav-buttons side="left">-->
+    <!--<button class="button button-icon button-clear ion-android-arrow-back" ng-click="Back()">-->
+    <!--</button>-->
+  <!--</ion-nav-buttons>-->
+  <ion-content has-header has-sub-header class="has-header" overflow-scroll="false" style="top:44px;">
     <div class="row" ng-repeat="photo in EventThumbs" ng-if="$index%3==0">
       <div class="col col-33" ng-if="EventThumbs[$index]">
         <img src="{{EventThumbs[$index] | MainImages}}" style="height:100%;width:100%;"

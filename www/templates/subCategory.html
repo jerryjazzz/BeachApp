@@ -1,4 +1,12 @@
 <ion-view view-title="{{viewTitle | uppercase}}">
+  <!--<ion-nav-buttons side="left">-->
+  <!--<button class="button button-icon button-clear ion-home" ng-click="goHome()">-->
+  <!--</button>-->
+  <!--<button class="button button-icon button-clear ion-chevron-left" ng-click="goBack()">-->
+  <!--</button>-->
+  <!--</ion-nav-buttons>-->
+  <!--<ion-nav-buttons side="right">-->
+  <!--<button class="button button-icon button-clear ion-android-funnel" ng-click="showFilters()" ng-showionic run androidbuttons>-->
   <ion-content scroll="false" overflow-scroll="false" style="height:40vh;" id="mapContent">
     <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options" control="map.control" ng-if="showMap">
       <ui-gmap-markers models="markers" coords="'self'" icon="'icon'" options="'options'" ng-class="map-icon-label"
@@ -10,11 +18,11 @@
     </ui-gmap-google-map>
   </ion-content>
   <ion-content id="detailContent" ng-style="{top:ContentHeight}" has-bouncing="false" overflow-scroll="false"
-               scrollbar-x="false" scrollbar-y="false" 1>
+               scrollbar-x="false" scrollbar-y="false">
     <ion-list>
-      <ion-item ng-repeat="Category in data" ng-click="openList(Category)">
+      <ion-item ng-repeat="Category in CatList" ng-click="openList(Category)">
         <div class="row row-no-padding">
-          <div class="col col-25">
+          <div class="col col-20">
             <img style="width:100%;" src="{{Category.logo | ThumbnailImages}}"/>
           </div>
           <div class="col col-75 col-center">
@@ -27,7 +35,7 @@
       </ion-item>
     </ion-list>
     <!--<div>-->
-    <!--<div class="row item" ng-repeat="Category in data" ng-click="openList(Category)">-->
+    <!--<div class="row item" ng-repeat="Category in CatList" ng-click="openList(Category)">-->
     <!--<div class="col col-33"><img src="{{Category.logo | ThumbnailImages}}"/></div>-->
     <!--<div class="col col-66 col-center"><h2 class="title" style="font-size:1em;font-weight: bold;">{{Category.name | uppercase}}</h2></div>-->
     <!--</div>-->

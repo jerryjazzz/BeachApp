@@ -1,12 +1,14 @@
 <ion-view view-title="EVENTS">
-  <ion-nav-buttons side="left">
-    <button class="button button-icon button-clear ion-android-arrow-back" ng-click="Back()">
-    </button>
-  </ion-nav-buttons>
-  <ion-nav-buttons side="right">
-    <button class="button button-icon button-clear ion-search" ng-click="searchEnable()">
-    </button>
-  </ion-nav-buttons>
+  <!--<ion-nav-buttons side="left">-->
+    <!--<button class="button button-icon button-clear ion-home" ng-click="goHome()">-->
+    <!--</button>-->
+    <!--<button class="button button-icon button-clear ion-chevron-left" ng-click="Back()">-->
+    <!--</button>-->
+  <!--</ion-nav-buttons>-->
+  <!--<ion-nav-buttons side="right">-->
+    <!--<button class="button button-icon button-clear ion-search" ng-click="searchEnable()">-->
+    <!--</button>-->
+  <!--</ion-nav-buttons>-->
   <ion-header-bar class="bar bar-subheader item-input-inset" ng-if="enableSearch">
     <label class="item-input-wrapper">
       <i class="icon ion-ios-search placeholder-icon"></i>
@@ -17,7 +19,7 @@
     </button>
   </ion-header-bar>
 
-  <ion-content>
+  <ion-content overflow-scroll="false">
     <ion-list ng-if="showListing()">
       <ion-item ng-repeat="event in eventList" ng-click="openDetail(event.eventId)">
         <div class="row row-no-padding">

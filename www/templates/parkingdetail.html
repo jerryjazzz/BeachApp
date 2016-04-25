@@ -1,10 +1,10 @@
 <ion-view view-title="{{businessName}}" cache-view="false">
-  <ion-nav-buttons side="left">
-    <button class="button button-icon  button-clear ion-home" ng-click="goHome()">
-    </button>
-    <button class="button button-icon button-clear ion-android-arrow-back" ng-click="Back()">
-    </button>
-  </ion-nav-buttons>
+  <!--<ion-nav-buttons side="left">-->
+    <!--<button class="button button-icon  button-clear ion-home" ng-click="goHome()">-->
+    <!--</button>-->
+    <!--<button class="button button-icon button-clear ion-android-arrow-back" ng-click="Back()">-->
+    <!--</button>-->
+  <!--</ion-nav-buttons>-->
   <ion-nav-buttons side="right">
     <button class="button button-icon button-clear ion-ios-navigate-outline" ng-click="navigate()">
     </button>
@@ -21,7 +21,7 @@
           </ui-gmap-markers>
         </ui-gmap-google-map>
       </ion-content>
-      <ion-content id="detailContent" ng-style="{top:ContentHeight}" has-bouncing="false" overflow-scroll="true">
+      <ion-content id="detailContent" ng-style="{top:ContentHeight}" has-bouncing="false" overflow-scroll="true" scrollbar-x="false" scrollbar-y="false">
         <div class="row">
           <div class="col col-75">
             <div class="row row-no-padding">

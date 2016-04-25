@@ -17,9 +17,8 @@
     </div>
     <div class="row">
       <div class="col">
-        <!--<input type="text" placeholder="Within Miles" ng-model="filterData.miles">
-        -->
-        <select ng-options="mile as mile for mile in miles" ng-model="filterData.miles" ng-selected="filterData.miles" style="width:100%;"></select>
+        <select ng-options="mile as mile for mile in miles" ng-model="filterData.miles" ng-selected="filterData.miles"
+                style="width:100%;"></select>
       </div>
     </div>
   </div>
@@ -33,7 +32,8 @@
     </div>
     <div class="row">
       <div class="col">
-        <select ng-options="price.price as price.price for price in PriceRange" ng-model="filterData.priceRange" style="width:100%;"></select>
+        <select ng-options="price.price as price.price for price in PriceRange" ng-model="filterData.priceRange"
+                style="width:100%;" ng-change="changePrice()"></select>
       </div>
     </div>
   </div>

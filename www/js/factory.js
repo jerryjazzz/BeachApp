@@ -2,12 +2,13 @@
  * Created by varun on 19-03-2016.
  */
 angular.module('DBApp.factory', [])
-  .factory("ManageHeader", function ($localStorage) {
+  .factory("ManageHeader", function ($localStorage, $q, $injector) {
     var timestampMarker = {
       request: function (config) {
         if (angular.isDefined($localStorage.lat) && angular.isDefined($localStorage.long)) {
           config.headers['lat'] = $localStorage.lat;
           config.headers['long'] = $localStorage.long;
+          config.timeout = 5000;
         }
         else {
           var geoOptions = {maximumAge: 3000, timeout: 5000, enableHighAccuracy: true};
@@ -19,9 +20,38 @@ angular.module('DBApp.factory', [])
           }, function (err) {
             console.log(err);
           }, geoOptions);
+          config.timeout = 5000;
         }
         return config;
+      },
+      requestError: function (error) {
+        console.log(error);
+      },
+      response: function (response) {
+        return response || $q.when(response);
+      },
+      responseError: function (rejection) {
+        console.log(rejection);
+        if (rejection.status === 500) {
+          $injector.get('$ionicLoading').hide();
+          alert("There was an issue fetching the data. Please Try again");
+          $injector.get('$state').go("home");
+        }
+        else if (rejection.status === 0) {
+          $injector.get('$ionicLoading').hide();
+          alert("There was an issue fetching the data. Please Try again");
+          $injector.get('$state').go("home");
+        }
+        return $q.reject(rejection);
       }
+      //responseError:function(rejection){
+      //  console.log(rejection);
+      //},
+      //response:function(response){
+      //  if (response.status === 500){
+      //    console.log("Error with Webservice");
+      //  }
+      //}
     };
     return timestampMarker;
   })
@@ -34,6 +64,7 @@ angular.module('DBApp.factory', [])
       //console.log(URL);
       if (angular.isUndefined($localStorage.menu)) {
         $http.get(URL).success(function (response) {
+          console.log(response);
           $localStorage.menu = response;
           deferred.resolve(response);
         }).error(function (err) {
@@ -145,6 +176,22 @@ angular.module('DBApp.factory', [])
         deferred.reject(err);
       });
       return deferred.promise;
+    };
+    returnData.getDetail = function (dealId) {
+      var deferred = $q.defer();
+      if (dealId) {
+        var URL = API_URL + "deal/detail/" + dealId;
+        console.log(URL);
+        $http.get(URL).then(function (response) {
+          deferred.resolve(response.data);
+        }, function (err) {
+          deferred.reject(err);
+        });
+        return deferred.promise;
+      }
+      else {
+        return false;
+      }
     }
     return returnData;
   })

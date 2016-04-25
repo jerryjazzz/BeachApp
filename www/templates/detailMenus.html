@@ -1,0 +1,21 @@
+<div class="modal" style="background-color: black;">
+  <ion-header-bar class="bar-clear">
+    <h1 class="title">{{businessName}} - Menu</h1>
+    <button class="button button-light button-outline" ng-click="CloseModal()">Close</button>
+  </ion-header-bar>
+  <content has-header="true" padding="true">
+    <ion-slide-box delegate-handle="MenuFull" active-slide="activeSlide" on-slide-changed="slideChanged(index)">
+      <ion-slide class="items" ng-repeat="oImage in MenuFull" style="top:44px;height:100vh;">
+        <ion-scroll direction="xy" scrollbar-x="false" scrollbar-y="false" min-zoom="{{zoomMin}}" zooming="true"
+                    style="top:auto;position:relative;height:90%;">
+          <div class="row">
+            <div class="col col-center">
+              <img ng-src="{{oImage | MainImages}}" ng-src="{{oImage | MainImages}}"
+                   on-double-tap="changeStyle($event,$index)" style="width:100%;"/>
+            </div>
+          </div>
+        </ion-scroll>
+      </ion-slide>
+    </ion-slide-box>
+  </content>
+</div>
