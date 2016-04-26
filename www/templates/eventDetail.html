@@ -1,7 +1,7 @@
 <ion-view view-title="{{eventName}}" cache-view="false">
   <!--<ion-nav-buttons side="left">-->
-    <!--<button class="button button-icon button-clear ion-android-arrow-back" ng-click="Back()">-->
-    <!--</button>-->
+  <!--<button class="button button-icon button-clear ion-android-arrow-back" ng-click="Back()">-->
+  <!--</button>-->
   <!--</ion-nav-buttons>-->
   <ion-nav-buttons side="right">
     <button class="button button-icon button-clear ion-ios-navigate-outline" ng-click="navigate()">
@@ -46,14 +46,20 @@
     <div class="row row-no-padding">
       <div class="col">
         <div class="card">
-          <div ng-repeat="(key,value) in eventFinalData">
-            <div class="item item-divider">
-              {{key}}
-            </div>
-            <div class="item item-text-wrap" ng-bind-html="eventDetail[value]">
+          <!--<div ng-repeat="(key,value) in eventFinalData">-->
+          <!--<div class="item item-divider">-->
+          <!--{{key}}-->
+          <!--</div>-->
+          <!--<div class="item item-text-wrap" ng-bind-html="eventDetail[value]">-->
 
-            </div>
-          </div>
+          <!--</div>-->
+          <!--</div>-->
+          <div class="item item-divider">Address</div>
+          <div class="item item-text-wrap" ng-bind-html="eventDetail.fullAddress"></div>
+          <div class="item item-divider">Description</div>
+          <div class="item item-text-wrap" ng-bind-html="eventDetail.description"></div>
+          <div class="item item-divider">Contact Person</div>
+          <div class="item item-text-wrap" ng-bind-html="eventDetail.contactName"></div>
           <div>
             <div class="item item-divider">
               Entry Fee

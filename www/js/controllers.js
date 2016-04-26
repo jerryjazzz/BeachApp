@@ -308,6 +308,11 @@ angular.module('DBApp.controllers', [])
         $ionicSlideBoxDelegate.$getByHandle("MenuFull").enableSlide(true);
       }
     }
+    $scope.openLink = function (link) {
+      console.log(link);
+      link = $filter('webLink')(link);
+      window.open(link, "_blank", "location=yes");
+    }
   })
   .controller('eventCtrl', function ($scope, $state, $stateParams, eventData, $ionicHistory) {
     $scope.showListing = function () {
@@ -424,11 +429,12 @@ angular.module('DBApp.controllers', [])
     //console.log(new Date(splitEndDate[0], splitEndDate[1] - 1, splitEndDate[2], splitEndTime[0], splitEndTime[1], 0, 0));
     $scope.startDateTime = new Date(splitStartDate[0], splitStartDate[1] - 1, splitStartDate[2], splitStartTime[0], splitStartTime[1], 0, 0);
     $scope.endDateTime = new Date(splitEndDate[0], splitEndDate[1] - 1, splitEndDate[2], splitEndTime[0], splitEndTime[1], 0, 0);
+    $scope.TextDescription = String($scope.eventDetail.description).replace(/<[^>]+>/gm, '');
     $scope.createEvent = function () {
       $cordovaCalendar.createEventInteractively({
         title: $scope.eventDetail.eventName,
-        location: $scope.fullAddress,
-        notes: $scope.eventDetail.description,
+        location: $scope.eventDetail.fullAddress,
+        notes: $scope.TextDescription,
         startDate: $scope.startDateTime,
         endDate: $scope.endDateTime
       }).then(function (result) {

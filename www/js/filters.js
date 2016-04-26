@@ -152,4 +152,15 @@ angular.module('DBApp.filters', [])
         return FinalArr;
       }
     }
+
+  })
+  .filter("webLink", function () {
+    return function (link) {
+      if (angular.isDefined(link)) {
+        if (!/^https?:\/\//i.test(link)) {
+          link = 'http://' + link;
+        }
+        return link;
+      }
+    }
   });

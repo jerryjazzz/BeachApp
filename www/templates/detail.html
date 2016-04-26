@@ -36,7 +36,8 @@
                 <div class="col">
                   <h4>Website</h4>
 
-                  <p><a href="{{EstablishData.website}}">{{EstablishData.website}}</a></p>
+                  <p ng-click="openLink(EstablishData.website)"><a href="javascript:void();"
+                                                                   ng-bind-html="EstablishData.website"></a></p>
                 </div>
               </div>
             </div>
