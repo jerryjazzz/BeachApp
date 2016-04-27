@@ -16,11 +16,12 @@ angular.module('DBApp', ['ionic',
     'ionic-zoom-view',
   ])
 
-  .run(function ($ionicPlatform, $rootScope, uiGmapIsReady, $ionicLoading, $localStorage, $state, HomeMenu) {
+  .run(function ($ionicPlatform, $rootScope, uiGmapIsReady, $ionicLoading, $localStorage, $state, HomeMenu, $cordovaNetwork) {
     $ionicPlatform.on("resume", function () {
 
     });
     $ionicPlatform.ready(function () {
+      document.addEventListener("offline", onOffline, false);
       HomeMenu.getAmenities().then(function (response) {
         $localStorage.amenities = response;
         console.log(response);
@@ -47,6 +48,7 @@ angular.module('DBApp', ['ionic',
     });
     $rootScope.showMap = true;
     $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams, options) {
+
       $ionicLoading.show({
         template: 'Please wait..'
       });
@@ -54,12 +56,13 @@ angular.module('DBApp', ['ionic',
     $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
       $ionicLoading.hide();
     })
-
+    function onOffline() {
+      $state.go("deviceOffline");
+    }
   })
 
   .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider) {
     $stateProvider
-
       .state('home', {
         url: '/home',
         templateUrl: 'templates/home.html',
@@ -69,6 +72,10 @@ angular.module('DBApp', ['ionic',
             return HomeMenu.homeIcons();
           }
         }
+      })
+      .state("deviceOffline", {
+        templateUrl: 'templates/offline.html',
+        controller: 'offlineCtrl'
       })
       .state('mainApp', {
         url: '/main',
@@ -266,6 +273,7 @@ angular.module('DBApp', ['ionic',
           },
         }
       })
+
       .state('mainApp.dealsDetail', {
         url: '/dealDetail/:id',
         params: {data: null},
@@ -291,9 +299,21 @@ angular.module('DBApp', ['ionic',
             }
           },
         }
+      })
+      .state('mainApp.menuGallery', {
+        url: '/menuGallery',
+        params: {images: null},
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/menuGallery.html',
+            controller: 'menuGalleryCtrl',
+          },
+        }
       });
 
     $ionicConfigProvider.tabs.position("bottom");
+    $ionicConfigProvider.backButton.previousTitleText(false);
+    $ionicConfigProvider.backButton.text('');
     $urlRouterProvider.otherwise('/home');
     //$httpProvider.defaults.headers.common["lat"] = "123456";
     //$httpProvider.defaults.headers.common["long"] = "123456";

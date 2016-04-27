@@ -163,4 +163,15 @@ angular.module('DBApp.filters', [])
         return link;
       }
     }
-  });
+  })
+  .filter("establishmentFilter", function () {
+    return function (link, miles, pricerange) {
+      if (angular.isDefined(link)) {
+        console.log("Link", link);
+      }
+      console.log("Miles", miles);
+      console.log("price range", pricerange);
+    }
+  })
+
+;

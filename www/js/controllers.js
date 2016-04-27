@@ -81,7 +81,7 @@ angular.module('DBApp.controllers', [])
     }
     console.log($ionicHistory.viewHistory())
   })
-  .controller('detailCtrl', function ($scope, $ionicPlatform, $sce, $state, $ionicScrollDelegate, $timeout, $filter, $ionicPopup, $stateParams, Data, $localStorage, $ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
+  .controller('detailCtrl', function ($scope, $ionicGesture, $ionicPlatform, $sce, $state, $ionicScrollDelegate, $timeout, $filter, $ionicPopup, $stateParams, Data, $localStorage, $ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
     console.log(Data);
     $scope.EstablishData = Data.Data;
     if ($scope.EstablishData.menuImages == "") {
@@ -220,51 +220,84 @@ angular.module('DBApp.controllers', [])
         alert("Number not available");
       }
     };
-    $scope.createModal = function () {
-      $ionicModal.fromTemplateUrl('templates/detailPhotos.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function (modal) {
-        $scope.modal = modal;
-        console.log(modal);
-      });
-      $timeout(function () {
-        $ionicSlideBoxDelegate.$getByHandle("Gallery").update();
-        console.log("Updated Successfully");
-      });
-    };
-
-    $scope.createMenuModal = function () {
-      //$ionicTabsDelegate.select(2);
-      $ionicModal.fromTemplateUrl('templates/detailMenus.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function (modal) {
-        $scope.modal = modal;
-      });
-      $ionicSlideBoxDelegate.$getByHandle("MenuFull").update();
-    };
-    $scope.loadMenuFull = function (index) {
-      if (index == null || angular.isUndefined(index)) {
-        index = 1
+    $scope.showModal = function (index, type) {
+      var templateUrl = "";
+      if (type == "menu") {
+        templateUrl = "templates/detailMenus.html";
       }
-      $ionicSlideBoxDelegate.update();
-      //$ionicSlideBoxDelegate.update();
-      $ionicSlideBoxDelegate.slide(index);
-      $scope.modal.show();
-    }
-
-    $scope.loadFullScreen = function (index) {
-      if (index == null || angular.isUndefined(index)) {
-        index = 1
+      else if (type == "photos") {
+        templateUrl = "templates/detailPhotos.html";
       }
-      //$ionicSlideBoxDelegate.$getByHandle("Gallery").update();
-      $ionicSlideBoxDelegate.slide(index);
-      $scope.modal.show();
-    }
+
+      if (templateUrl !== "") {
+        $ionicModal.fromTemplateUrl(templateUrl, {
+          scope: $scope,
+          animation: 'slide-in-up'
+        }).then(function (modal) {
+          $scope.modal = modal;
+          $scope.modal.show();
+          $ionicSlideBoxDelegate.slide(index);
+        })
+      }
+    };
     $scope.CloseModal = function () {
       $scope.modal.hide();
     }
+
+
+    //$scope.createModal = function () {
+    //  $ionicModal.fromTemplateUrl('templates/detailPhotos.html', {
+    //    scope: $scope,
+    //    animation: 'slide-in-up'
+    //  }).then(function (modal) {
+    //    $scope.modal = modal;
+    //    console.log(modal);
+    //  });
+    //  $timeout(function () {
+    //    $ionicSlideBoxDelegate.$getByHandle("Gallery").update();
+    //    console.log("Updated Successfully");
+    //  });
+    //};
+    //
+    //$scope.createMenuModal = function () {
+    //  //$ionicTabsDelegate.select(2);
+    //
+    //  $ionicModal.fromTemplateUrl('templates/detailMenus.html', {
+    //    scope: $scope,
+    //    animation: 'slide-in-up'
+    //  }).then(function (modal) {
+    //    $scope.modal = modal;
+    //    console.log(document.getElementById("testId"));
+    //    var testElem = angular.element(document.getElementById("testId"));
+    //  });
+    //  $ionicSlideBoxDelegate.$getByHandle("MenuFull").update();
+    //};
+    //$scope.loadMenuFull = function (index) {
+    //
+    //  console.log(JSON.stringify(testElem));
+    //  $ionicGesture.on("pinch", function (e) {
+    //    console.log(e.gesture.scale)
+    //  }, testElem);
+    //  if (index == null || angular.isUndefined(index)) {
+    //    index = 1
+    //  }
+    //  $ionicSlideBoxDelegate.update();
+    //  //$ionicSlideBoxDelegate.update();
+    //  $ionicSlideBoxDelegate.slide(index);
+    //  $scope.modal.show();
+    //}
+    //
+    //$scope.loadFullScreen = function (index) {
+    //  if (index == null || angular.isUndefined(index)) {
+    //    index = 1
+    //  }
+    //  //$ionicSlideBoxDelegate.$getByHandle("Gallery").update();
+    //  $ionicSlideBoxDelegate.slide(index);
+    //  $scope.modal.show();
+    //}
+    //$scope.CloseModal = function () {
+    //  $scope.modal.hide();
+    //}
     //$ionicPlatform.registerBackButtonAction(function ($event) {
     //  $scope.$apply();
     //}, 10000);
@@ -278,41 +311,43 @@ angular.module('DBApp.controllers', [])
     $scope.goHome = function () {
       $state.go("home");
     }
-    $scope.updateSlideStatus = function (slide) {
-      if (angular.isUndefined($scope.activeSlide)) {
-        slide = 0;
-      }
-      var zoomFactor = $ionicScrollDelegate.$getByHandle('scrollHandle' + slide).getScrollPosition().zoom;
-      if (zoomFactor == $scope.zoomMin) {
-        $ionicSlideBoxDelegate.enableSlide(true);
-      } else {
-        $ionicSlideBoxDelegate.enableSlide(false);
-      }
-    };
-    $scope.zoomMin = 1;
-    $scope.slideChanged = function (index) {
-      console.log(index);
-      $scope.activeSlide = index;
-    }
-    $scope.Zoomed = false;
-    $scope.changeStyle = function (event, index) {
-      var elem = angular.element(event.target);
-      if (!$scope.Zoomed) {
-        $scope.Zoomed = true;
-        elem.css("width", "auto");
-        $ionicSlideBoxDelegate.$getByHandle("MenuFull").enableSlide(false);
-      }
-      else {
-        $scope.Zoomed = false;
-        elem.css("width", "100%");
-        $ionicSlideBoxDelegate.$getByHandle("MenuFull").enableSlide(true);
-      }
-    }
+    //$scope.updateSlideStatus = function (slide) {
+    //  if (angular.isUndefined($scope.activeSlide)) {
+    //    slide = 0;
+    //  }
+    //  var zoomFactor = $ionicScrollDelegate.$getByHandle('scrollHandle' + slide).getScrollPosition().zoom;
+    //  if (zoomFactor == $scope.zoomMin) {
+    //    $ionicSlideBoxDelegate.enableSlide(true);
+    //  } else {
+    //    $ionicSlideBoxDelegate.enableSlide(false);
+    //  }
+    //};
+    //$scope.zoomMin = 1;
+    //$scope.slideChanged = function (index) {
+    //  console.log(index);
+    //  $scope.activeSlide = index;
+    //}
+    //$scope.Zoomed = false;
+    //$scope.changeStyle = function (event, index) {
+    //  var elem = angular.element(event.target);
+    //  if (!$scope.Zoomed) {
+    //    $scope.Zoomed = true;
+    //    elem.css("width", "auto");
+    //    $ionicSlideBoxDelegate.$getByHandle("MenuFull").enableSlide(false);
+    //  }
+    //  else {
+    //    $scope.Zoomed = false;
+    //    elem.css("width", "100%");
+    //    $ionicSlideBoxDelegate.$getByHandle("MenuFull").enableSlide(true);
+    //  }
+    //}
     $scope.openLink = function (link) {
       console.log(link);
       link = $filter('webLink')(link);
       window.open(link, "_blank", "location=yes");
-    }
+    };
+
+
   })
   .controller('eventCtrl', function ($scope, $state, $stateParams, eventData, $ionicHistory) {
     $scope.showListing = function () {
@@ -844,9 +879,17 @@ angular.module('DBApp.controllers', [])
         console.log('Tapped!', res);
       });
     };
-    $scope.greaterThan = function (prop, val) {
+    $scope.checkFinalFilter = function (prop, val, prop1, val1) {
       return function (item) {
-        return item[prop] > val;
+        console.log(val1);
+        if (val1 == null) {
+          return item[prop] > val
+        }
+        else {
+          return item[prop] > val && item[prop1] == val1;
+        }
+
+        //return item[prop] > val;
       }
     }
 
@@ -871,5 +914,8 @@ angular.module('DBApp.controllers', [])
         $scope.filterData.priceRangeNew = newvalue;
       }
     })
+  })
+  .controller("offlineCtrl", function ($scope) {
+    console.log("i am offline");
   })
 ;

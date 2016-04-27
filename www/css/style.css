@@ -2,7 +2,7 @@
 
 .homePageBackground {
   top: 20vh;
-  height:80vh;
+  height: 80vh;
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#03bcfd+0,75f3ff+32,0382d7+100 */
   background: #03bcfd; /* Old browsers */
   background: -moz-linear-gradient(top, #03bcfd 0%, #75f3ff 32%, #0382d7 100%); /* FF3.6-15 */
@@ -198,7 +198,7 @@ p.info {
   font-size: 2em;
   color: white;
   padding: 5px;
-  line-height:1;
+  line-height: 1;
 }
 
 .eventHeader > .eventType {
@@ -223,20 +223,43 @@ p.info {
 /*}*/
 
 /*.tab-item.tab-item-active, .tab-item.active, .tab-item.activated {*/
-  /*border: black;*/
+/*border: black;*/
 /*}*/
 /*.tabs-striped.tabs-color-stable .tab-item.tab-item-active{*/
-  /*border:black;*/
-  /*border-top-width:2px;*/
+/*border:black;*/
+/*border-top-width:2px;*/
 /*}*/
 /*.tab-item-active{*/
-  /*color:black;*/
+/*color:black;*/
 /*}*/
 
-.homeTitle{
+.homeTitle {
   font-size: 5px;
 }
-.tabs-striped.tabs-color-stable .tab-item.tab-item-active{
+
+.tabs-striped.tabs-color-stable .tab-item.tab-item-active {
   border-top-width: 2px;
-  border-color:green;
+  border-color: green;
+}
+
+/*ion-content{*/
+/*background-color: grey;*/
+/*}*/
+
+.container {
+  background-color: grey;
+}
+
+.scrollCanvas {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+}
+
+.image {
+  width: 100%;
+  height: 90vh;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center, center;
 }

@@ -4,13 +4,16 @@
     <button class="button button-stable button-outline" ng-click="CloseModal()">Close</button>
   </ion-header-bar>
   <content has-header="true" padding="true">
-    <ion-slide-box ng-if="hasGallery" delegate-handle="Gallery">
+    <ion-slide-box>
       <ion-slide class="items" ng-repeat="oImage in GalleryFull" style="top:44px;height:100vh;">
-        <div class="row" style="top:auto;position:absolute;height:90%;">
-          <div class="col col-center">
-            <img src="{{oImage | MainImages}}" style="width:100%;"/>
+        <ion-scroll direction="xy" scrollbar-x="false" scrollbar-y="false" min-zoom="1" zooming="true"
+                    style="top:auto;position:relative;height:90%;" overflow-scroll="false">
+          <div class="row">
+            <div class="col col-center">
+              <img ng-src="{{oImage | MainImages}}" style="width:100%;" class="image"/>
+            </div>
           </div>
-        </div>
+        </ion-scroll>
       </ion-slide>
     </ion-slide-box>
   </content>

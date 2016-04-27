@@ -42,7 +42,7 @@
               </div>
             </div>
             <div class="col col-25">
-              <img src="{{EstablishData.logo | ThumbnailImages}}" style="height:100%;width:100%;float:right"/>
+              <img ng-src="{{EstablishData.logo | ThumbnailImages}}" style="height:100%;width:100%;float:right"/>
             </div>
           </div>
           <div class="row" ng-repeat="(key,value) in dataArr">
@@ -64,38 +64,38 @@
         </ion-content>
       </ion-tab>
       <ion-tab ng-if="hasGallery" title="Photos" icon-on="ion-ios-camera" icon-off="ion-ios-camera-outline">
-        <ion-content has-header has-sub-header class="has-header" style="top:44px;" ng-init="createModal()">
+        <ion-content has-header has-sub-header class="has-header" style="top:44px;" ng-init="createModal('photos')">
           <div class="row" ng-repeat="photo in Gallery" ng-if="$index%3==0">
             <div class="col col-33" ng-if="Gallery[$index]">
-              <img src="{{Gallery[$index] | MainImages}}" style="height:100%;width:100%;"
-                   ng-click="loadFullScreen($index)"/>
+              <img ng-src="{{Gallery[$index] | MainImages}}" style="height:100%;width:100%;"
+                   ng-click="showModal($index,'photos')"/>
             </div>
             <div class="col col-33" ng-if="Gallery[$index+1]">
-              <img src="{{Gallery[$index+1] | MainImages}}" style="height:100%;width:100%;"
-                   ng-click="loadFullScreen($index+1)"/>
+              <img ng-src="{{Gallery[$index+1] | MainImages}}" style="height:100%;width:100%;"
+                   ng-click="showModal($index+1,'photos')"/>
             </div>
             <div class="col col-33" ng-if="Gallery[$index+2]">
-              <img src="{{Gallery[$index+2] | MainImages}}" style="height:100%;width:100%;"
-                   ng-click="loadFullScreen($index+2)"/>
+              <img ng-src="{{Gallery[$index+2] | MainImages}}" style="height:100%;width:100%;"
+                   ng-click="showModal($index+2,'photos')"/>
             </div>
           </div>
 
         </ion-content>
       </ion-tab>
       <ion-tab ng-if="hasMenu" title="Menu" icon-on="ion-android-restaurant" icon-off="ion-android-restaurant">
-        <ion-content has-header has-sub-header class="has-header" style="top:44px;" ng-init="createMenuModal()">
+        <ion-content has-header has-sub-header class="has-header" style="top:44px;" ng-init="createModal('menu')">
           <div class="row" ng-repeat="photo in MenuImages" ng-if="$index%3==0">
             <div class="col col-33" ng-if="MenuImages[$index]">
-              <img src="{{MenuImages[$index] | MainImages}}" style="height:100%;width:100%;"
-                   ng-click="loadMenuFull($index)"/>
+              <img ng-src="{{MenuImages[$index] | MainImages}}" style="height:100%;width:100%;"
+                   ng-click="showModal($index,'menu')"/>
             </div>
             <div class="col col-33" ng-if="MenuImages[$index+1]">
-              <img src="{{MenuImages[$index+1] | MainImages}}" style="height:100%;width:100%;"
-                   ng-click="loadMenuFull($index+1)"/>
+              <img ng-src="{{MenuImages[$index+1] | MainImages}}" style="height:100%;width:100%;"
+                   ng-click="showModal($index+1,'menu')"/>
             </div>
             <div class="col col-33" ng-if="MenuImages[$index+2]">
-              <img src="{{MenuImages[$index+2] | MainImages}}" style="height:100%;width:100%;"
-                   ng-click="loadMenuFull($index+2)"/>
+              <img ng-src="{{MenuImages[$index+2] | MainImages}}" style="height:100%;width:100%;"
+                   ng-click="showModal($index+2,'menu')"/>
             </div>
           </div>
         </ion-content>
@@ -105,8 +105,5 @@
         <!-- Tab 3 content -->
       </ion-tab>
     </ion-tabs>
-    <script id="menuImages.html" type="text/ng-template">
-
-    </script>
   </ion-pane>
 </ion-view>
