@@ -221,6 +221,10 @@ p.info {
 /*.theAve .angular-google-map-container {*/
 /*height: 100vh;*/
 /*}*/
+.angular-google-map-container {
+  border-bottom: 1px solid blue;
+  border-bottom-width: 4px;
+}
 
 /*.tab-item.tab-item-active, .tab-item.active, .tab-item.activated {*/
 /*border: black;*/

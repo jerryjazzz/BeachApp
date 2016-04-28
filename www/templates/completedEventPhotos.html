@@ -3,39 +3,39 @@
     <!--<button class="button button-icon button-clear ion-android-arrow-back" ng-click="Back()">-->
     <!--</button>-->
   <!--</ion-nav-buttons>-->
-  <ion-content has-header has-sub-header class="has-header" overflow-scroll="false" style="top:44px;">
+  <ion-content has-header has-sub-header class="has-header" overflow-scroll="false" scrollbar-x="false" scrollbar-y="false"  style="top:44px;">
     <div class="row" ng-repeat="photo in EventThumbs" ng-if="$index%3==0">
       <div class="col col-33" ng-if="EventThumbs[$index]">
-        <img src="{{EventThumbs[$index] | MainImages}}" style="height:100%;width:100%;"
-             ng-click="loadFullScreen($index)"/>
+        <img ng-src="{{EventThumbs[$index] | MainImages}}" style="height:100%;width:100%;"
+             ng-click="showModal($index)"/>
       </div>
       <div class="col col-33" ng-if="EventThumbs[$index+1]">
-        <img src="{{EventThumbs[$index+1] | MainImages}}" style="height:100%;width:100%;"
-             ng-click="loadFullScreen($index+1)"/>
+        <img ng-src="{{EventThumbs[$index+1] | MainImages}}" style="height:100%;width:100%;"
+             ng-click="showModal($index+1)"/>
       </div>
       <div class="col col-33" ng-if="EventThumbs[$index+2]">
-        <img src="{{EventThumbs[$index+2] | MainImages}}" style="height:100%;width:100%;"
-             ng-click="loadFullScreen($index+2)"/>
+        <img ng-src="{{EventThumbs[$index+2] | MainImages}}" style="height:100%;width:100%;"
+             ng-click="showModal($index+2)"/>
       </div>
     </div>
-    <script id="image-modal.html" type="text/ng-template">
-      <div class="modal" style="background-color: black;">
-        <ion-header-bar class="bar-clear">
-          <h1 class="title">Photo Gallery</h1>
-          <button class="button button-stable button-outline" ng-click="CloseModal()">Close</button>
-        </ion-header-bar>
-        <content has-header="true" padding="true">
-          <ion-slide-box ng-if="EventOriginal" delegate-handle="Gallery">
-            <ion-slide class="items" ng-repeat="oImage in EventOriginal" style="top:44px;height:100vh;">
-              <div class="row" style="top:auto;position:absolute;height:90%;">
-                <div class="col col-center">
-                  <img src="{{oImage | MainImages}}" style="width:100%;"/>
-                </div>
-              </div>
-            </ion-slide>
-          </ion-slide-box>
-        </content>
-      </div>
-    </script>
+    <!--<script id="image-modal.html" type="text/ng-template">-->
+      <!--<div class="modal" style="background-color: black;">-->
+        <!--<ion-header-bar class="bar-clear">-->
+          <!--<h1 class="title">Photo Gallery</h1>-->
+          <!--<button class="button button-stable button-outline" ng-click="CloseModal()">Close</button>-->
+        <!--</ion-header-bar>-->
+        <!--<content has-header="true" padding="true">-->
+          <!--<ion-slide-box ng-if="EventOriginal" delegate-handle="Gallery">-->
+            <!--<ion-slide class="items" ng-repeat="oImage in EventOriginal" style="top:44px;height:100vh;">-->
+              <!--<div class="row" style="top:auto;position:absolute;height:90%;">-->
+                <!--<div class="col col-center">-->
+                  <!--<img src="{{oImage | MainImages}}" style="width:100%;"/>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</ion-slide>-->
+          <!--</ion-slide-box>-->
+        <!--</content>-->
+      <!--</div>-->
+    <!--</script>-->
   </ion-content>
 </ion-view>

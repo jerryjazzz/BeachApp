@@ -1,9 +1,10 @@
 <ion-view view-title="{{businessName}}">
   <ion-content>
     <ion-slide-box>
-      <ion-slide ng-repeat="image in images">
+      <ion-slide ng-repeat="image in images" active-slide="activeSlide">
         <div class="container" ng-if="slideVisible($index)" class="scrollCanvas">
-          <ion-scroll class="scrollCanvas" zooming="true" min-zoom="1" direction="xy" overflow-scroll="false">
+          <ion-scroll class="scrollCanvas" zooming="true" min-zoom="1" direction="xy" overflow-scroll="false"
+                      >
             <div class="image" style="background-image: url( {{image}} )"></div>
           </ion-scroll>
         </div>

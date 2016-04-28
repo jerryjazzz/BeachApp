@@ -237,6 +237,7 @@ angular.module('DBApp.controllers', [])
           $scope.modal = modal;
           $scope.modal.show();
           $ionicSlideBoxDelegate.slide(index);
+          $scope.activeSlide = index;
         })
       }
     };
@@ -244,6 +245,16 @@ angular.module('DBApp.controllers', [])
       $scope.modal.hide();
     }
 
+    $scope.zoomMin = 1;
+    $scope.updateSlideStatus = function (slide) {
+      console.log(slide);
+      var zoomFactor = $ionicScrollDelegate.$getByHandle('scrollHandle' + slide).getScrollPosition().zoom;
+      if (zoomFactor == $scope.zoomMin) {
+        $ionicSlideBoxDelegate.enableSlide(true);
+      } else {
+        $ionicSlideBoxDelegate.enableSlide(false);
+      }
+    };
 
     //$scope.createModal = function () {
     //  $ionicModal.fromTemplateUrl('templates/detailPhotos.html', {
@@ -464,7 +475,9 @@ angular.module('DBApp.controllers', [])
     //console.log(new Date(splitEndDate[0], splitEndDate[1] - 1, splitEndDate[2], splitEndTime[0], splitEndTime[1], 0, 0));
     $scope.startDateTime = new Date(splitStartDate[0], splitStartDate[1] - 1, splitStartDate[2], splitStartTime[0], splitStartTime[1], 0, 0);
     $scope.endDateTime = new Date(splitEndDate[0], splitEndDate[1] - 1, splitEndDate[2], splitEndTime[0], splitEndTime[1], 0, 0);
-    $scope.TextDescription = String($scope.eventDetail.description).replace(/<[^>]+>/gm, '');
+    $scope.TextDescription = String($scope.eventDetail.description).replace(/<br\s*[\/]?>/gi, "\n")
+    $scope.TextDescription = String($scope.TextDescription).replace(/<[^>]+>/gm, '');
+    $scope.TextDescription = String($scope.TextDescription).replace(/&nbsp;/gi, ' ');
     $scope.createEvent = function () {
       $cordovaCalendar.createEventInteractively({
         title: $scope.eventDetail.eventName,
@@ -581,7 +594,7 @@ angular.module('DBApp.controllers', [])
       $ionicHistory.goBack(-1);
     }
   })
-  .controller("completedEventPhotosCtrl", function ($scope, $state, $stateParams, $ionicModal, $ionicSlideBoxDelegate, $ionicHistory) {
+  .controller("completedEventPhotosCtrl", function ($scope, $state, $stateParams, $ionicModal, $ionicSlideBoxDelegate, $ionicHistory, $ionicScrollDelegate) {
     console.log($stateParams);
     $scope.gallery = $stateParams.gallery;
     if ($scope.gallery == null) {
@@ -598,27 +611,53 @@ angular.module('DBApp.controllers', [])
       $scope.EventThumbs = $scope.gallery.thumbnail;
       $scope.EventOriginal = $scope.gallery.original;
     }
-    $scope.loadFullScreen = function (index) {
-      if (index == null || angular.isUndefined(index)) {
-        index = 1
-      }
-      $ionicModal.fromTemplateUrl('image-modal.html', {
+    //$scope.loadFullScreen = function (index) {
+    //  if (index == null || angular.isUndefined(index)) {
+    //    index = 1
+    //  }
+    //  $ionicModal.fromTemplateUrl('image-modal.html', {
+    //    scope: $scope,
+    //    animation: 'slide-in-up'
+    //  }).then(function (modal) {
+    //    $scope.modal = modal;
+    //    $ionicSlideBoxDelegate.update();
+    //    console.log(index);
+    //    $ionicSlideBoxDelegate.slide(index);
+    //    $scope.modal.show();
+    //  });
+    //};
+    //$scope.CloseModal = function () {
+    //  $scope.modal.hide();
+    //}
+    $scope.Back = function () {
+      $ionicHistory.goBack(-1);
+    }
+    $scope.showModal = function (index) {
+      templateUrl = "templates/eventPhotos.html";
+      $ionicModal.fromTemplateUrl(templateUrl, {
         scope: $scope,
         animation: 'slide-in-up'
       }).then(function (modal) {
         $scope.modal = modal;
-        $ionicSlideBoxDelegate.update();
-        console.log(index);
-        $ionicSlideBoxDelegate.slide(index);
         $scope.modal.show();
-      });
+        $ionicSlideBoxDelegate.slide(index);
+        $scope.activeSlide = index;
+      })
     };
     $scope.CloseModal = function () {
       $scope.modal.hide();
     }
-    $scope.Back = function () {
-      $ionicHistory.goBack(-1);
-    }
+
+    $scope.zoomMin = 1;
+    $scope.updateSlideStatus = function (slide) {
+      console.log(slide);
+      var zoomFactor = $ionicScrollDelegate.$getByHandle('scrollHandle' + slide).getScrollPosition().zoom;
+      if (zoomFactor == $scope.zoomMin) {
+        $ionicSlideBoxDelegate.enableSlide(true);
+      } else {
+        $ionicSlideBoxDelegate.enableSlide(false);
+      }
+    };
   })
   .controller("mapsCtrl", function ($scope, $state, $stateParams, $ionicHistory, uiGmapIsReady) {
     $scope.vh = window.innerHeight;
@@ -881,15 +920,13 @@ angular.module('DBApp.controllers', [])
     };
     $scope.checkFinalFilter = function (prop, val, prop1, val1) {
       return function (item) {
-        console.log(val1);
+        //console.log(val1);
         if (val1 == null) {
           return item[prop] > val
         }
         else {
           return item[prop] > val && item[prop1] == val1;
         }
-
-        //return item[prop] > val;
       }
     }
 

@@ -83,7 +83,8 @@
         </ion-content>
       </ion-tab>
       <ion-tab ng-if="hasMenu" title="Menu" icon-on="ion-android-restaurant" icon-off="ion-android-restaurant">
-        <ion-content has-header has-sub-header class="has-header" style="top:44px;" ng-init="createModal('menu')">
+        <ion-content has-header has-sub-header class="has-header" style="top:44px;" ng-init="createModal('menu')"
+                     scrollbar-x="false" scrollbar-y="false">
           <div class="row" ng-repeat="photo in MenuImages" ng-if="$index%3==0">
             <div class="col col-33" ng-if="MenuImages[$index]">
               <img ng-src="{{MenuImages[$index] | MainImages}}" style="height:100%;width:100%;"
