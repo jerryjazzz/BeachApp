@@ -12,7 +12,7 @@
   <ion-content id="detailContent" ng-style="{top:ContentHeight}" has-bouncing="false" overflow-scroll="false"
                scrollbar-x="false" scrollbar-y="false" 1>
     <ion-list>
-      <ion-item ng-repeat="Category in data" ng-click="openList(Category)">
+      <ion-item ng-repeat="Category in data" ng-click="openList(Category)" style="padding-top:5px;padding-bottom:5px;">
         <div class="row row-no-padding">
           <div class="col col-25">
             <img style="width:100%;" ng-src="{{Category.logo | ThumbnailImages}}"/>

@@ -85,17 +85,22 @@ angular.module('DBApp', ['ionic',
       })
       .state('mainApp.category', {
         url: '/category/:id',
-        params: {name: null},
+        params: {name: null,"data":null},
         views: {
           'menuContent': {
             templateUrl: 'templates/category.html',
             controller: 'catCtrl',
             resolve: {
-              catList: function (CatList, $stateParams) {
-                var id = $stateParams.id;
-                console.log($stateParams);
-                return CatList.catlist(id);
-              },
+              //catList: function (CatList,$stateParams) {
+              //  var id = $stateParams.id;
+              //  console.log($stateParams);
+              //  //return CatList.catlist(id);
+              //  //console.log($stateParams.id);
+              //  //console.log(CatList.catlist(id));
+              //  return CatList.catlist(id);
+              //  //return $stateParams.data;
+              //
+              //},
             }
           },
         }

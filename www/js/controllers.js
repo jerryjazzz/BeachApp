@@ -42,7 +42,7 @@ angular.module('DBApp.controllers', [])
       $state.go("home");
     }
   })
-  .controller('HomeCtrl', function ($scope, $state, $stateParams, Icons, $ionicHistory, HomeMenu, $localStorage) {
+  .controller('HomeCtrl', function ($scope, $state, $stateParams, Icons, $ionicHistory, HomeMenu, $localStorage, $filter) {
     $ionicHistory.clearCache().then(function (response) {
       console.log("cache removed");
     });
@@ -76,10 +76,21 @@ angular.module('DBApp.controllers', [])
         return true;
       }
       else {
-        $state.go("mainApp.category", {"id": id, "name": name});
+        //var Data = {};
+        var finalData = $filter('filter')($localStorage.allData, {id: parseInt(id)}, true);
+        console.log(finalData);
+        var Data = finalData[0];
+        var name = Data.name;
+        var newData = Data.details
+        console.log(newData);
+        $state.go("mainApp.category", {"id": id, "name": name, "data": newData});
       }
-    }
+    };
     console.log($ionicHistory.viewHistory())
+    HomeMenu.getAll().then(function (response) {
+      console.log("All", response);
+    })
+
   })
   .controller('detailCtrl', function ($scope, $ionicGesture, $ionicPlatform, $sce, $state, $ionicScrollDelegate, $timeout, $filter, $ionicPopup, $stateParams, Data, $localStorage, $ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
     console.log(Data);
@@ -400,7 +411,11 @@ angular.module('DBApp.controllers', [])
     //}
     console.log($scope.dealList.length);
   })
-  .controller('catCtrl', function ($scope, $state, $ionicHistory, $stateParams, catList, $filter, $localStorage) {
+  .controller('catCtrl', function ($scope, $state, $ionicHistory, $stateParams,  $filter, $localStorage) {
+    //var catList = $stateParams.data;
+    //CatList.catlist(3).then(function (response) {
+    //  console.log(response);
+    //});
     $scope.markers = [];
     $scope.map = {center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}, control: {}};
     $scope.options = {
@@ -408,7 +423,10 @@ angular.module('DBApp.controllers', [])
       disableDefaultUI: true
     };
     $scope.viewTitle = $stateParams.name;
-    $scope.data = catList.CatList;
+    //$scope.data = catList.CatList;
+    console.log($scope.data);
+    console.log($stateParams.data);
+    $scope.data = $stateParams.data;
     $scope.vh = window.innerHeight;
     if (ionic.Platform.isIOS()) {
       $scope.ContentHeight = ($scope.vh * 40) / 100 + 44 + 20 + "px";

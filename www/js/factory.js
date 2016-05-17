@@ -88,22 +88,47 @@ angular.module('DBApp.factory', [])
       });
       return deferred.promise;
     };
+    returnData.getAll = function () {
+      var deferred = $q.defer();
+      var URL = API_URL + "category/all/";
+      console.log(URL);
+      if (!$localStorage.allData) {
+        $http.get(URL).then(function (response) {
+          deferred.resolve(response.data.CatList);
+          $localStorage.allData = response.data.CatList;
+        }, function (err) {
+          deferred.reject(err);
+        });
+      }
+      else {
+        deferred.resolve($localStorage.allData)
+      }
 
+      return deferred.promise;
+    };
     return returnData;
-
   })
-  .factory("CatList", function ($http, $q, API_URL) {
+  .factory("CatList", function ($http, $q, API_URL,$localStorage,$filter) {
     var returnData = {};
     returnData.catlist = function (id) {
       var deferred = $q.defer();
-      var URL = API_URL + "category/fetchSubCategory/" + id;
-      //console.log(URL);return false;
-      $http.get(URL).then(function (response) {
-        //console.log(JSON.stringify(response));
-        deferred.resolve(response.data);
-      }, function (err) {
-        deferred.reject(err);
-      });
+      if (!$localStorage.allData) {
+        var URL = API_URL + "category/fetchSubCategory/" + id;
+        console.log(URL);
+        //return false;
+        $http.get(URL).then(function (response) {
+          deferred.resolve(response.data);
+        }, function (err) {
+          deferred.reject(err);
+        });
+      }
+      else {
+        var Data = $localStorage.allData;
+        console.log(id,parseInt(id));
+        console.log(Data);
+
+        console.log(finalData);
+      }
       return deferred.promise;
     };
     return returnData;
