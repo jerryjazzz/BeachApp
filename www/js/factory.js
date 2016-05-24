@@ -18,7 +18,7 @@ angular.module('DBApp.factory', [])
             config.headers['lat'] = $localStorage.lat;
             config.headers['long'] = $localStorage.long;
           }, function (err) {
-            console.log(err);
+            //console.log(err);
           }, geoOptions);
           config.timeout = 5000;
         }
@@ -92,23 +92,17 @@ angular.module('DBApp.factory', [])
       var deferred = $q.defer();
       var URL = API_URL + "category/all/";
       console.log(URL);
-      if (!$localStorage.allData) {
-        $http.get(URL).then(function (response) {
-          deferred.resolve(response.data.CatList);
-          $localStorage.allData = response.data.CatList;
-        }, function (err) {
-          deferred.reject(err);
-        });
-      }
-      else {
-        deferred.resolve($localStorage.allData)
-      }
-
+      $http.get(URL).then(function (response) {
+        deferred.resolve(response.data.CatList);
+        $localStorage.allData = response.data.CatList;
+      }, function (err) {
+        deferred.reject(err);
+      });
       return deferred.promise;
     };
     return returnData;
   })
-  .factory("CatList", function ($http, $q, API_URL,$localStorage,$filter) {
+  .factory("CatList", function ($http, $q, API_URL, $localStorage, $filter) {
     var returnData = {};
     returnData.catlist = function (id) {
       var deferred = $q.defer();
@@ -123,14 +117,23 @@ angular.module('DBApp.factory', [])
         });
       }
       else {
-        var Data = $localStorage.allData;
-        console.log(id,parseInt(id));
-        console.log(Data);
-
+        var finalData = $filter('filter')($localStorage.allData, {id: parseInt(id)}, true);
         console.log(finalData);
+        var Data = finalData[0];
+        var name = Data.name;
+        var newData = Data.details
+        console.log(newData);
+        var response = {"data": newData, "name": name};
+        deferred.resolve(response);
+
+        //console.log(finalData);
       }
+
       return deferred.promise;
     };
+    returnData.allData = function () {
+
+    }
     return returnData;
   })
   .factory("detailData", function ($http, $q, API_URL) {

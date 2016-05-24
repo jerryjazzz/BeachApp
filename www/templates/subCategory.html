@@ -23,7 +23,7 @@
       <ion-item ng-repeat="Category in CatList" ng-click="openList(Category)">
         <div class="row row-no-padding">
           <div class="col col-20">
-            <img style="width:100%;" src="{{Category.logo | ThumbnailImages}}"/>
+            <img style="width:100%;" ng-src="{{Category.logo | ThumbnailImages}}"/>
           </div>
           <div class="col col-75 col-center">
             <h2 style="font-size: 1em;font-weight: bold;margin-left:5px;padding:5px;">{{Category.name | uppercase}}</h2>

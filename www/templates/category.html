@@ -1,7 +1,8 @@
 <ion-view view-title="{{viewTitle | uppercase}}">
   <ion-content scroll="false" overflow-scroll="false" style="height:40vh;" id="mapContent">
-    <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options" control="map.control" ng-if="showMap">
-      <ui-gmap-markers models="markers" coords="'self'" icon="'icon'" options="'options'" ng-class="map-icon-label"
+    <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options" control="map.control"
+                        ng-if="showMap && data">
+      <ui-gmap-markers models="markers" coords="'self'" options="'options'" events="events" ng-class="map-icon-label"
                        fit="true">
         <ui-gmap-windows show="show">
           <div ng-non-bindable>{{title}}</div>
@@ -12,7 +13,7 @@
   <ion-content id="detailContent" ng-style="{top:ContentHeight}" has-bouncing="false" overflow-scroll="false"
                scrollbar-x="false" scrollbar-y="false" 1>
     <ion-list>
-      <ion-item ng-repeat="Category in data" ng-click="openList(Category)" style="padding-top:5px;padding-bottom:5px;">
+      <ion-item ng-repeat="Category in data" ng-click="openList(Category)" style="padding-t">
         <div class="row row-no-padding">
           <div class="col col-25">
             <img style="width:100%;" ng-src="{{Category.logo | ThumbnailImages}}"/>

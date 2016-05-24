@@ -16,7 +16,7 @@ angular.module('DBApp', ['ionic',
     'ionic-zoom-view',
   ])
 
-  .run(function ($ionicPlatform, $rootScope, uiGmapIsReady, $ionicLoading, $localStorage, $state, HomeMenu, $cordovaNetwork) {
+  .run(function ($ionicPlatform, $rootScope, uiGmapIsReady, $ionicLoading, $localStorage, $state, HomeMenu,CatList, $cordovaNetwork) {
     $ionicPlatform.on("resume", function () {
 
     });
@@ -28,6 +28,10 @@ angular.module('DBApp', ['ionic',
       }, function (err) {
         console.log(err);
       });
+      HomeMenu.getAll().then(function (response) {
+        console.log("All Categories fetched");
+        //console.log("All", response);
+      })
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
       if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -124,7 +128,7 @@ angular.module('DBApp', ['ionic',
       })
       .state('mainApp.establishment', {
         url: '/establishment/',
-        params: {data: null, name: null},
+        params: {data: null, name: null,icon:null},
         views: {
           'menuContent': {
             templateUrl: 'templates/establishmentList.html',

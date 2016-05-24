@@ -58,6 +58,7 @@ angular.module('DBApp.directives', [])
       })
     }
   })
+
   //.directive("mapLoaded", function () {
   //  return function (scope, element, attrs) {
   //    element.ready(function () {

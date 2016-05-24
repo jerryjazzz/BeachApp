@@ -87,9 +87,7 @@ angular.module('DBApp.controllers', [])
       }
     };
     console.log($ionicHistory.viewHistory())
-    HomeMenu.getAll().then(function (response) {
-      console.log("All", response);
-    })
+
 
   })
   .controller('detailCtrl', function ($scope, $ionicGesture, $ionicPlatform, $sce, $state, $ionicScrollDelegate, $timeout, $filter, $ionicPopup, $stateParams, Data, $localStorage, $ionicPlatform, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, $ionicModal, $ionicSlideBoxDelegate, $ionicTabsDelegate) {
@@ -411,22 +409,26 @@ angular.module('DBApp.controllers', [])
     //}
     console.log($scope.dealList.length);
   })
-  .controller('catCtrl', function ($scope, $state, $ionicHistory, $stateParams,  $filter, $localStorage) {
-    //var catList = $stateParams.data;
-    //CatList.catlist(3).then(function (response) {
-    //  console.log(response);
-    //});
+  .controller('catCtrl', function ($scope, $state, $ionicHistory, $stateParams, CatList, $filter, $localStorage) {
+
+    if ($stateParams.data == null) {
+      console.log($stateParams);
+      CatList.catlist($stateParams.id).then(function (response) {
+        $scope.data = response.data;
+        $scope.viewTitle = response.name;
+      })
+    }
+    else {
+      $scope.data = $stateParams.data;
+      $scope.viewTitle = $stateParams.name;
+    }
     $scope.markers = [];
     $scope.map = {center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}, control: {}};
+    //$scope.map = {center: {lat: 26.4611111, lng: -80.0730556}, zoom: 12, bounds: {}, control: {}};
     $scope.options = {
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: true
     };
-    $scope.viewTitle = $stateParams.name;
-    //$scope.data = catList.CatList;
-    console.log($scope.data);
-    console.log($stateParams.data);
-    $scope.data = $stateParams.data;
     $scope.vh = window.innerHeight;
     if (ionic.Platform.isIOS()) {
       $scope.ContentHeight = ($scope.vh * 40) / 100 + 44 + 20 + "px";
@@ -436,23 +438,37 @@ angular.module('DBApp.controllers', [])
     }
     $scope.HotelList = [];
     $scope.markers = [];
-    angular.forEach($scope.data, function (value, key) {
-      angular.forEach(value.HotelList, function (v1, k1) {
-        var marker = {};
-        marker = {
-          latitude: v1.lat,
-          longitude: v1.lng,
-          title: v1.businessname,
-          id: v1.id,
-          icon: '',
-          options: {
-            label: v1.subCategoryName,
-          }
-        };
-        $scope.markers.push(marker);
-      })
+    if ($scope.data) {
+      angular.forEach($scope.data, function (value, key) {
+        //console.log(value.iconName);
+        var iconName = value.iconName;
+        angular.forEach(value.HotelList, function (v1, k1) {
+          //console.log(v1);
+          var marker = {};
+          marker = {
+            latitude: v1.lat,
+            longitude: v1.lng,
+            title: v1.businessname,
+            id: v1.id,
+            options: {
+              icon: {
+                path: 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z',
+                fillColor: '#E91E63',
+                fillOpacity: 1,
+                strokeColor: '',
+                strokeWeight: 0
+              },
+              map_icon_label: '<span class="map-icon ' + iconName + '"></span>'
+              //labelContent: '<span class="map-icon map-icon-point-of-interest"></span>',
+              //shadow: "none"
+            },
 
-    });
+          };
+          $scope.markers.push(marker);
+        })
+
+      });
+    }
     $scope.openList = function (data) {
       if (data.subCategoryList.length > 0) {
         $state.go("mainApp.subCategory", {id: data.id, data: data});
@@ -472,6 +488,7 @@ angular.module('DBApp.controllers', [])
     $scope.goBack = function () {
       $ionicHistory.goBack(-1);
     }
+
   })
   .controller('eventDetailCtrl', function ($scope, $state, $stateParams, $ionicHistory, eventData, $cordovaCalendar, $filter, $ionicPopup) {
     $scope.Back = function () {
@@ -811,8 +828,9 @@ angular.module('DBApp.controllers', [])
   .controller("subCatCtrl", function ($scope, $stateParams, $state, $localStorage, $filter, $ionicHistory) {
     console.log($stateParams);
     $scope.data = $stateParams.data;
+    var iconName = $scope.data.iconName;
     $scope.CatList = $scope.data.subCategoryList;
-    $scope.markers = [];
+    //$scope.markers = [];
     $scope.map = {center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}, control: {}};
     $scope.options = {
       mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -829,6 +847,7 @@ angular.module('DBApp.controllers', [])
     $scope.HotelList = [];
     $scope.markers = [];
     angular.forEach($scope.data.HotelList, function (v1, k1) {
+      console.log(v1);
       var marker = {};
       marker = {
         latitude: v1.lat,
@@ -837,7 +856,16 @@ angular.module('DBApp.controllers', [])
         id: v1.id,
         icon: '',
         options: {
-          label: v1.subCategoryName,
+          icon: {
+            path: 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z',
+            fillColor: '#E91E63',
+            fillOpacity: 1,
+            strokeColor: '',
+            strokeWeight: 0
+          },
+          map_icon_label: '<span class="map-icon ' + iconName + '"></span>'
+          //labelContent: '<span class="map-icon map-icon-point-of-interest"></span>',
+          //shadow: "none"
         }
       };
       $scope.markers.push(marker);
@@ -846,7 +874,7 @@ angular.module('DBApp.controllers', [])
     $scope.openList = function (data) {
       if (data.id) {
         $scope.List = $filter('filter')($scope.data.HotelList, {categorytype: data.id});
-        $state.go("mainApp.establishment", {data: $scope.List, name: data.name});
+        $state.go("mainApp.establishment", {data: $scope.List, name: data.name, icon: iconName});
       } else {
         console.log("Go to Home");
       }
@@ -863,6 +891,7 @@ angular.module('DBApp.controllers', [])
   .controller("establishmentCtrl", function ($scope, $stateParams, $state, $localStorage, $filter, $ionicHistory, priceRange, $ionicPopup) {
     console.log($stateParams);
     $scope.data = $stateParams.data;
+    var iconName = $stateParams.icon;
     $scope.markers = [];
     $scope.map = {center: {latitude: 26.4611111, longitude: -80.0730556}, zoom: 12, bounds: {}, control: {}};
     $scope.options = {
@@ -891,7 +920,16 @@ angular.module('DBApp.controllers', [])
         id: v1.id,
         icon: '',
         options: {
-          label: v1.subCategoryName,
+          icon: {
+            path: 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z',
+            fillColor: '#E91E63',
+            fillOpacity: 1,
+            strokeColor: '',
+            strokeWeight: 0
+          },
+          map_icon_label: '<span class="map-icon ' + iconName + '"></span>'
+          //labelContent: '<span class="map-icon map-icon-point-of-interest"></span>',
+          //shadow: "none"
         }
       };
       $scope.markers.push(marker);
