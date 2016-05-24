@@ -25,7 +25,6 @@
 </feature>
   <plugin name="cordova-plugin-console" source="npm"/>
   <plugin name="cordova-plugin-device" source="npm"/>
-  <plugin name="cordova-plugin-geolocation" source="npm"/>
   <plugin name="cordova-plugin-splashscreen" source="npm"/>
   <plugin name="cordova-plugin-statusbar" source="npm"/>
   <plugin name="cordova-plugin-whitelist" source="npm"/>
